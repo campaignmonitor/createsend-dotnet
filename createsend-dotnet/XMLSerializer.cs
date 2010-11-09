@@ -20,5 +20,15 @@ namespace createsend_dotnet
                 return (T)serializer.Deserialize(reader);
             }
         }
+
+        public static string Serialize<T>(T model)
+        {
+            StringWriter writer = new StringWriter(new StringBuilder());
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+            serializer.Serialize(writer, model);
+
+            return writer.ToString();
+        }
     }
 }

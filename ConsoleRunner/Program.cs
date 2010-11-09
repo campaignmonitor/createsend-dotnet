@@ -9,9 +9,14 @@ namespace ConsoleRunner
     {
         static void Main(string[] args)
         {
-            System.Console.WriteLine(General.ApiKey("http://jasoninc.alphacreatesend.com", "jbh", "wordpass"));
-            System.Console.WriteLine(General.SystemDate());
-            System.Console.WriteLine(General.Countries());
+            //System.Console.WriteLine(General.ApiKey("http://jasoninc.alphacreatesend.com", "jbh", "wordpass"));
+            //System.Console.WriteLine(General.SystemDate());
+            foreach(String country in General.Countries())
+            System.Console.WriteLine(country);
+
+           /*
+            Console.WriteLine(result.Code);
+            Console.WriteLine(result.Message);*/
         }
     }
 }

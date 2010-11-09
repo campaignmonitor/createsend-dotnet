@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using System.Collections;
 
 namespace createsend_dotnet
 {
@@ -22,5 +23,33 @@ namespace createsend_dotnet
     public class SystemDateResult
     {
         public string SystemDate { get; set; }
+    }
+
+    [XmlRoot("ArrayOfstring")]
+    public class ArrayOfstring : IEnumerable<string>
+    {
+        private List<string> _countries = new List<string>();
+
+        [XmlIgnore]
+        public List<string> Countries
+        {
+            get { return _countries; }
+            set { _countries = value; }
+        }
+
+        public void Add(string item)
+        {
+            _countries.Add(item);
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return _countries.GetEnumerator();
+        }        
+
+        IEnumerator<string> IEnumerable<string>.GetEnumerator()
+        {
+            return _countries.GetEnumerator();
+        }
     }
 }

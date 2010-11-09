@@ -21,9 +21,9 @@ namespace createsend_dotnet
             return DateTime.Parse(XMLSerializer.Deserialize<SystemDateResult>(HttpHelper.Get("/systemdate.xml", null)).SystemDate);
         }
 
-        public static string Countries()
+        public static IEnumerable<string> Countries()
         {
-            return HttpHelper.Get("/countries.xml", null);
+            return XMLSerializer.Deserialize<ArrayOfstring>(HttpHelper.Get("/countries.xml", null));
         }
     }
 }
