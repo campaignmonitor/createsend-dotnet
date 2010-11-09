@@ -9,8 +9,7 @@ namespace ConsoleRunner
     {
         static void Main(string[] args)
         {
-            foreach (Client client in General.Clients())
-                Console.WriteLine(client.Name);
+            Console.WriteLine(General.ApiKey("jasoninc.alphacreatesend.com", "jbh", "wordpass"));
         }
     }
 }

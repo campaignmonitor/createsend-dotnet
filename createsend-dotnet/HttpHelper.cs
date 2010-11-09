@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Net;
+using System.Collections.Specialized;
+using System.Web;
 
 namespace createsend_dotnet
 {
@@ -47,24 +49,24 @@ namespace createsend_dotnet
     {
         private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
 
-        public static string Get(string path, string query)
+        public static string Get(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("GET", CreateSendOptions.BaseUri + path + query, null);
+            return MakeRequest("GET", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), null);
         }
 
-        public static string Post(string path, string query, string payload)
+        public static string Post(string path, NameValueCollection queryArguments, string payload)
         {
-            return MakeRequest("POST", CreateSendOptions.BaseUri + path + query, payload);
+            return MakeRequest("POST", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), payload);
         }
 
-        public static string Put(string path, string query, string payload)
+        public static string Put(string path, NameValueCollection queryArguments, string payload)
         {
-            return MakeRequest("PUT", CreateSendOptions.BaseUri + path + query, payload);
+            return MakeRequest("PUT", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), payload);
         }
 
-        public static string Delete(string path, string query)
+        public static string Delete(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("DELETE", CreateSendOptions.BaseUri + path + query, null);
+            return MakeRequest("DELETE", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), null);
         }
 
         static string MakeRequest(string method, string uri, string payload)
@@ -130,6 +132,32 @@ namespace createsend_dotnet
         public static void OverrideAuthenticationCredentials(string username, string password)
         {
             authCredentials = new NetworkCredential(username, password);
+        }        
+    }
+
+    public static class NamveValueCollectionExtension
+    {
+        public static string ToQueryString(this NameValueCollection nvc)
+        {
+            if (nvc.Count > 0)
+                return "?" + string.Join("&", GetPairs(nvc));
+            else
+                return "";
+        }
+
+        private static string[] GetPairs(NameValueCollection nvc)
+        {
+            List<string> keyValuePair = new List<string>();
+
+            foreach (string key in nvc.AllKeys)
+            {
+                string encodedKey = HttpUtility.UrlEncode(key) + "=";
+
+                foreach (string value in nvc.GetValues(key))
+                    keyValuePair.Add(encodedKey + HttpUtility.UrlEncode(value));
+            }
+
+            return keyValuePair.ToArray();
         }
     }
 }

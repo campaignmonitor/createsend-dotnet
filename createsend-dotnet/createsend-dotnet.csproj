@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionEnabler.cs" />
     <Compile Include="General.cs" />
     <Compile Include="Models\ArrayOfstring.cs" />
     <Compile Include="Models\Client.cs" />

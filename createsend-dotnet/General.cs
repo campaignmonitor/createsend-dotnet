@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
@@ -9,8 +10,11 @@ namespace createsend_dotnet
     {
         public static string ApiKey(string siteUrl, string username, string password)
         {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("SiteUrl", siteUrl);
+
             HttpHelper.OverrideAuthenticationCredentials(username, password);
-            string getKeyResult = HttpHelper.Get("/apikey.xml", string.Format("?SiteUrl={0}", HttpUtility.UrlEncode(siteUrl)));
+            string getKeyResult = HttpHelper.Get("/apikey.xml", queryArguments);
             //reset to default
             HttpHelper.OverrideAuthenticationCredentials(CreateSendOptions.ApiKey, "x");
             return XMLSerializer.Deserialize<ApiKeyResult>(getKeyResult).ApiKey;
