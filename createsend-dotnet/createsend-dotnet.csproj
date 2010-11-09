@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General.cs" />
+    <Compile Include="Models\ArrayOfstring.cs" />
+    <Compile Include="Models\Client.cs" />
     <Compile Include="XMLSerializer.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="Models\Result.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

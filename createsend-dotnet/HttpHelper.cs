@@ -44,7 +44,6 @@ namespace createsend_dotnet
     }
 
     internal class HttpHelper
-    //public class HttpHelper
     {
         private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
 
