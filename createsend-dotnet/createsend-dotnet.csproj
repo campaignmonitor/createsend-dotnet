@@ -42,6 +42,7 @@
     <Compile Include="General.cs" />
     <Compile Include="Models\ArrayOfstring.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\EnumerableCollection.cs" />
     <Compile Include="XMLSerializer.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
