@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Collections.Specialized;
+using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
@@ -27,7 +28,8 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Countries()
         {
-            return XMLSerializer.Deserialize<Countries>(HttpHelper.Get("/countries.xml", null));
+            string json = HttpHelper.Get("/countries.json", null);
+            return (string[])JavaScriptConvert.DeserializeObject(json, typeof(string[]));
         }
 
         public static IEnumerable<string> Timeszones()

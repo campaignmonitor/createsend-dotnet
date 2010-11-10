@@ -11,7 +11,7 @@ namespace ConsoleRunner
         {
             foreach(string country in General.Countries())
                 Console.WriteLine(country);
-
+            Console.ReadLine();
         }
     }
 }
