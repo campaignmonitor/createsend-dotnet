@@ -12,5 +12,5 @@ namespace createsend_dotnet
     }
 
     [XmlRoot("Clients")]
-    public class Clients : EnumerableCollection<Client> { }
+    public class Clients : List<Client> { }
 }

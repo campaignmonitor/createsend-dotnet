@@ -9,7 +9,9 @@ namespace ConsoleRunner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(General.ApiKey("jasoninc.alphacreatesend.com", "jbh", "wordpass"));
+            foreach(string country in General.Countries())
+                Console.WriteLine(country);
+
         }
     }
 }

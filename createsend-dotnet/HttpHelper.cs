@@ -139,7 +139,7 @@ namespace createsend_dotnet
     {
         public static string ToQueryString(this NameValueCollection nvc)
         {
-            if (nvc.Count > 0)
+            if (nvc!= null && nvc.Count > 0)
                 return "?" + string.Join("&", GetPairs(nvc));
             else
                 return "";

@@ -27,12 +27,12 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Countries()
         {
-            return XMLSerializer.Deserialize<ArrayOfstring>(HttpHelper.Get("/countries.xml", null));
+            return XMLSerializer.Deserialize<Countries>(HttpHelper.Get("/countries.xml", null));
         }
 
-        public static IEnumerable<string> Timezones()
+        public static IEnumerable<string> Timeszones()
         {
-            return XMLSerializer.Deserialize<ArrayOfstring>(HttpHelper.Get("/timezones.xml", null));
+            return XMLSerializer.Deserialize<Timezones>(HttpHelper.Get("/timezones.xml", null));
         }
 
         public static IEnumerable<Client> Clients()

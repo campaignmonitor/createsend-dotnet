@@ -5,6 +5,6 @@ using System.Xml.Serialization;
 
 namespace createsend_dotnet
 {
-    [XmlRoot("ArrayOfstring")]
-    public class ArrayOfstring : EnumerableCollection<string> { }
+    [XmlRoot("Countries")]
+    public class Countries : List<string> { }
 }
