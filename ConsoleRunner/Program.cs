@@ -9,9 +9,11 @@ namespace ConsoleRunner
     {
         static void Main(string[] args)
         {
-            foreach(string country in General.Countries())
-                Console.WriteLine(country);
+            foreach(Client client in General.Clients())
+                Console.WriteLine(client.Name);
             Console.ReadLine();
+
+            Console.WriteLine(General.SystemDate());
         }
     }
 }

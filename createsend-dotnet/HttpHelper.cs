@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Net;
 using System.Collections.Specialized;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
@@ -124,7 +125,7 @@ namespace createsend_dotnet
         private static Exception ThrowReworkedCustomException(WebException we)
         {
             System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream());
-            ErrorResult apiExceptionResult = XMLSerializer.Deserialize<ErrorResult>(sr.ReadToEnd().Trim());
+            ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(sr.ReadToEnd().Trim());
 
             return new Exception(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
         }
