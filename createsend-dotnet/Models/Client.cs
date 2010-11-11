@@ -5,31 +5,41 @@ using System.Xml.Serialization;
 
 namespace createsend_dotnet
 {
-    public class Client
+    public class BasicClient
     {
         public string ClientID { get; set; }
         public string Name { get; set; }
     }
 
-    public class Clients : List<Client> { }
+    public class Clients : List<BasicClient> { }
+
+    public class ClientWithSettings
+    {
+        public string ApiKey { get; set; }
+        public ClientDetail BasicDetails { get; set; }
+        public ClientAccessSettings AccessDetails { get; set; }
+        public BillingOptions BillingDetails { get; set; }
+    }
 
     public class ClientDetail
     {
-        public string APIClientID { get; set; }
+        public ClientDetail() { }
+        public ClientDetail(string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+            CompanyName = companyName;
+            ContactName = contactName;
+            EmailAddress = emailAddress;
+            Country = country;
+            TimeZone = timezone;
+        }
+
+        public string ClientID { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
         public string EmailAddress { get; set; }
         public string Country { get; set; }
         public string TimeZone { get; set; }
-    }
-    [XmlRoot("Client")]
-    public class ClientWithSettings
-    {
-        public string ApiKey { get; set; }
-        //public ClientDetail BasicDetails { get; set; }
-        //public ClientAccessSettingsForOutput AccessDetails { get; set; }
-        public BillingOptions BillingDetails { get; set; }
-    }       
+    }      
 
     public class BillingOptions
     {
@@ -45,6 +55,12 @@ namespace createsend_dotnet
         public decimal BaseDeliveryRate { get; set; }
         public decimal BaseRatePerRecipient { get; set; }
         public decimal BaseDesignSpamTestRate { get; set; }
+    }
 
+    public class ClientAccessSettings
+    {
+        public int AccessLevel { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

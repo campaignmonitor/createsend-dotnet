@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using createsend_dotnet;
+using Newtonsoft.Json;
 
 namespace ConsoleRunner
 {
@@ -9,11 +10,7 @@ namespace ConsoleRunner
     {
         static void Main(string[] args)
         {
-            foreach(Client client in General.Clients())
-                Console.WriteLine(client.Name);
-            Console.ReadLine();
-
-            Console.WriteLine(General.SystemDate());
+            Console.WriteLine(Client.Create(new ClientDetail() { CompanyName = "APIv3_3", ContactName = "jason", Country = "Australia", EmailAddress = "jasonh+v3_3@freshview.com", TimeZone = "(GMT+10:00) Canberra, Melbourne, Sydney" }));
         }
     }
 }

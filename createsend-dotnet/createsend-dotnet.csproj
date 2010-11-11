@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="ExtensionEnabler.cs" />
     <Compile Include="General.cs" />
     <Compile Include="Models\Client.cs" />

@@ -33,13 +33,13 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<string[]>(json);
         }
 
-        public static IEnumerable<string> Timeszones()
+        public static IEnumerable<string> Timezones()
         {
             string json = HttpHelper.Get("/timezones.json", null);
             return JavaScriptConvert.DeserializeObject<string[]>(json);
         }
 
-        public static IEnumerable<Client> Clients()
+        public static IEnumerable<BasicClient> Clients()
         {
             string json = HttpHelper.Get("/clients.json", null);
             return JavaScriptConvert.DeserializeObject<Clients>(json);
