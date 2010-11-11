@@ -23,16 +23,6 @@ namespace createsend_dotnet
     
     public class ClientDetail
     {
-        public ClientDetail() { }
-        public ClientDetail(string companyName, string contactName, string emailAddress, string country, string timezone)
-        {
-            CompanyName = companyName;
-            ContactName = contactName;
-            EmailAddress = emailAddress;
-            Country = country;
-            TimeZone = timezone;
-        }
-
         public string ClientID { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }

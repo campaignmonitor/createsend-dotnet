@@ -74,7 +74,7 @@ namespace createsend_dotnet
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             req.Method = method;
-            req.ContentType = "application/xml";
+            req.ContentType = "application/json";
             req.UserAgent = "createsend-dotnet-#" + CreateSendOptions.VersionNumber;
 
             req.Credentials = authCredentials;

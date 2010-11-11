@@ -7,40 +7,94 @@ namespace createsend_dotnet
 {
     public class Client
     {
-        public static string Create(ClientDetail newClient)
+        private string _clientID;
+
+        public Client(string clientID)
         {
-            string json = HttpHelper.Post("/clients.json", null, JavaScriptConvert.SerializeObject(newClient));
+            _clientID = clientID;
+        }
+
+        public string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+            string json = HttpHelper.Post("/clients.json", null, JavaScriptConvert.SerializeObject(
+                new ClientDetail() { CompanyName = companyName, ContactName = contactName, EmailAddress = emailAddress, Country = country, TimeZone = timezone })
+                );
             return JavaScriptConvert.DeserializeObject<string>(json);
         }
 
-        public static ClientWithSettings Details(string clientID)
+        public ClientWithSettings Details()
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}.json", clientID), null);
+            string json = HttpHelper.Get(string.Format("/clients/{0}.json", _clientID), null);
             return JavaScriptConvert.DeserializeObject<ClientWithSettings>(json);
         }
 
-        public static IEnumerable<CampaignDetail> Campaigns(string clientID)
+        public IEnumerable<CampaignDetail> Campaigns()
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}/campaigns.json", clientID), null);
+            string json = HttpHelper.Get(string.Format("/clients/{0}/campaigns.json", _clientID), null);
             return JavaScriptConvert.DeserializeObject<CampaignDetail[]>(json);
         }
 
-        public static IEnumerable<DraftDetail> Drafts(string clientID)
+        public IEnumerable<DraftDetail> Drafts()
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}/drafts.json", clientID), null);
+            string json = HttpHelper.Get(string.Format("/clients/{0}/drafts.json", _clientID), null);
             return JavaScriptConvert.DeserializeObject<DraftDetail[]>(json);
         }
 
-        public static IEnumerable<BasicList> Lists(string clientID)
+        public IEnumerable<BasicList> Lists()
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}/lists.json", clientID), null);
+            string json = HttpHelper.Get(string.Format("/clients/{0}/lists.json", _clientID), null);
             return JavaScriptConvert.DeserializeObject<BasicList[]>(json);
         }
 
-        public static IEnumerable<BasicSegment> Segments(string clientID)
+        public IEnumerable<BasicSegment> Segments()
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}/segments.json", clientID), null);
+            string json = HttpHelper.Get(string.Format("/clients/{0}/segments.json", _clientID), null);
             return JavaScriptConvert.DeserializeObject<BasicSegment[]>(json);
+        }
+
+        public PagedCollection<BasicSubscriber> SuppressionList()
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/suppressionlist.json", _clientID), null);
+            return JavaScriptConvert.DeserializeObject<PagedCollection<BasicSubscriber>>(json);
+        }
+
+        public IEnumerable<BasicTemplate> Templates()
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/templates.json", _clientID), null);
+            return JavaScriptConvert.DeserializeObject<BasicTemplate[]>(json);
+        }
+
+        public void SetBasics(string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+            HttpHelper.Put(string.Format("/clients/{0}/setbasics.json", _clientID), null, JavaScriptConvert.SerializeObject(
+                new ClientDetail() { CompanyName = companyName, ContactName = contactName, EmailAddress = emailAddress, Country = country, TimeZone = timezone })
+            );
+        }
+
+        public void SetAccess(string userName, string password, int accessLevel)
+        {
+            HttpHelper.Put(string.Format("/clients/{0}/setaccess.json", _clientID), null, JavaScriptConvert.SerializeObject(
+                new ClientAccessSettings() { Username = userName, Password = password, AccessLevel = accessLevel })
+            );
+        }
+
+        public void SetPAYGBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, decimal markupOnDelivery, decimal markupPerRecipient, decimal markupOnDesignSpamTest)
+        {
+            HttpHelper.Put(string.Format("/clients/{0}/setpaygbilling.json", _clientID), null, JavaScriptConvert.SerializeObject(
+                new BillingOptions() { Currency = currency, ClientPays = clientPays, CanPurchaseCredits = canPurchaseCredits, MarkupPercentage = markupPercentage, MarkupOnDelivery = markupOnDelivery, MarkupPerRecipient = markupPerRecipient, MarkupOnDesignSpamTest = markupOnDesignSpamTest })
+            );
+        }
+
+        public void SetMonthlyBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage)
+        {
+            HttpHelper.Put(string.Format("/clients/{0}/setmonthlybilling.json", _clientID), null, JavaScriptConvert.SerializeObject(
+                new BillingOptions() { Currency = currency, ClientPays = clientPays, CanPurchaseCredits = canPurchaseCredits, MarkupPercentage = markupPercentage })
+            );
+        }
+
+        public void Delete()
+        {
+            HttpHelper.Delete(string.Format("/clients/{0}.json", _clientID), null);
         }
     }
 }
