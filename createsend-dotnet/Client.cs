@@ -18,5 +18,29 @@ namespace createsend_dotnet
             string json = HttpHelper.Get(string.Format("/clients/{0}.json", clientID), null);
             return JavaScriptConvert.DeserializeObject<ClientWithSettings>(json);
         }
+
+        public static IEnumerable<CampaignDetail> Campaigns(string clientID)
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/campaigns.json", clientID), null);
+            return JavaScriptConvert.DeserializeObject<CampaignDetail[]>(json);
+        }
+
+        public static IEnumerable<DraftDetail> Drafts(string clientID)
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/drafts.json", clientID), null);
+            return JavaScriptConvert.DeserializeObject<DraftDetail[]>(json);
+        }
+
+        public static IEnumerable<BasicList> Lists(string clientID)
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/lists.json", clientID), null);
+            return JavaScriptConvert.DeserializeObject<BasicList[]>(json);
+        }
+
+        public static IEnumerable<BasicSegment> Segments(string clientID)
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/segments.json", clientID), null);
+            return JavaScriptConvert.DeserializeObject<BasicSegment[]>(json);
+        }
     }
 }

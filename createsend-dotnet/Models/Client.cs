@@ -18,9 +18,9 @@ namespace createsend_dotnet
         public string ApiKey { get; set; }
         public ClientDetail BasicDetails { get; set; }
         public ClientAccessSettings AccessDetails { get; set; }
-        public BillingOptions BillingDetails { get; set; }
+        public BillingDetail BillingDetails { get; set; }
     }
-
+    
     public class ClientDetail
     {
         public ClientDetail() { }
@@ -38,7 +38,7 @@ namespace createsend_dotnet
         public string ContactName { get; set; }
         public string EmailAddress { get; set; }
         public string Country { get; set; }
-        public string TimeZone { get; set; }
+        public string TimeZone { get; set; }        
     }      
 
     public class BillingOptions
@@ -50,6 +50,10 @@ namespace createsend_dotnet
         public decimal? MarkupOnDelivery { get; set; }
         public decimal? MarkupPerRecipient { get; set; }
         public decimal? MarkupOnDesignSpamTest { get; set; }        
+    }
+
+    public class BillingDetail : BillingOptions
+    {
         public string CurrentTier { get; set; }
         public decimal CurrentMonthlyRate { get; set; }
         public decimal BaseDeliveryRate { get; set; }

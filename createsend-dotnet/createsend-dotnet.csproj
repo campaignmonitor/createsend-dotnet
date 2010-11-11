@@ -46,8 +46,11 @@
     <Compile Include="Client.cs" />
     <Compile Include="ExtensionEnabler.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="Models\Campaign.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="Models\List.cs" />
+    <Compile Include="Models\Segment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Result.cs" />
   </ItemGroup>
