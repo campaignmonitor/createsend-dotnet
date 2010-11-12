@@ -14,8 +14,8 @@ namespace ConsoleRunner
         //list in apicreated - 41a99346539316727de7f24491da29d6
         static void Main(string[] args)
         {
-            foreach (Subscriber subscriber in new List("c59ebf5a6314f17ec107c94d84665ca9").Unsubscribed(new DateTime(2008, 1, 1), 2, 10, "email", "asc").Results)
-                Console.WriteLine(subscriber.EmailAddress);
+            new Subscriber("41a99346539316727de7f24491da29d6").Add("jasonh+fromapi1@freshview.com", "Jason", new List<SubscriberCustomField>() { new SubscriberCustomField() { Key = "[aasfd]", Value = "AFADFDSF" } }, true);
+
         }
     }
 }

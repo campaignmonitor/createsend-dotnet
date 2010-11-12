@@ -28,14 +28,6 @@ namespace createsend_dotnet
         public List<string> FieldOptions { get; set; }
     }
 
-    internal class ListCustomFieldForAdd
-    {
-        public string FieldName { get; set; }
-        public string Key { get; set; }
-        public string DataType { get; set; }
-        public List<string> Options { get; set; }
-    }
-
     public enum CustomFieldDataType
     {
         Text = 1,

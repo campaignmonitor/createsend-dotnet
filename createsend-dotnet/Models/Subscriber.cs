@@ -17,7 +17,7 @@ namespace createsend_dotnet
         public string Value{ get ;set; }
     }
 
-    public class Subscriber : BasicSubscriber
+    public class SubscriberDetail : BasicSubscriber
     {
         public string Name { get; set; }
         public List<SubscriberCustomField> CustomFields { get; set; }

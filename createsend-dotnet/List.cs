@@ -44,7 +44,7 @@ namespace createsend_dotnet
         public string CreateCustomField(string fieldName, CustomFieldDataType dataType, List<string> options)
         {
             string json = HttpHelper.Post(string.Format("/lists/{0}/customfields.json", _listID), null, JavaScriptConvert.SerializeObject(
-                new ListCustomFieldForAdd() { FieldName = fieldName, DataType = dataType.ToString(), Options = options })
+                new Dictionary<string, object>() { { "FieldName", fieldName }, { "DataType", dataType.ToString() }, { "Options", options } })
                 );
             return JavaScriptConvert.DeserializeObject<string>(json);
         }
@@ -72,22 +72,22 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<ListStats>(json);
         }
 
-        public PagedCollection<Subscriber> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
         }
 
-        public PagedCollection<Subscriber> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
         }
 
-        public PagedCollection<Subscriber> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
         }
 
-        private PagedCollection<Subscriber> GenericPagedSubscriberGet(string type, DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -97,7 +97,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderdirection", orderDirection);
 
             string json = HttpHelper.Get(string.Format("/lists/{0}/{1}.json", _listID, type), queryArguments);
-            return JavaScriptConvert.DeserializeObject<PagedCollection<Subscriber>>(json);
+            return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
         }
     }
 }
