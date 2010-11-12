@@ -14,7 +14,7 @@ namespace createsend_dotnet
             _clientID = clientID;
         }
 
-        public string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
+        public static string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
         {
             string json = HttpHelper.Post("/clients.json", null, JavaScriptConvert.SerializeObject(
                 new ClientDetail() { CompanyName = companyName, ContactName = contactName, EmailAddress = emailAddress, Country = country, TimeZone = timezone })

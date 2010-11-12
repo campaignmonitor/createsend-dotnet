@@ -46,6 +46,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="ExtensionEnabler.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="List.cs" />
     <Compile Include="Models\Campaign.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />

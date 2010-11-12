@@ -10,4 +10,16 @@ namespace createsend_dotnet
         public DateTime Date { get; set; }
         public string State { get; set; }
     }
+
+    public class SubscriberCustomField
+    {
+        public string Key { get; set; }
+        public string Value{ get ;set; }
+    }
+
+    public class Subscriber : BasicSubscriber
+    {
+        public string Name { get; set; }
+        public List<SubscriberCustomField> CustomFields { get; set; }
+    }
 }

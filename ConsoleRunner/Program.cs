@@ -8,11 +8,14 @@ namespace ConsoleRunner
 {
     class Program
     {
-        //011ebcadaeb71e9a
-        //277da11f331fc698ad22a66c0c4b5c33
+        //testing - 011ebcadaeb71e9a
+        //testing list - aa76d29949e7f10ab28712617634fd0b
+        //apicreated  - 277da11f331fc698ad22a66c0c4b5c33
+        //list in apicreated - 41a99346539316727de7f24491da29d6
         static void Main(string[] args)
         {
-            new Client("34a1fa45cbf30b2024e3df25fa214e54").Delete();
+            foreach (Subscriber subscriber in new List("c59ebf5a6314f17ec107c94d84665ca9").Unsubscribed(new DateTime(2008, 1, 1), 2, 10, "email", "asc").Results)
+                Console.WriteLine(subscriber.EmailAddress);
         }
     }
 }
