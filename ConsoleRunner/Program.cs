@@ -14,7 +14,7 @@ namespace ConsoleRunner
         //list in apicreated - 41a99346539316727de7f24491da29d6
         static void Main(string[] args)
         {
-            new Subscriber("41a99346539316727de7f24491da29d6").Add("jasonh+fromapi1@freshview.com", "Jason", new List<SubscriberCustomField>() { new SubscriberCustomField() { Key = "[aasfd]", Value = "AFADFDSF" } }, true);
+            new Template("abb0bd5e12075139a3eeed71f2b29dd2").Delete();
 
         }
     }

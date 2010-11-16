@@ -127,7 +127,7 @@ namespace createsend_dotnet
             System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream());
             ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(sr.ReadToEnd().Trim());
 
-            return new Exception(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
+            return new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message), apiExceptionResult.ResultData);
         }
 
         public static void OverrideAuthenticationCredentials(string username, string password)

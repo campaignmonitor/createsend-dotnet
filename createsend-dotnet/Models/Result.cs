@@ -10,6 +10,7 @@ namespace createsend_dotnet
     {
         public string Code { get; set; }
         public string Message { get; set; }
+        public object ResultData { get; set; }
     }
 
     public class ApiKeyResult

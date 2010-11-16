@@ -41,9 +41,18 @@ namespace createsend_dotnet
                 reworkedSusbcribers.Add("Subscriber", subscriberWithoutDate);
             }
 
-            string json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", _listID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "Subscribers", reworkedSusbcribers }, { "Resubscribe", resubscribe } }
-                ));
+            try
+            {
+                string json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", _listID), null, JavaScriptConvert.SerializeObject(
+                    new Dictionary<string, object>() { { "Subscribers", reworkedSusbcribers }, { "Resubscribe", resubscribe } }
+                    ));
+            }
+            catch (CreatesendException ex)
+            {
+                //TODO : return whatever this requests extra result data is
+                throw ex;
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         public bool Unusbscribe(string emailAddress)
