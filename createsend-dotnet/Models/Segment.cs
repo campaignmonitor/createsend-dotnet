@@ -11,6 +11,8 @@ namespace createsend_dotnet
         public string Title { get; set; }
     }
 
+    public class Segments : List<BasicSegment> { }
+
     public class SegmentDetail : BasicSegment
     {
         public int ActiveSubscribers { get; set; }

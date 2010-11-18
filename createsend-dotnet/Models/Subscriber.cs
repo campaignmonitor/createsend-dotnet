@@ -11,6 +11,14 @@ namespace createsend_dotnet
         public string State { get; set; }
     }
 
+    public class CampaignRecipient
+    {
+        public string EmailAddress { get; set; }
+        public string ListID { get; set; }
+    }
+
+    public class CampaignRecipients : List<CampaignRecipient> { }
+
     public class SubscriberCustomField
     {
         public string Key { get; set; }
