@@ -15,12 +15,13 @@ namespace ConsoleRunner
         static void Main(string[] args)
         {
             foreach (BasicSegment segment in new Client("011ebcadaeb71e9a").Segments())
-                Console.WriteLine(new Segment(segment.SegmentID).Details());
+                Console.WriteLine(new Segment(segment.SegmentID).Details().SegmentID + ":" + new Segment(segment.SegmentID).Details().Title);
             SegmentRules rules = new SegmentRules();
-            rules.Add(new Rule() { Subject = "Email", Clauses = new List<string>() { "EQUALS jasonh" } });
+            rules.Add(new Rule() { Subject = "EmailAddress", Clauses = new List<string>() { "EQUALS jasonh" } });
             var segmentID = Segment.Create("aa76d29949e7f10ab28712617634fd0b", "fucker", rules);
             Console.WriteLine(segmentID);
 
+            new Segment("894f2b9a6e0ebfcd23076c707a2186a7").AddRule("EmailAddress", new List<string>() { "CONTAINS suckit" });
         }
     }
 }
