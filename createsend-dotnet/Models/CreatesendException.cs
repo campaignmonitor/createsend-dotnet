@@ -6,10 +6,14 @@ namespace createsend_dotnet
 {
     public class CreatesendException : Exception
     {
-        public CreatesendException(string message, object additionalResultData)
+        public CreatesendException(string message) : base (message) { }
+
+        public CreatesendException(string message, string responseData)
+            : base(message)
         {
-            ResultData = additionalResultData;
+            ResponseData = responseData;
         }
-        public object ResultData { get; set; }
+
+        public string ResponseData { get; set; }
     }
 }

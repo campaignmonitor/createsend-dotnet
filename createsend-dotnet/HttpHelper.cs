@@ -124,10 +124,19 @@ namespace createsend_dotnet
 
         private static Exception ThrowReworkedCustomException(WebException we)
         {
-            System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream());
-            ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(sr.ReadToEnd().Trim());
-
-            return new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message), apiExceptionResult.ResultData);
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream()))
+            {
+                string response = sr.ReadToEnd().Trim();
+                try
+                {
+                    ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(response);
+                    return new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
+                }
+                catch (Newtonsoft.Json.JsonSerializationException)
+                {
+                    return new CreatesendException("The CreateSend API returned and error with addtional data", response);
+                }
+            }
         }
 
         public static void OverrideAuthenticationCredentials(string username, string password)

@@ -14,7 +14,12 @@ namespace ConsoleRunner
         //list in apicreated - 41a99346539316727de7f24491da29d6
         static void Main(string[] args)
         {
-            new Template("abb0bd5e12075139a3eeed71f2b29dd2").Delete();
+            foreach (BasicSegment segment in new Client("011ebcadaeb71e9a").Segments())
+                Console.WriteLine(new Segment(segment.SegmentID).Details());
+            SegmentRules rules = new SegmentRules();
+            rules.Add(new Rule() { Subject = "Email", Clauses = new List<string>() { "EQUALS jasonh" } });
+            var segmentID = Segment.Create("aa76d29949e7f10ab28712617634fd0b", "fucker", rules);
+            Console.WriteLine(segmentID);
 
         }
     }

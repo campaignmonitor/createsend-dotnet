@@ -49,7 +49,10 @@ namespace createsend_dotnet
             }
             catch (CreatesendException ex)
             {
-                //TODO : return whatever this requests extra result data is
+                //TODO : return/process whatever this requests extra result data is, of type T
+                /*
+                 * ErrorResult<T> = JavaScriptConvert.DeserializeObject<ErrorResult<T>>(ex.ResponseData);
+                 * */
                 throw ex;
             }
             catch (Exception ex) { throw ex; }
