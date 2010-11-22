@@ -108,8 +108,8 @@ namespace createsend_dotnet
                     switch ((int)((HttpWebResponse)we.Response).StatusCode)
                     {
                         case 400:
-                            throw ThrowReworkedCustomException(we);
                         case 401:
+                            throw ThrowReworkedCustomException(we);
                         case 404:
                         default:
                             throw we;
