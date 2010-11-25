@@ -2,19 +2,38 @@
 using System.Collections.Generic;
 using System.Text;
 using createsend_dotnet;
-using Newtonsoft.Json;
 
-namespace ConsoleRunner
+namespace Samples
 {
-    class Program
+    public class SubscriberSamples
     {
-        //testing - 011ebcadaeb71e9a
-        //testing list - aa76d29949e7f10ab28712617634fd0b
-        //apicreated  - 277da11f331fc698ad22a66c0c4b5c33
-        //list in apicreated - 41a99346539316727de7f24491da29d6
-        static void Main(string[] args)
+        //see API documentation on where to get this value
+        private string listID = "your_list_id";
+
+        void BasicAdd()
         {
-            Subscriber subscriber = new Subscriber("aa76d29949e7f10ab28712617634fd0b");
+            Subscriber subscriber = new Subscriber(listID);
+
+            try
+            {
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false);
+                Console.WriteLine(newSubscriberID);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                //handle some other failure
+            }
+        }
+
+        void BatchAdd()
+        {
+            Subscriber subscriber = new Subscriber(listID);
 
             List<SubscriberDetail> newSubscribers = new List<SubscriberDetail>();
 
@@ -58,6 +77,10 @@ namespace ConsoleRunner
                         Console.WriteLine(result.Message + " - " + result.EmailAddress);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                //handle some other failure
             }
         }
     }

@@ -32,30 +32,40 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<string>(json);
         }
         
-        public void Import(List<SubscriberDetail> subscribers, bool resubscribe)
+        public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
-            Dictionary<string, object> reworkedSusbcribers = new Dictionary<string, object>();
+            List<object> reworkedSusbcribers = new List<object>();
+            string json = "";
             foreach (SubscriberDetail subscriber in subscribers)
             {
                 Dictionary<string, object> subscriberWithoutDate = new Dictionary<string, object>() { { "EmailAddress", subscriber.EmailAddress }, { "Name", subscriber.Name }, { "CustomFields", subscriber.CustomFields } };
-                reworkedSusbcribers.Add("Subscriber", subscriberWithoutDate);
+                reworkedSusbcribers.Add(subscriberWithoutDate);
             }
 
             try
             {
-                string json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", _listID), null, JavaScriptConvert.SerializeObject(
+                json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", _listID), null, JavaScriptConvert.SerializeObject(
                     new Dictionary<string, object>() { { "Subscribers", reworkedSusbcribers }, { "Resubscribe", resubscribe } }
                     ));
             }
             catch (CreatesendException ex)
             {
-                //TODO : return/process whatever this requests extra result data is, of type T
-                /*
-                 * ErrorResult<T> = JavaScriptConvert.DeserializeObject<ErrorResult<T>>(ex.ResponseData);
-                 * */
+                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
+                {
+                    ErrorResult<BulkImportResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<BulkImportResults>>(ex.Data["ErrorResponse"].ToString());
+                    ex.Data.Add("ErrorResult", result);
+                }
+                else if(ex.Data.Contains("ErrorResult"))
+                {
+                    ErrorResult<BulkImportResults> result = new ErrorResult<BulkImportResults>((ErrorResult)ex.Data["ErrorResult"]);
+                    ex.Data["ErrorResult"] = result;
+                }
+
                 throw ex;
             }
             catch (Exception ex) { throw ex; }
+
+            return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
         }
 
         public bool Unusbscribe(string emailAddress)

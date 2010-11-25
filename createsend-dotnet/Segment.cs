@@ -26,12 +26,13 @@ namespace createsend_dotnet
             }
             catch (CreatesendException ex)
             {
-                if (!string.IsNullOrEmpty(ex.ResponseData))
+                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
                 {
-                    ErrorResult<RuleErrorResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<RuleErrorResults>>(ex.ResponseData);
+                    ErrorResult<RuleErrorResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<RuleErrorResults>>(ex.Data["ErrorResponse"].ToString());
+                    ex.Data.Add("ErrorResult", result);
                 }
 
-                //TODO : return this result instead of newly created segment id - example code gonna need to show how to handle this
+                throw ex;
             }
             catch (Exception ex) { throw ex; }
             

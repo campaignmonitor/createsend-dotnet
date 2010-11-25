@@ -130,11 +130,19 @@ namespace createsend_dotnet
                 try
                 {
                     ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(response);
-                    return new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
+                    
+                    CreatesendException exception = new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
+                    exception.Data.Add("ErrorResponse", response);
+                    exception.Data.Add("ErrorResult", apiExceptionResult);         
+
+                    return exception;
                 }
                 catch (Newtonsoft.Json.JsonSerializationException)
                 {
-                    return new CreatesendException("The CreateSend API returned and error with addtional data", response);
+                    CreatesendException exception = new CreatesendException("The CreateSend API returned an error with addtional data");
+                    exception.Data.Add("ErrorResponse", response);
+
+                    return exception;
                 }
             }
         }

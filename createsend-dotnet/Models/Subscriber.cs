@@ -27,6 +27,15 @@ namespace createsend_dotnet
 
     public class SubscriberDetail : BasicSubscriber
     {
+        public SubscriberDetail() : base() { }
+
+        public SubscriberDetail(string emailAddress, string name, List<SubscriberCustomField> customFields)
+        {
+            EmailAddress = emailAddress;
+            Name = name;
+            CustomFields = customFields;
+        }
+
         public string Name { get; set; }
         public List<SubscriberCustomField> CustomFields { get; set; }
     }
