@@ -31,6 +31,31 @@ namespace Samples
             }
         }
 
+        void AddWithCustomFields()
+        {
+            Subscriber subscriber = new Subscriber(listID);
+
+            try
+            {
+                List<SubscriberCustomField> customFields = new List<SubscriberCustomField>();
+                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Value = "Value" });
+                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey2", Value = "Value2" });
+
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", customFields, false);
+                Console.WriteLine(newSubscriberID);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                //handle some other failure
+            }
+        }
+
         void BatchAdd()
         {
             Subscriber subscriber = new Subscriber(listID);
