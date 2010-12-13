@@ -8,4 +8,4 @@ To use the .NET library, first build the solution, and add the resultant dll and
 
 Secondly, add the the following element to the appSettings section of your configuration file (where your_api_key is your API Key)
 
-### <add key="api_key" value="your_api_key" />
+    <add key="api_key" value="your_api_key" />
