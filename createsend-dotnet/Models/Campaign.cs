@@ -36,10 +36,10 @@ namespace createsend_dotnet
 
     public class CampaignOpenDetail
     {
-        string EmailAddress { get; set; }
-        string ListID { get; set; }
-        DateTime Date { get; set; }
-        string IPAddress { get; set; }
+        public string EmailAddress { get; set; }
+        public string ListID { get; set; }
+        public DateTime Date { get; set; }
+        public string IPAddress { get; set; }
     }
 
     public class CampaignUnsubscribeDetail : CampaignOpenDetail { }
