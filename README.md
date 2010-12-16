@@ -2,7 +2,7 @@
 
 A .NET library which implements the complete functionality of v3 of the CreateSend API.
 
-As well as the source code for the library, we have also included a single merged assembly (createsend-dotnet.dll), which can be used directly as a reference in .NET projects, if you do not want to worry about build the solution yourself.
+As well as the source code for the library, we have also included a single merged assembly (createsend-dotnet.dll), which can be used directly as a reference in .NET projects, if you do not want to worry about building the solution yourself.
 
 ## Installation
 
