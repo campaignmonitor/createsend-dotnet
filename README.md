@@ -2,10 +2,46 @@
 
 A .NET library which implements the complete functionality of v3 of the CreateSend API.
 
+As well as the source code for the library, we have also included a single merged assembly (createsend-dotnet.dll), which can be used directly as a reference in .NET projects, if you do not want to worry about build the solution yourself.
+
 ## Installation
 
-To use the .NET library, first build the solution, and add the resultant dll and the Newtonsoft.Json.dll as references to your project.
+The easiest way of getting up and running:
 
-Secondly, add the the following element to the appSettings section of your configuration file (where your_api_key is your API Key)
+1. Add the createsend-dotnet.dll assembly as a reference in your .NET project
+2. Add the the following element to the appSettings section of your configuration file (replacing your_api_key with your actual API Key)
 
     <add key="api_key" value="your_api_key" />
+
+## Example
+
+Example config file:
+
+    <?xml version="1.0"?>
+    <configuration>
+      <appSettings>
+        <add key="api_key" value="98wqdu9qw8ud98quwd9q8wud98uq98wu"/>
+      </appSettings>
+      <startup><supportedRuntime version="v2.0.50727"/></startup>
+    </configuration>
+
+Example console app:
+    
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using createsend_dotnet;
+
+    namespace dotnet_api_client
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                List<BasicClient> clients = (List<BasicClient>)General.Clients();
+                foreach (BasicClient c in clients)
+                    Console.WriteLine(string.Format("ID: {0}; Name: {1}", c.Name, c.ClientID));
+                Console.ReadLine();
+            }
+        }
+    }
