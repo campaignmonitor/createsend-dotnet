@@ -57,6 +57,7 @@
     <Compile Include="Models\Segment.cs" />
     <Compile Include="Models\Subscriber.cs" />
     <Compile Include="Models\Template.cs" />
+    <Compile Include="Models\Webhook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Segment.cs" />

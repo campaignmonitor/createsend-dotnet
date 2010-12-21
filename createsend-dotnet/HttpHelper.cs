@@ -88,6 +88,10 @@ namespace createsend_dotnet
                     os.Close();
                 }
             }
+            else if (method != "GET" && string.IsNullOrEmpty(payload))
+            {
+                req.ContentLength = 0;
+            }
 
             try
             {

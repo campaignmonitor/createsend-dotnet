@@ -99,5 +99,55 @@ namespace createsend_dotnet
             string json = HttpHelper.Get(string.Format("/lists/{0}/{1}.json", _listID, type), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
         }
+
+        public IEnumerable<BasicWebhook> Webhooks()
+        {
+            string json = HttpHelper.Get(string.Format("/lists/{0}/webhooks.json", _listID), null);
+            return JavaScriptConvert.DeserializeObject<BasicWebhook[]>(json);
+        }
+
+        public string CreateWebhook(List<string> events, string url, string payloadFormat)
+        {
+            string json = HttpHelper.Post(string.Format("/lists/{0}/webhooks.json", _listID), null, JavaScriptConvert.SerializeObject(
+                new Dictionary<string, object>() { { "Events", events }, { "Url", url }, { "PayloadFormat", payloadFormat } })
+                );
+            return JavaScriptConvert.DeserializeObject<string>(json);
+        }
+
+        public bool TestWebhook(string webhookID)
+        {
+            try
+            {
+                HttpHelper.Get(string.Format("/lists/{0}/webhooks/{1}/test.json", _listID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
+            }
+            catch (CreatesendException ex)
+            {
+                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
+                {
+                    ErrorResult<WebhookTestErrorResult> result = JavaScriptConvert.DeserializeObject<ErrorResult<WebhookTestErrorResult>>(ex.Data["ErrorResponse"].ToString());
+                    ex.Data.Add("ErrorResult", result);
+                }
+
+                throw ex;
+            }
+            catch (Exception ex) { throw ex; }
+
+            return true; //an exception will be thrown if there is a problem
+        }
+
+        public void DeleteWebhook(string webhookID)
+        {
+            HttpHelper.Delete(string.Format("/lists/{0}/webhooks/{1}.json", _listID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
+        }
+
+        public void ActivateWebhook(string webhookID)
+        {
+            HttpHelper.Put(string.Format("/lists/{0}/webhooks/{1}/activate.json", _listID, System.Web.HttpUtility.UrlEncode(webhookID)), null, "");
+        }
+
+        public void DeactivateWebhook(string webhookID)
+        {
+            HttpHelper.Put(string.Format("/lists/{0}/webhooks/{1}/deactivate.json", _listID, System.Web.HttpUtility.UrlEncode(webhookID)), null, "");
+        }
     }
 }
