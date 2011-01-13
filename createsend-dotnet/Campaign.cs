@@ -54,7 +54,7 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<CampaignListsAndSegments>(json);
         }
 
-        public IEnumerable<CampaignRecipient> Recipients(int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignRecipient> Recipients(int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("page", page.ToString());
@@ -63,7 +63,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderdirection", orderDirection);
 
             string json = HttpHelper.Get(string.Format("/campaigns/{0}/recipients.json", _campaignID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<CampaignRecipients>(json);
+            return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignRecipient>>(json);
         }
 
         public PagedCollection<CampaignOpenDetail> Opens(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
