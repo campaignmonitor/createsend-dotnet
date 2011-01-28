@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
-    <Compile Include="ExtensionEnabler.cs" />
     <Compile Include="General.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\Campaign.cs" />

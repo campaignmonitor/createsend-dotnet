@@ -52,22 +52,22 @@ namespace createsend_dotnet
 
         public static string Get(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("GET", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), null);
+            return MakeRequest("GET", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), null);
         }
 
         public static string Post(string path, NameValueCollection queryArguments, string payload)
         {
-            return MakeRequest("POST", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), payload);
+            return MakeRequest("POST", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), payload);
         }
 
         public static string Put(string path, NameValueCollection queryArguments, string payload)
         {
-            return MakeRequest("PUT", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), payload);
+            return MakeRequest("PUT", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), payload);
         }
 
         public static string Delete(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("DELETE", CreateSendOptions.BaseUri + path + queryArguments.ToQueryString(), null);
+            return MakeRequest("DELETE", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), null);
         }
 
         static string MakeRequest(string method, string uri, string payload)
@@ -160,7 +160,7 @@ namespace createsend_dotnet
 
     public static class NamveValueCollectionExtension
     {
-        public static string ToQueryString(this NameValueCollection nvc)
+        public static string ToQueryString(NameValueCollection nvc)
         {
             if (nvc!= null && nvc.Count > 0)
                 return "?" + string.Join("&", GetPairs(nvc));
