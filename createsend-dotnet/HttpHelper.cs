@@ -40,7 +40,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.3";
+                return "1.0.4";
             }
         }
 
@@ -76,7 +76,7 @@ namespace createsend_dotnet
             req.Method = method;
             req.ContentType = "application/json";
             req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}", 
-                CreateSendOptions.VersionNumber, System.Environment.Version, System.Environment.OSVersion);
+                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion);
 
             req.Credentials = authCredentials;
 
