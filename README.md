@@ -8,10 +8,12 @@ As well as the source code for the library, we have also included a single merge
 
 The easiest way of getting up and running:
 
-1. Add the createsend-dotnet.dll assembly as a reference in your .NET project
-2. Add the following element to the appSettings section of your configuration file (replacing your_api_key with your actual API Key):
+1. Add the createsend-dotnet.dll assembly as a reference in your project
+2. Add the following element to the appSettings section of your configuration file (replacing your_api_key with your actual API Key)
 
         <add key="api_key" value="your_api_key" />
+
+Using NuGet:
 
 1. Install-Package campaignmonitor-api
 2. Edit the following element which is created in the appSettings section of your configuration file (replacing your_api_key with your actual API Key):
