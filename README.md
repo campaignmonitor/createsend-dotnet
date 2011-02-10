@@ -13,6 +13,10 @@ The easiest way of getting up and running:
 
     <add key="api_key" value="your_api_key" />
 
+Using NuGet:
+
+    Install-Package campaignmonitor-api
+
 ## Example
 
 Example config file:
