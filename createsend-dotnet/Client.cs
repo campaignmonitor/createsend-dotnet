@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
@@ -52,9 +53,15 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<BasicSegment[]>(json);
         }
 
-        public PagedCollection<BasicSubscriber> SuppressionList()
+        public PagedCollection<BasicSubscriber> SuppressionList(int page, int pageSize, string orderField, string orderDirection)
         {
-            string json = HttpHelper.Get(string.Format("/clients/{0}/suppressionlist.json", _clientID), null);
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("page", page.ToString());
+            queryArguments.Add("pagesize", pageSize.ToString());
+            queryArguments.Add("orderfield", orderField);
+            queryArguments.Add("orderdirection", orderDirection);
+
+            string json = HttpHelper.Get(string.Format("/clients/{0}/suppressionlist.json", _clientID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<BasicSubscriber>>(json);
         }
 
