@@ -68,7 +68,7 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
         }
 
-        public bool Unusbscribe(string emailAddress)
+        public bool Unsubscribe(string emailAddress)
         {
             return (HttpHelper.Post(string.Format("/subscribers/{0}/unsubscribe.json", _listID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, string>() { {"EmailAddress", emailAddress } }
