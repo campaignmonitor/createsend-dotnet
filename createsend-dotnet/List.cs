@@ -60,6 +60,14 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<ListCustomField[]>(json);
         }
 
+        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        {
+            HttpHelper.Put(string.Format("/lists/{0}/customfields/{1}/options.json", _listID, customFieldKey), null, 
+                JavaScriptConvert.SerializeObject(
+                    new { KeepExistingOptions = keepExistingOptions, Options = options })
+                );
+        }
+
         public IEnumerable<BasicSegment> Segments()
         {
             string json = HttpHelper.Get(string.Format("/lists/{0}/segments.json", _listID), null);
