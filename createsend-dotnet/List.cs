@@ -62,7 +62,7 @@ namespace createsend_dotnet
 
         public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
         {
-            HttpHelper.Put(string.Format("/lists/{0}/customfields/{1}/options.json", _listID, customFieldKey), null, 
+            HttpHelper.Put(string.Format("/lists/{0}/customfields/{1}/options.json", _listID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null, 
                 JavaScriptConvert.SerializeObject(
                     new { KeepExistingOptions = keepExistingOptions, Options = options })
                 );
