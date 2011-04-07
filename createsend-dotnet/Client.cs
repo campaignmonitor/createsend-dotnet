@@ -53,7 +53,7 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<BasicSegment[]>(json);
         }
 
-        public PagedCollection<BasicSubscriber> SuppressionList(int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SuppressedSubscriber> SuppressionList(int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("page", page.ToString());
@@ -62,7 +62,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderdirection", orderDirection);
 
             string json = HttpHelper.Get(string.Format("/clients/{0}/suppressionlist.json", _clientID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<PagedCollection<BasicSubscriber>>(json);
+            return JavaScriptConvert.DeserializeObject<PagedCollection<SuppressedSubscriber>>(json);
         }
 
         public IEnumerable<BasicTemplate> Templates()

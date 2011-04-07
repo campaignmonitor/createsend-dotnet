@@ -11,6 +11,11 @@ namespace createsend_dotnet
         public string State { get; set; }
     }
 
+    public class SuppressedSubscriber : BasicSubscriber
+    {
+        public string SuppressionReason { get; set; }
+    }
+
     public class CampaignRecipient
     {
         public string EmailAddress { get; set; }
