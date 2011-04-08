@@ -31,6 +31,16 @@ namespace createsend_dotnet
                 ));
             return JavaScriptConvert.DeserializeObject<string>(json);
         }
+
+        public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("email", emailAddress);
+
+            HttpHelper.Put(string.Format("/subscribers/{0}.json", _listID), queryArguments, JavaScriptConvert.SerializeObject(
+                new Dictionary<string, object>() { { "EmailAddress", newEmailAddress }, { "Name", name }, { "CustomFields", customFields }, { "Resubscribe", resubscribe } }
+                ));
+        }
         
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
