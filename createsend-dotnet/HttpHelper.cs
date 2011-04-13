@@ -40,7 +40,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.8";
+                return "1.0.9";
             }
         }
 
@@ -75,10 +75,14 @@ namespace createsend_dotnet
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             req.Method = method;
             req.ContentType = "application/json";
+            req.AutomaticDecompression = DecompressionMethods.GZip;
+
+            // HttpWebRequest only suppies the network credentials after receiving a 401 response which is retarded. 
+            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
+                Encoding.Default.GetBytes(authCredentials.UserName + ":" + authCredentials.Password));
+
             req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}", 
                 CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion);
-
-            req.Credentials = authCredentials;
 
             if (method != "GET" && !string.IsNullOrEmpty(payload))
             {
