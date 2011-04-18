@@ -23,7 +23,7 @@ namespace createsend_dotnet
         public string PreviewURL { get; set; }
     }
 
-    public class CampaignSumamry
+    public class CampaignSummary
     {
         public int Recipients { get; set; }
         public int TotalOpened { get; set; }
