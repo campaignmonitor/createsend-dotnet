@@ -8,18 +8,11 @@ namespace createsend_dotnet
 {
     public class Campaign
     {
-        private string _campaignID;
-        public string CampaignID
-        {
-            get
-            {
-                return _campaignID;
-            }
-        }
+        public string CampaignID { get; set; }
 
         public Campaign(string campaignID)
         {
-            _campaignID = campaignID;
+            CampaignID = campaignID;
         }
 
         public static string Create(string clientID, string subject, string name, string fromName, string fromEmail, string replyTo, string htmlUrl, string textUrl, List<string> listIDs, List<string> segmentIDs)
@@ -32,32 +25,32 @@ namespace createsend_dotnet
 
         public void SendPreview(List<string> recipients, string personalize)
         {
-            string json = HttpHelper.Post(string.Format("/campaigns/{0}/sendpreview.json", _campaignID), null, JavaScriptConvert.SerializeObject(
+            string json = HttpHelper.Post(string.Format("/campaigns/{0}/sendpreview.json", CampaignID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "PreviewRecipients", recipients}, { "Personalize", personalize} })
                 );
         }
 
         public void Send(string confirmationEmail, DateTime sendDate)
         {
-            string json = HttpHelper.Post(string.Format("/campaigns/{0}/send.json", _campaignID), null, JavaScriptConvert.SerializeObject(
+            string json = HttpHelper.Post(string.Format("/campaigns/{0}/send.json", CampaignID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "ConfirmationEmail", confirmationEmail }, { "SendDate", sendDate.ToString("yyyy-MM-dd HH:mm:ss") } })
                 );
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(string.Format("/campaigns/{0}.json", _campaignID), null);
+            HttpHelper.Delete(string.Format("/campaigns/{0}.json", CampaignID), null);
         }
 
         public CampaignSummary Summary()
         {
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/summary.json", _campaignID), null);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/summary.json", CampaignID), null);
             return JavaScriptConvert.DeserializeObject<CampaignSummary>(json);
         }
 
         public CampaignListsAndSegments ListsAndSegments()
         {
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/listsandsegments.json", _campaignID), null);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/listsandsegments.json", CampaignID), null);
             return JavaScriptConvert.DeserializeObject<CampaignListsAndSegments>(json);
         }
 
@@ -69,7 +62,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/recipients.json", _campaignID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/recipients.json", CampaignID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignRecipient>>(json);
         }
 
@@ -82,7 +75,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/opens.json", _campaignID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/opens.json", CampaignID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignOpenDetail>>(json);
         }
 
@@ -95,7 +88,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/unsubscribes.json", _campaignID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignUnsubscribeDetail>>(json);
         }
 
@@ -108,7 +101,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/clicks.json", _campaignID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/clicks.json", CampaignID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignClickDetail>>(json);
         }
 
@@ -121,7 +114,7 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/campaigns/{0}/bounces.json", _campaignID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/campaigns/{0}/bounces.json", CampaignID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<CampaignBounceDetail>>(json);
         }        
     }

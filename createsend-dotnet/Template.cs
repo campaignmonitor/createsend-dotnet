@@ -7,11 +7,11 @@ namespace createsend_dotnet
 {
     public class Template
     {
-        private string _templateID;
+        public string TemplateID { get; set; }
 
         public Template(string templateID)
         {
-            _templateID = templateID;
+            TemplateID = templateID;
         }
 
         public static string Create(string clientID, string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
@@ -24,20 +24,20 @@ namespace createsend_dotnet
 
         public void Update(string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
         {
-            HttpHelper.Put(string.Format("/templates/{0}.json", _templateID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Put(string.Format("/templates/{0}.json", TemplateID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
                 );
         }
 
         public BasicTemplate Details()
         {
-            string json = HttpHelper.Get(string.Format("/templates/{0}.json", _templateID), null);
+            string json = HttpHelper.Get(string.Format("/templates/{0}.json", TemplateID), null);
             return JavaScriptConvert.DeserializeObject<BasicTemplate>(json);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(string.Format("/templates/{0}.json", _templateID), null);
+            HttpHelper.Delete(string.Format("/templates/{0}.json", TemplateID), null);
         }
     }
 }

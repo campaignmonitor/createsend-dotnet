@@ -8,11 +8,11 @@ namespace createsend_dotnet
 {
     public class Segment
     {
-        private string _segmentID;
+        public string SegmentID { get; set; }
 
         public Segment(string segmentID)
         {
-            _segmentID = segmentID;
+            SegmentID = segmentID;
         }
 
         public static string Create(string listID, string title, SegmentRules rules)
@@ -41,14 +41,14 @@ namespace createsend_dotnet
 
         public void Update(string title, SegmentRules rules)
         {
-            HttpHelper.Put(string.Format("/segments/{0}.json", _segmentID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Put(string.Format("/segments/{0}.json", SegmentID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Title", title }, { "Rules", rules } })
                 );
         }
 
         public void AddRule(string subject, List<string> clauses)
         {
-            HttpHelper.Post(string.Format("/segments/{0}/rules.json", _segmentID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Post(string.Format("/segments/{0}/rules.json", SegmentID), null, JavaScriptConvert.SerializeObject(
                     new Dictionary<string, object>() { { "Subject", subject }, { "Clauses", clauses } })
                     );
         }
@@ -62,24 +62,24 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/segments/{0}/active.json", _segmentID), queryArguments);
+            string json = HttpHelper.Get(string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
             return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
         }
 
         public SegmentDetail Details()
         {
-            string json = HttpHelper.Get(string.Format("/segments/{0}.json", _segmentID), null);
+            string json = HttpHelper.Get(string.Format("/segments/{0}.json", SegmentID), null);
             return JavaScriptConvert.DeserializeObject<SegmentDetail>(json);
         }
 
         public void ClearRules()
         {
-            HttpHelper.Delete(string.Format("/segments/{0}/rules.json", _segmentID), null);
+            HttpHelper.Delete(string.Format("/segments/{0}/rules.json", SegmentID), null);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(string.Format("/segments/{0}.json", _segmentID), null);
+            HttpHelper.Delete(string.Format("/segments/{0}.json", SegmentID), null);
         }
     }
 }
