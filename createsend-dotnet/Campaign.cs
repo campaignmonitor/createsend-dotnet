@@ -9,6 +9,13 @@ namespace createsend_dotnet
     public class Campaign
     {
         private string _campaignID;
+        public string CampaignID
+        {
+            get
+            {
+                return _campaignID;
+            }
+        }
 
         public Campaign(string campaignID)
         {
