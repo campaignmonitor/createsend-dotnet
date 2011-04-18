@@ -56,6 +56,35 @@ namespace Samples
             }
         }
 
+        /// <summary>
+        /// Updates the subscriber with current email address of "test@notarealdomain.com" to have the new email
+        /// "new_address@notarealdomain.com", while leaving the name unchanged.
+        /// </summary>
+        void UpdateWithNewEmailAndUnchangedNameDontResubscribe()
+        {
+            Subscriber subscriber = new Subscriber(listID);
+
+            try
+            {
+                List<SubscriberCustomField> customFields = new List<SubscriberCustomField>();
+                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Value = "Value" });
+                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey2", Value = "Value2" });
+
+                subscriber.Update("test@notarealdomain.com", "new_address@notarealdomain.com", null, customFields, false);
+                Console.WriteLine("Subscriber Updated successfully with new email: new_address@notarealdomain.com. Name was unchanged");
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                //handle some other failure
+            }
+        }
+
         void BatchAdd()
         {
             Subscriber subscriber = new Subscriber(listID);
