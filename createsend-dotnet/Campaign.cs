@@ -9,6 +9,13 @@ namespace createsend_dotnet
     public class Campaign
     {
         private string _campaignID;
+        public string CampaignID
+        {
+            get
+            {
+                return _campaignID;
+            }
+        }
 
         public Campaign(string campaignID)
         {
@@ -42,10 +49,10 @@ namespace createsend_dotnet
             HttpHelper.Delete(string.Format("/campaigns/{0}.json", _campaignID), null);
         }
 
-        public CampaignSumamry Summary()
+        public CampaignSummary Summary()
         {
             string json = HttpHelper.Get(string.Format("/campaigns/{0}/summary.json", _campaignID), null);
-            return JavaScriptConvert.DeserializeObject<CampaignSumamry>(json);
+            return JavaScriptConvert.DeserializeObject<CampaignSummary>(json);
         }
 
         public CampaignListsAndSegments ListsAndSegments()
