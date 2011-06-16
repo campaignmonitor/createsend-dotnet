@@ -14,7 +14,7 @@ namespace createsend_dotnet
             TemplateID = templateID;
         }
 
-        public static string Create(string clientID, string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
+        public static string Create(string clientID, string name, string htmlPageUrl, string zipUrl, string screenshotUrl)
         {
             string json = HttpHelper.Post(string.Format("/templates/{0}.json", clientID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
@@ -22,7 +22,7 @@ namespace createsend_dotnet
             return JavaScriptConvert.DeserializeObject<string>(json);
         }
 
-        public void Update(string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
+        public void Update(string name, string htmlPageUrl, string zipUrl, string screenshotUrl)
         {
             HttpHelper.Put(string.Format("/templates/{0}.json", TemplateID), null, JavaScriptConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })

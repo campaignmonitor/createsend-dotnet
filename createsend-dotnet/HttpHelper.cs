@@ -40,7 +40,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.11";
+                return "1.0.12";
             }
         }
 
