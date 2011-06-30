@@ -70,10 +70,8 @@ namespace createsend_dotnet
                     ErrorResult<BulkImportResults> result = new ErrorResult<BulkImportResults>((ErrorResult)ex.Data["ErrorResult"]);
                     ex.Data["ErrorResult"] = result;
                 }
-
-                throw ex;
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex) { throw; }
 
             return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
         }
