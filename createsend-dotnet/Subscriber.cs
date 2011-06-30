@@ -71,7 +71,7 @@ namespace createsend_dotnet
                     ex.Data["ErrorResult"] = result;
                 }
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex) { throw; }
 
             return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
         }
