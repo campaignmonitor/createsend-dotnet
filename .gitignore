@@ -13,3 +13,6 @@ _ReSharper.*/
 *.testsettings
 *.vsmdi
 user.config
+createsend-dotnet.dll
+createsend-dotnet.pdb
+createsend-dotnet*.zip
