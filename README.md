@@ -45,7 +45,7 @@ Example console app:
         {
             static void Main(string[] args)
             {
-                List<BasicClient> clients = (List<BasicClient>)General.Clients();
+                IEnumerable<BasicClient> clients = General.Clients();
                 foreach (BasicClient c in clients)
                     Console.WriteLine(string.Format("ID: {0}; Name: {1}", c.Name, c.ClientID));
                 Console.ReadLine();
