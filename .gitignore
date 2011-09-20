@@ -13,3 +13,4 @@ _ReSharper.*/
 *.testsettings
 *.vsmdi
 user.config
+packages

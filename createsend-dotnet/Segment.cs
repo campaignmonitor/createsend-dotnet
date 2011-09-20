@@ -20,7 +20,7 @@ namespace createsend_dotnet
             string json = "";
             try
             {
-                json = HttpHelper.Post(string.Format("/segments/{0}.json", listID), null, JavaScriptConvert.SerializeObject(
+                json = HttpHelper.Post(string.Format("/segments/{0}.json", listID), null, JsonConvert.SerializeObject(
                     new Dictionary<string, object>() { { "ListID", listID }, { "Title", title }, { "Rules", rules } })
                     );
             }
@@ -28,7 +28,7 @@ namespace createsend_dotnet
             {
                 if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
                 {
-                    ErrorResult<RuleErrorResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<RuleErrorResults>>(ex.Data["ErrorResponse"].ToString());
+                    ErrorResult<RuleErrorResults> result = JsonConvert.DeserializeObject<ErrorResult<RuleErrorResults>>(ex.Data["ErrorResponse"].ToString());
                     ex.Data.Add("ErrorResult", result);
                 }
 
@@ -36,19 +36,19 @@ namespace createsend_dotnet
             }
             catch (Exception ex) { throw ex; }
             
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public void Update(string title, SegmentRules rules)
         {
-            HttpHelper.Put(string.Format("/segments/{0}.json", SegmentID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Put(string.Format("/segments/{0}.json", SegmentID), null, JsonConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Title", title }, { "Rules", rules } })
                 );
         }
 
         public void AddRule(string subject, List<string> clauses)
         {
-            HttpHelper.Post(string.Format("/segments/{0}/rules.json", SegmentID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Post(string.Format("/segments/{0}/rules.json", SegmentID), null, JsonConvert.SerializeObject(
                     new Dictionary<string, object>() { { "Subject", subject }, { "Clauses", clauses } })
                     );
         }
@@ -63,13 +63,13 @@ namespace createsend_dotnet
             queryArguments.Add("orderdirection", orderDirection);
 
             string json = HttpHelper.Get(string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
+            return JsonConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
         }
 
         public SegmentDetail Details()
         {
             string json = HttpHelper.Get(string.Format("/segments/{0}.json", SegmentID), null);
-            return JavaScriptConvert.DeserializeObject<SegmentDetail>(json);
+            return JsonConvert.DeserializeObject<SegmentDetail>(json);
         }
 
         public void ClearRules()

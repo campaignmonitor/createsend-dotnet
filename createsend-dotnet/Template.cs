@@ -16,15 +16,15 @@ namespace createsend_dotnet
 
         public static string Create(string clientID, string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
         {
-            string json = HttpHelper.Post(string.Format("/templates/{0}.json", clientID), null, JavaScriptConvert.SerializeObject(
+            string json = HttpHelper.Post(string.Format("/templates/{0}.json", clientID), null, JsonConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
                 );
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public void Update(string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
         {
-            HttpHelper.Put(string.Format("/templates/{0}.json", TemplateID), null, JavaScriptConvert.SerializeObject(
+            HttpHelper.Put(string.Format("/templates/{0}.json", TemplateID), null, JsonConvert.SerializeObject(
                 new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
                 );
         }
@@ -32,7 +32,7 @@ namespace createsend_dotnet
         public BasicTemplate Details()
         {
             string json = HttpHelper.Get(string.Format("/templates/{0}.json", TemplateID), null);
-            return JavaScriptConvert.DeserializeObject<BasicTemplate>(json);
+            return JsonConvert.DeserializeObject<BasicTemplate>(json);
         }
 
         public void Delete()
