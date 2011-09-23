@@ -28,6 +28,7 @@ namespace createsend_dotnet
     {
         public string Key { get; set; }
         public string Value{ get ;set; }
+        public bool Clear { get; set; }
     }
 
     public class SubscriberDetail : BasicSubscriber

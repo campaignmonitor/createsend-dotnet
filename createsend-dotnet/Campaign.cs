@@ -57,6 +57,13 @@ namespace createsend_dotnet
                 });
         }
 
+        public void Unschedule()
+        {
+            HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/campaigns/{0}/unschedule.json", CampaignID),
+                null, null);
+        }
+
         public void Delete()
         {
             HttpHelper.Delete(string.Format("/campaigns/{0}.json", CampaignID), null);

@@ -51,10 +51,23 @@ namespace createsend_dotnet
                     { "Resubscribe", resubscribe } 
                 });
         }
+
+        public void Delete(string emailAddress)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("email", emailAddress);
+            HttpHelper.Delete(string.Format("/subscribers/{0}.json", ListID),
+                              queryArguments);
+        }
         
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
-            List<object> reworkedSusbcribers = new List<object>();
+            return Import(subscribers, resubscribe, false);
+        }
+
+        public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe, bool queueSubscriptionBasedAutoResponders)
+        {
+            List<object> reworkedSubscribers = new List<object>();
             foreach (SubscriberDetail subscriber in subscribers)
             {
                 Dictionary<string, object> subscriberWithoutDate = new Dictionary<string, object>() 
@@ -63,15 +76,16 @@ namespace createsend_dotnet
                     { "Name", subscriber.Name }, 
                     { "CustomFields", subscriber.CustomFields } 
                 };
-                reworkedSusbcribers.Add(subscriberWithoutDate);
+                reworkedSubscribers.Add(subscriberWithoutDate);
             }
 
             return HttpHelper.Post<Dictionary<string, object>, BulkImportResults, ErrorResult<BulkImportResults>>(
                 string.Format("/subscribers/{0}/import.json", ListID), null, 
                 new Dictionary<string, object>() 
                 { 
-                    { "Subscribers", reworkedSusbcribers }, 
-                    { "Resubscribe", resubscribe } 
+                    { "Subscribers", reworkedSubscribers }, 
+                    { "Resubscribe", resubscribe },
+                    { "QueueSubscriptionBasedAutoResponders", queueSubscriptionBasedAutoResponders }
                 });
         }
 

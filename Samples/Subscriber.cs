@@ -59,6 +59,7 @@ namespace Samples
         /// <summary>
         /// Updates the subscriber with current email address of "test@notarealdomain.com" to have the new email
         /// "new_address@notarealdomain.com", while leaving the name unchanged.
+        /// Also clears the value of CustomFieldKey
         /// </summary>
         void UpdateWithNewEmailAndUnchangedNameDontResubscribe()
         {
@@ -67,7 +68,7 @@ namespace Samples
             try
             {
                 List<SubscriberCustomField> customFields = new List<SubscriberCustomField>();
-                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Value = "Value" });
+                customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Clear = true });
                 customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey2", Value = "Value2" });
 
                 subscriber.Update("test@notarealdomain.com", "new_address@notarealdomain.com", null, customFields, false);
@@ -137,5 +138,13 @@ namespace Samples
                 //handle some other failure
             }
         }
+
+        void DeleteSubscriber()
+        {
+            Subscriber subscriber = new Subscriber(listID);
+            subscriber.Delete("test1@notarealdomain.com");
+        }
+
+
     }
 }

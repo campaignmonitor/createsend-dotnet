@@ -105,6 +105,11 @@ namespace createsend_dotnet
             return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
         }
 
+        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
         private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
