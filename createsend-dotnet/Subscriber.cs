@@ -20,16 +20,20 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            string json = HttpHelper.Get(string.Format("/subscribers/{0}.json", ListID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<SubscriberDetail>(json);
+            return HttpHelper.Get<SubscriberDetail>(string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
 
         public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
         {
-            string json = HttpHelper.Post(string.Format("/subscribers/{0}.json", ListID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "EmailAddress", emailAddress }, { "Name", name }, { "CustomFields", customFields }, { "Resubscribe", resubscribe } }
-                ));
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/subscribers/{0}.json", ListID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "EmailAddress", emailAddress }, 
+                    { "Name", name }, 
+                    { "CustomFields", customFields }, 
+                    { "Resubscribe", resubscribe } 
+                });
         }
 
         public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
@@ -37,52 +41,50 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            HttpHelper.Put(string.Format("/subscribers/{0}.json", ListID), queryArguments, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "EmailAddress", newEmailAddress }, { "Name", name }, { "CustomFields", customFields }, { "Resubscribe", resubscribe } }
-                ));
+            HttpHelper.Put<Dictionary<string, object>, string>(
+                string.Format("/subscribers/{0}.json", ListID), queryArguments, 
+                new Dictionary<string, object>() 
+                { 
+                    { "EmailAddress", newEmailAddress }, 
+                    { "Name", name }, 
+                    { "CustomFields", customFields }, 
+                    { "Resubscribe", resubscribe } 
+                });
         }
         
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
             List<object> reworkedSusbcribers = new List<object>();
-            string json = "";
             foreach (SubscriberDetail subscriber in subscribers)
             {
-                Dictionary<string, object> subscriberWithoutDate = new Dictionary<string, object>() { { "EmailAddress", subscriber.EmailAddress }, { "Name", subscriber.Name }, { "CustomFields", subscriber.CustomFields } };
+                Dictionary<string, object> subscriberWithoutDate = new Dictionary<string, object>() 
+                { 
+                    { "EmailAddress", subscriber.EmailAddress }, 
+                    { "Name", subscriber.Name }, 
+                    { "CustomFields", subscriber.CustomFields } 
+                };
                 reworkedSusbcribers.Add(subscriberWithoutDate);
             }
 
-            try
-            {
-                json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", ListID), null, JavaScriptConvert.SerializeObject(
-                    new Dictionary<string, object>() { { "Subscribers", reworkedSusbcribers }, { "Resubscribe", resubscribe } }
-                    ));
-            }
-            catch (CreatesendException ex)
-            {
-                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
-                {
-                    ErrorResult<BulkImportResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<BulkImportResults>>(ex.Data["ErrorResponse"].ToString());
-                    ex.Data.Add("ErrorResult", result);
-                }
-                else if(ex.Data.Contains("ErrorResult"))
-                {
-                    ErrorResult<BulkImportResults> result = new ErrorResult<BulkImportResults>((ErrorResult)ex.Data["ErrorResult"]);
-                    ex.Data["ErrorResult"] = result;
-                }
-
-                throw ex;
-            }
-            catch (Exception ex) { throw ex; }
-
-            return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
+            return HttpHelper.Post<Dictionary<string, object>, BulkImportResults, ErrorResult<BulkImportResults>>(
+                string.Format("/subscribers/{0}/import.json", ListID), null, 
+                new Dictionary<string, object>() 
+                { 
+                    { "Subscribers", reworkedSusbcribers }, 
+                    { "Resubscribe", resubscribe } 
+                });
         }
 
         public bool Unsubscribe(string emailAddress)
         {
-            return (HttpHelper.Post(string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, string>() { {"EmailAddress", emailAddress } }
-                )) != null);
+            string result = HttpHelper.Post<Dictionary<string, string>, string>(
+                string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, 
+                new Dictionary<string, string>() 
+                { 
+                    {"EmailAddress", emailAddress } 
+                });
+
+            return result != null;
         }
     }
 }

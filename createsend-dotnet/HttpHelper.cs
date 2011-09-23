@@ -50,28 +50,48 @@ namespace createsend_dotnet
     {
         private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
 
-        public static string Get(string path, NameValueCollection queryArguments)
+        public static U Get<U>(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("GET", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), null);
+            return Get<U, ErrorResult>(path, queryArguments);
         }
 
-        public static string Post(string path, NameValueCollection queryArguments, string payload)
+        public static U Get<U, EX>(string path, NameValueCollection queryArguments) where EX : ErrorResult
         {
-            return MakeRequest("POST", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), payload);
+            return MakeRequest<string, U, EX>("GET", path, queryArguments, null);
         }
 
-        public static string Put(string path, NameValueCollection queryArguments, string payload)
+        public static U Post<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return MakeRequest("PUT", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), payload);
+            return Post<T, U, ErrorResult>(path, queryArguments, payload);
+        }
+
+        public static U Post<T, U, EX>(string path, NameValueCollection queryArguments, T payload)
+            where T : class
+            where EX : ErrorResult
+        {
+            return MakeRequest<T, U, EX>("POST", path, queryArguments, payload);
+        }
+
+        public static U Put<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
+        {
+            return MakeRequest<T, U, ErrorResult>("PUT", path, queryArguments, payload);
         }
 
         public static string Delete(string path, NameValueCollection queryArguments)
         {
-            return MakeRequest("DELETE", CreateSendOptions.BaseUri + path + NamveValueCollectionExtension.ToQueryString(queryArguments), null);
+            return MakeRequest<string, string, ErrorResult>("DELETE", path, queryArguments, null);
         }
 
-        static string MakeRequest(string method, string uri, string payload)
+        static U MakeRequest<T, U, EX>(string method, string path, NameValueCollection queryArguments, T payload)
+            where T : class
+            where EX : ErrorResult
         {
+            JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
+            serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
+            serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+
+            string uri = CreateSendOptions.BaseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
+
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             req.Method = method;
             req.ContentType = "application/json";
@@ -81,20 +101,23 @@ namespace createsend_dotnet
             req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
                 Encoding.Default.GetBytes(authCredentials.UserName + ":" + authCredentials.Password));
 
-            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}", 
+            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}",
                 CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion);
 
-            if (method != "GET" && !string.IsNullOrEmpty(payload))
+            if (method != "GET")
             {
-                using (System.IO.StreamWriter os = new System.IO.StreamWriter(req.GetRequestStream()))
+                if (payload != null)
                 {
-                    os.Write(payload);
-                    os.Close();
+                    using (System.IO.StreamWriter os = new System.IO.StreamWriter(req.GetRequestStream()))
+                    {
+                        os.Write(JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings));
+                        os.Close();
+                    }
                 }
-            }
-            else if (method != "GET" && string.IsNullOrEmpty(payload))
-            {
-                req.ContentLength = 0;
+                else
+                {
+                    req.ContentLength = 0;
+                }
             }
 
             try
@@ -102,11 +125,11 @@ namespace createsend_dotnet
                 using (System.Net.HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
                 {
                     if (resp == null)
-                        return "";
+                        return default(U);
                     else
                     {
                         System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-                        return sr.ReadToEnd().Trim();
+                        return JsonConvert.DeserializeObject<U>(sr.ReadToEnd().Trim(), serialiserSettings);
                     }
                 }
             }
@@ -118,7 +141,7 @@ namespace createsend_dotnet
                     {
                         case 400:
                         case 401:
-                            throw ThrowReworkedCustomException(we);
+                            throw ThrowReworkedCustomException<EX>(we);
                         case 404:
                         default:
                             throw we;
@@ -131,42 +154,44 @@ namespace createsend_dotnet
             }
         }
 
-        private static Exception ThrowReworkedCustomException(WebException we)
+        private static Exception ThrowReworkedCustomException<EX>(WebException we) where EX : ErrorResult
         {
             using (System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream()))
             {
                 string response = sr.ReadToEnd().Trim();
+                ErrorResult result;
+
                 try
                 {
-                    ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(response);
-                    
-                    CreatesendException exception = new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
-                    exception.Data.Add("ErrorResponse", response);
-                    exception.Data.Add("ErrorResult", apiExceptionResult);         
-
-                    return exception;
+                    result = JsonConvert.DeserializeObject<ErrorResult>(response);
                 }
-                catch (Newtonsoft.Json.JsonSerializationException)
+                catch (JsonSerializationException)
                 {
-                    CreatesendException exception = new CreatesendException("The CreateSend API returned an error with addtional data");
-                    exception.Data.Add("ErrorResponse", response);
-
-                    return exception;
+                    result = JsonConvert.DeserializeObject<EX>(response, 
+                        new JsonSerializerSettings { MissingMemberHandling = MissingMemberHandling.Ignore });
                 }
+
+                CreatesendException exception = new CreatesendException(
+                    string.Format("The CreateSend API responded with the following error - {0}: {1}", 
+                    result.Code, result.Message));
+                exception.Data.Add("ErrorResponse", response);
+                exception.Data.Add("ErrorResult", result);
+
+                return exception;
             }
         }
 
         public static void OverrideAuthenticationCredentials(string username, string password)
         {
             authCredentials = new NetworkCredential(username, password);
-        }        
+        }
     }
 
-    public static class NamveValueCollectionExtension
+    public static class NameValueCollectionExtension
     {
         public static string ToQueryString(NameValueCollection nvc)
         {
-            if (nvc!= null && nvc.Count > 0)
+            if (nvc != null && nvc.Count > 0)
                 return "?" + string.Join("&", GetPairs(nvc));
             else
                 return "";

@@ -33,7 +33,7 @@ namespace createsend_dotnet
 
     public class SystemDateResult
     {
-        public string SystemDate { get; set; }
+        public DateTime SystemDate { get; set; }
     }
 
     public class BulkImportResults

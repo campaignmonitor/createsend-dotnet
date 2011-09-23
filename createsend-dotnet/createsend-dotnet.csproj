@@ -32,9 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>lib\JSON.Net\Net20\Newtonsoft.Json.Net20.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -62,10 +61,6 @@
     <Compile Include="Segment.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="Template.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="lib\Newtonsoft.Json.dll" />
-    <Content Include="lib\Newtonsoft.Json.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

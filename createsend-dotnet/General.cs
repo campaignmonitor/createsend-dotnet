@@ -15,34 +15,31 @@ namespace createsend_dotnet
             queryArguments.Add("SiteUrl", siteUrl);
 
             HttpHelper.OverrideAuthenticationCredentials(username, password);
-            string json = HttpHelper.Get("/apikey.json", queryArguments);
+            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>("/apikey.json", queryArguments);
             //reset to default authentication
             HttpHelper.OverrideAuthenticationCredentials(CreateSendOptions.ApiKey, "x");
-            return JavaScriptConvert.DeserializeObject<ApiKeyResult>(json).ApiKey;
+
+            return result.ApiKey;
         }
 
         public static DateTime SystemDate()
         {
-            string json = HttpHelper.Get("/systemdate.json", null);
-            return DateTime.Parse(JavaScriptConvert.DeserializeObject<SystemDateResult>(json).SystemDate);
+            return HttpHelper.Get<SystemDateResult>("/systemdate.json", null).SystemDate;
         }
 
         public static IEnumerable<string> Countries()
         {
-            string json = HttpHelper.Get("/countries.json", null);
-            return JavaScriptConvert.DeserializeObject<string[]>(json);
+            return HttpHelper.Get<string[]>("/countries.json", null);
         }
 
         public static IEnumerable<string> Timezones()
         {
-            string json = HttpHelper.Get("/timezones.json", null);
-            return JavaScriptConvert.DeserializeObject<string[]>(json);
+            return HttpHelper.Get<string[]>("/timezones.json", null);
         }
 
         public static IEnumerable<BasicClient> Clients()
         {
-            string json = HttpHelper.Get("/clients.json", null);
-            return JavaScriptConvert.DeserializeObject<Clients>(json);
+            return HttpHelper.Get<Clients>("/clients.json", null);
         }
     }
 }

@@ -17,23 +17,33 @@ namespace createsend_dotnet
 
         public static string Create(string clientID, string title, string unsubscribePage, bool confirmedOptIn, string confirmationSuccessPage)
         {
-            string json = HttpHelper.Post(string.Format("/lists/{0}.json", clientID), null, JavaScriptConvert.SerializeObject(
-                new ListDetail() { Title = title, UnsubscribePage = unsubscribePage, ConfirmedOptIn = confirmedOptIn, ConfirmationSuccessPage = confirmationSuccessPage })
-                );
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<ListDetail, string>(
+                string.Format("/lists/{0}.json", clientID), null,
+                new ListDetail()
+                {
+                    Title = title,
+                    UnsubscribePage = unsubscribePage,
+                    ConfirmedOptIn = confirmedOptIn,
+                    ConfirmationSuccessPage = confirmationSuccessPage
+                });
         }
 
         public void Update(string title, string unsubscribePage, bool confirmedOptIn, string confirmationSuccessPage)
         {
-            HttpHelper.Put(string.Format("/lists/{0}.json", ListID), null, JavaScriptConvert.SerializeObject(
-                new ListDetail() { Title = title, UnsubscribePage = unsubscribePage, ConfirmedOptIn = confirmedOptIn, ConfirmationSuccessPage = confirmationSuccessPage })
-                );
+            HttpHelper.Put<ListDetail, string>(
+                string.Format("/lists/{0}.json", ListID), null,
+                new ListDetail()
+                {
+                    Title = title,
+                    UnsubscribePage = unsubscribePage,
+                    ConfirmedOptIn = confirmedOptIn,
+                    ConfirmationSuccessPage = confirmationSuccessPage
+                });
         }
 
         public ListDetail Details()
         {
-            string json = HttpHelper.Get(string.Format("/lists/{0}.json", ListID), null);
-            return JavaScriptConvert.DeserializeObject<ListDetail>(json);
+            return HttpHelper.Get<ListDetail>(string.Format("/lists/{0}.json", ListID), null);
         }
 
         public void Delete()
@@ -43,10 +53,14 @@ namespace createsend_dotnet
 
         public string CreateCustomField(string fieldName, CustomFieldDataType dataType, List<string> options)
         {
-            string json = HttpHelper.Post(string.Format("/lists/{0}/customfields.json", ListID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "FieldName", fieldName }, { "DataType", dataType.ToString() }, { "Options", options } })
-                );
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/lists/{0}/customfields.json", ListID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "FieldName", fieldName }, 
+                    { "DataType", dataType.ToString() }, 
+                    { "Options", options } 
+                });
         }
 
         public void DeleteCustomField(string customFieldKey)
@@ -56,28 +70,24 @@ namespace createsend_dotnet
 
         public IEnumerable<ListCustomField> CustomFields()
         {
-            string json = HttpHelper.Get(string.Format("/lists/{0}/customfields.json", ListID), null);
-            return JavaScriptConvert.DeserializeObject<ListCustomField[]>(json);
+            return HttpHelper.Get<ListCustomField[]>(string.Format("/lists/{0}/customfields.json", ListID), null);
         }
 
         public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
         {
-            HttpHelper.Put(string.Format("/lists/{0}/customfields/{1}/options.json", ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null, 
-                JavaScriptConvert.SerializeObject(
-                    new { KeepExistingOptions = keepExistingOptions, Options = options })
-                );
+            HttpHelper.Put<object, string>(
+                string.Format("/lists/{0}/customfields/{1}/options.json", ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
+                new { KeepExistingOptions = keepExistingOptions, Options = options });
         }
 
         public IEnumerable<BasicSegment> Segments()
         {
-            string json = HttpHelper.Get(string.Format("/lists/{0}/segments.json", ListID), null);
-            return JavaScriptConvert.DeserializeObject<BasicSegment[]>(json);
+            return HttpHelper.Get<BasicSegment[]>(string.Format("/lists/{0}/segments.json", ListID), null);
         }
 
         public ListStats Stats()
         {
-            string json = HttpHelper.Get(string.Format("/lists/{0}/stats.json", ListID), null);
-            return JavaScriptConvert.DeserializeObject<ListStats>(json);
+            return HttpHelper.Get<ListStats>(string.Format("/lists/{0}/stats.json", ListID), null);
         }
 
         public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
@@ -104,42 +114,31 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
-            return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
+            return HttpHelper.Get<PagedCollection<SubscriberDetail>>(string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
         }
 
         public IEnumerable<BasicWebhook> Webhooks()
         {
-            string json = HttpHelper.Get(string.Format("/lists/{0}/webhooks.json", ListID), null);
-            return JavaScriptConvert.DeserializeObject<BasicWebhook[]>(json);
+            return HttpHelper.Get<BasicWebhook[]>(string.Format("/lists/{0}/webhooks.json", ListID), null);
         }
 
         public string CreateWebhook(List<string> events, string url, string payloadFormat)
         {
-            string json = HttpHelper.Post(string.Format("/lists/{0}/webhooks.json", ListID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "Events", events }, { "Url", url }, { "PayloadFormat", payloadFormat } })
-                );
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/lists/{0}/webhooks.json", ListID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "Events", events }, 
+                    { "Url", url }, 
+                    { "PayloadFormat", payloadFormat } 
+                });
         }
 
         public bool TestWebhook(string webhookID)
         {
-            try
-            {
-                HttpHelper.Get(string.Format("/lists/{0}/webhooks/{1}/test.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
-            }
-            catch (CreatesendException ex)
-            {
-                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
-                {
-                    ErrorResult<WebhookTestErrorResult> result = JavaScriptConvert.DeserializeObject<ErrorResult<WebhookTestErrorResult>>(ex.Data["ErrorResponse"].ToString());
-                    ex.Data.Add("ErrorResult", result);
-                }
-
-                throw ex;
-            }
-            catch (Exception ex) { throw ex; }
-
+            HttpHelper.Get<string, ErrorResult<WebhookTestErrorResult>>(
+                string.Format("/lists/{0}/webhooks/{1}/test.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
+          
             return true; //an exception will be thrown if there is a problem
         }
 
@@ -150,12 +149,12 @@ namespace createsend_dotnet
 
         public void ActivateWebhook(string webhookID)
         {
-            HttpHelper.Put(string.Format("/lists/{0}/webhooks/{1}/activate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, "");
+            HttpHelper.Put<string, string>(string.Format("/lists/{0}/webhooks/{1}/activate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
         }
 
         public void DeactivateWebhook(string webhookID)
         {
-            HttpHelper.Put(string.Format("/lists/{0}/webhooks/{1}/deactivate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, "");
+            HttpHelper.Put<string, string>(string.Format("/lists/{0}/webhooks/{1}/deactivate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
         }
     }
 }

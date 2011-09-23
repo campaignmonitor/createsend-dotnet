@@ -17,40 +17,36 @@ namespace createsend_dotnet
 
         public static string Create(string listID, string title, SegmentRules rules)
         {
-            string json = "";
-            try
-            {
-                json = HttpHelper.Post(string.Format("/segments/{0}.json", listID), null, JavaScriptConvert.SerializeObject(
-                    new Dictionary<string, object>() { { "ListID", listID }, { "Title", title }, { "Rules", rules } })
-                    );
-            }
-            catch (CreatesendException ex)
-            {
-                if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
-                {
-                    ErrorResult<RuleErrorResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<RuleErrorResults>>(ex.Data["ErrorResponse"].ToString());
-                    ex.Data.Add("ErrorResult", result);
-                }
-
-                throw ex;
-            }
-            catch (Exception ex) { throw ex; }
-            
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<Dictionary<string, object>, string, ErrorResult<RuleErrorResults>>(
+                string.Format("/segments/{0}.json", listID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "ListID", listID }, 
+                    { "Title", title }, 
+                    { "Rules", rules } 
+                });
         }
 
         public void Update(string title, SegmentRules rules)
         {
-            HttpHelper.Put(string.Format("/segments/{0}.json", SegmentID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "Title", title }, { "Rules", rules } })
-                );
+            HttpHelper.Put<Dictionary<string, object>, string>(
+                string.Format("/segments/{0}.json", SegmentID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "Title", title }, 
+                    { "Rules", rules } 
+                });
         }
 
         public void AddRule(string subject, List<string> clauses)
         {
-            HttpHelper.Post(string.Format("/segments/{0}/rules.json", SegmentID), null, JavaScriptConvert.SerializeObject(
-                    new Dictionary<string, object>() { { "Subject", subject }, { "Clauses", clauses } })
-                    );
+            HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/segments/{0}/rules.json", SegmentID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "Subject", subject }, 
+                    { "Clauses", clauses } 
+                });
         }
 
         public PagedCollection<SubscriberDetail> Subscribers(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
@@ -62,14 +58,12 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            string json = HttpHelper.Get(string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<PagedCollection<SubscriberDetail>>(json);
+            return HttpHelper.Get<PagedCollection<SubscriberDetail>>(string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
         }
 
         public SegmentDetail Details()
         {
-            string json = HttpHelper.Get(string.Format("/segments/{0}.json", SegmentID), null);
-            return JavaScriptConvert.DeserializeObject<SegmentDetail>(json);
+            return HttpHelper.Get<SegmentDetail>(string.Format("/segments/{0}.json", SegmentID), null);
         }
 
         public void ClearRules()

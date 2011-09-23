@@ -16,23 +16,33 @@ namespace createsend_dotnet
 
         public static string Create(string clientID, string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
         {
-            string json = HttpHelper.Post(string.Format("/templates/{0}.json", clientID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
-                );
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return HttpHelper.Post<Dictionary<string, object>, string>(
+                string.Format("/templates/{0}.json", clientID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "Name", name }, 
+                    { "HtmlPageURL", htmlPageUrl }, 
+                    { "ZipFileUrl", zipUrl }, 
+                    { "ScreenshotUrl", screenshotUrl } 
+                });
         }
 
         public void Update(string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
         {
-            HttpHelper.Put(string.Format("/templates/{0}.json", TemplateID), null, JavaScriptConvert.SerializeObject(
-                new Dictionary<string, object>() { { "Name", name }, { "HtmlPageURL", htmlPageUrl }, { "ZipFileUrl", zipUrl }, { "ScreenshotUrl", screenshotUrl } })
-                );
+            HttpHelper.Put<Dictionary<string, object>, string>(
+                string.Format("/templates/{0}.json", TemplateID), null,
+                new Dictionary<string, object>() 
+                { 
+                    { "Name", name }, 
+                    { "HtmlPageURL", htmlPageUrl }, 
+                    { "ZipFileUrl", zipUrl }, 
+                    { "ScreenshotUrl", screenshotUrl } 
+                });
         }
 
         public BasicTemplate Details()
         {
-            string json = HttpHelper.Get(string.Format("/templates/{0}.json", TemplateID), null);
-            return JavaScriptConvert.DeserializeObject<BasicTemplate>(json);
+            return HttpHelper.Get<BasicTemplate>(string.Format("/templates/{0}.json", TemplateID), null);
         }
 
         public void Delete()
