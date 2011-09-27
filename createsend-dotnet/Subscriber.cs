@@ -19,17 +19,17 @@ namespace createsend_dotnet
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
-
+            
             string json = HttpHelper.Get(string.Format("/subscribers/{0}.json", ListID), queryArguments);
-            return JavaScriptConvert.DeserializeObject<SubscriberDetail>(json);
+            return JsonConvert.DeserializeObject<SubscriberDetail>(json);
         }
 
         public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
         {
-            string json = HttpHelper.Post(string.Format("/subscribers/{0}.json", ListID), null, JavaScriptConvert.SerializeObject(
+            string json = HttpHelper.Post(string.Format("/subscribers/{0}.json", ListID), null, JsonConvert.SerializeObject(
                 new Dictionary<string, object>() { { "EmailAddress", emailAddress }, { "Name", name }, { "CustomFields", customFields }, { "Resubscribe", resubscribe } }
                 ));
-            return JavaScriptConvert.DeserializeObject<string>(json);
+            return JsonConvert.DeserializeObject<string>(json);
         }
 
         public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
@@ -37,7 +37,7 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            HttpHelper.Put(string.Format("/subscribers/{0}.json", ListID), queryArguments, JavaScriptConvert.SerializeObject(
+            HttpHelper.Put(string.Format("/subscribers/{0}.json", ListID), queryArguments, JsonConvert.SerializeObject(
                 new Dictionary<string, object>() { { "EmailAddress", newEmailAddress }, { "Name", name }, { "CustomFields", customFields }, { "Resubscribe", resubscribe } }
                 ));
         }
@@ -54,7 +54,7 @@ namespace createsend_dotnet
 
             try
             {
-                json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", ListID), null, JavaScriptConvert.SerializeObject(
+                json = HttpHelper.Post(string.Format("/subscribers/{0}/import.json", ListID), null, JsonConvert.SerializeObject(
                     new Dictionary<string, object>() { { "Subscribers", reworkedSusbcribers }, { "Resubscribe", resubscribe } }
                     ));
             }
@@ -62,7 +62,7 @@ namespace createsend_dotnet
             {
                 if (!ex.Data.Contains("ErrorResult") && ex.Data.Contains("ErrorResponse"))
                 {
-                    ErrorResult<BulkImportResults> result = JavaScriptConvert.DeserializeObject<ErrorResult<BulkImportResults>>(ex.Data["ErrorResponse"].ToString());
+                    ErrorResult<BulkImportResults> result = JsonConvert.DeserializeObject<ErrorResult<BulkImportResults>>(ex.Data["ErrorResponse"].ToString());
                     ex.Data.Add("ErrorResult", result);
                 }
                 else if(ex.Data.Contains("ErrorResult"))
@@ -72,12 +72,12 @@ namespace createsend_dotnet
                 }
                 throw ex;
             }
-            return JavaScriptConvert.DeserializeObject<BulkImportResults>(json);
+            return JsonConvert.DeserializeObject<BulkImportResults>(json);
         }
 
         public bool Unsubscribe(string emailAddress)
         {
-            return (HttpHelper.Post(string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, JavaScriptConvert.SerializeObject(
+            return (HttpHelper.Post(string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, JsonConvert.SerializeObject(
                 new Dictionary<string, string>() { {"EmailAddress", emailAddress } }
                 )) != null);
         }

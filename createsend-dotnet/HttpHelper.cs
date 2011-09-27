@@ -136,7 +136,7 @@ namespace createsend_dotnet
                 string response = sr.ReadToEnd().Trim();
                 try
                 {
-                    ErrorResult apiExceptionResult = JavaScriptConvert.DeserializeObject<ErrorResult>(response);
+                    ErrorResult apiExceptionResult = JsonConvert.DeserializeObject<ErrorResult>(response);
                     
                     CreatesendException exception = new CreatesendException(string.Format("The CreateSend API responded with the following error - {0}: {1}", apiExceptionResult.Code, apiExceptionResult.Message));
                     exception.Data.Add("ErrorResponse", response);

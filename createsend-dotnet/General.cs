@@ -18,31 +18,31 @@ namespace createsend_dotnet
             string json = HttpHelper.Get("/apikey.json", queryArguments);
             //reset to default authentication
             HttpHelper.OverrideAuthenticationCredentials(CreateSendOptions.ApiKey, "x");
-            return JavaScriptConvert.DeserializeObject<ApiKeyResult>(json).ApiKey;
+            return JsonConvert.DeserializeObject<ApiKeyResult>(json).ApiKey;
         }
 
         public static DateTime SystemDate()
         {
             string json = HttpHelper.Get("/systemdate.json", null);
-            return DateTime.Parse(JavaScriptConvert.DeserializeObject<SystemDateResult>(json).SystemDate);
+            return DateTime.Parse(JsonConvert.DeserializeObject<SystemDateResult>(json).SystemDate);
         }
 
         public static IEnumerable<string> Countries()
         {
             string json = HttpHelper.Get("/countries.json", null);
-            return JavaScriptConvert.DeserializeObject<string[]>(json);
+            return JsonConvert.DeserializeObject<string[]>(json);
         }
 
         public static IEnumerable<string> Timezones()
         {
             string json = HttpHelper.Get("/timezones.json", null);
-            return JavaScriptConvert.DeserializeObject<string[]>(json);
+            return JsonConvert.DeserializeObject<string[]>(json);
         }
 
         public static IEnumerable<BasicClient> Clients()
         {
             string json = HttpHelper.Get("/clients.json", null);
-            return JavaScriptConvert.DeserializeObject<Clients>(json);
+            return JsonConvert.DeserializeObject<Clients>(json);
         }
     }
 }
