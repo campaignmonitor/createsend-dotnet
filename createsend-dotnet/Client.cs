@@ -35,6 +35,12 @@ namespace createsend_dotnet
             return JsonConvert.DeserializeObject<CampaignDetail[]>(json);
         }
 
+        public IEnumerable<ScheduledCampaignDetail> Scheduled()
+        {
+            string json = HttpHelper.Get(string.Format("/clients/{0}/scheduled.json", ClientID), null);
+            return JsonConvert.DeserializeObject<ScheduledCampaignDetail[]>(json);
+        }
+
         public IEnumerable<DraftDetail> Drafts()
         {
             string json = HttpHelper.Get(string.Format("/clients/{0}/drafts.json", ClientID), null);

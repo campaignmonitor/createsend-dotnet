@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
-    internal static class CreateSendOptions
+    public static class CreateSendOptions
     {
         static string api_key;
         static string base_uri;
@@ -22,10 +22,8 @@ namespace createsend_dotnet
 
         public static string ApiKey
         {
-            get
-            {
-                return api_key;
-            }
+            get { return api_key; }
+            set { api_key = value; }
         }
 
         public static string BaseUri
@@ -40,13 +38,13 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.10";
+                return "1.0.14";
             }
         }
 
     }
 
-    internal class HttpHelper
+    public class HttpHelper
     {
         private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
 
@@ -148,7 +146,7 @@ namespace createsend_dotnet
                 }
                 catch (Newtonsoft.Json.JsonSerializationException)
                 {
-                    CreatesendException exception = new CreatesendException("The CreateSend API returned an error with addtional data");
+                    CreatesendException exception = new CreatesendException("The CreateSend API returned an error with additional data");
                     exception.Data.Add("ErrorResponse", response);
 
                     return exception;
