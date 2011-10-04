@@ -14,7 +14,7 @@ namespace createsend_dotnet
             TemplateID = templateID;
         }
 
-        public static string Create(string clientID, string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
+        public static string Create(string clientID, string name, string htmlPageUrl, string zipUrl)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
                 string.Format("/templates/{0}.json", clientID), null,
@@ -22,12 +22,11 @@ namespace createsend_dotnet
                 { 
                     { "Name", name }, 
                     { "HtmlPageURL", htmlPageUrl }, 
-                    { "ZipFileUrl", zipUrl }, 
-                    { "ScreenshotUrl", screenshotUrl } 
+                    { "ZipFileUrl", zipUrl }
                 });
         }
 
-        public void Update(string name, string htmlPageUrl, bool zipUrl, string screenshotUrl)
+        public void Update(string name, string htmlPageUrl, string zipUrl)
         {
             HttpHelper.Put<Dictionary<string, object>, string>(
                 string.Format("/templates/{0}.json", TemplateID), null,
@@ -35,8 +34,7 @@ namespace createsend_dotnet
                 { 
                     { "Name", name }, 
                     { "HtmlPageURL", htmlPageUrl }, 
-                    { "ZipFileUrl", zipUrl }, 
-                    { "ScreenshotUrl", screenshotUrl } 
+                    { "ZipFileUrl", zipUrl }
                 });
         }
 

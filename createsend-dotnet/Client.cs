@@ -38,6 +38,11 @@ namespace createsend_dotnet
             return HttpHelper.Get<CampaignDetail[]>(string.Format("/clients/{0}/campaigns.json", ClientID), null);
         }
 
+        public IEnumerable<ScheduledCampaignDetail> Scheduled()
+        {
+            return HttpHelper.Get<ScheduledCampaignDetail[]>(string.Format("/clients/{0}/scheduled.json", ClientID), null);
+        }
+
         public IEnumerable<DraftDetail> Drafts()
         {
             return HttpHelper.Get<DraftDetail[]>(string.Format("/clients/{0}/drafts.json", ClientID), null);
