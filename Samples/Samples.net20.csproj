@@ -5,14 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}</ProjectGuid>
+    <ProjectGuid>{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>createsend_dotnet</RootNamespace>
-    <AssemblyName>createsend-dotnet</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>Samples</RootNamespace>
+    <AssemblyName>Samples</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,41 +25,27 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\net40\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>lib\JSON.Net\Net\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Campaign.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="General.cs" />
     <Compile Include="List.cs" />
-    <Compile Include="Models\Campaign.cs" />
-    <Compile Include="Models\CreatesendException.cs" />
-    <Compile Include="Models\Client.cs" />
-    <Compile Include="HttpHelper.cs" />
-    <Compile Include="Models\List.cs" />
-    <Compile Include="Models\PagedCollection.cs" />
-    <Compile Include="Models\Segment.cs" />
-    <Compile Include="Models\Subscriber.cs" />
-    <Compile Include="Models\Template.cs" />
-    <Compile Include="Models\Webhook.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Result.cs" />
-    <Compile Include="Segment.cs" />
     <Compile Include="Subscriber.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\createsend-dotnet\createsend-dotnet.net20.csproj">
+      <Project>{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}</Project>
+      <Name>createsend-dotnet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

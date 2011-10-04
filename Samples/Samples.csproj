@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Samples</RootNamespace>
     <AssemblyName>Samples</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,7 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\createsend-dotnet\createsend-dotnet.csproj">
+    <ProjectReference Include="..\createsend-dotnet\createsend-dotnet.net20.csproj">
       <Project>{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}</Project>
       <Name>createsend-dotnet</Name>
     </ProjectReference>

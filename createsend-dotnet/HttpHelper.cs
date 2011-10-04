@@ -6,6 +6,7 @@ using System.Net;
 using System.Collections.Specialized;
 using System.Web;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace createsend_dotnet
 {
@@ -40,7 +41,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.10";
+                return "1.0.11";
             }
         }
 
@@ -101,8 +102,8 @@ namespace createsend_dotnet
             req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
                 Encoding.Default.GetBytes(authCredentials.UserName + ":" + authCredentials.Password));
 
-            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}",
-                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion);
+            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
+                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion, Assembly.GetExecutingAssembly().FullName);
 
             if (method != "GET")
             {
