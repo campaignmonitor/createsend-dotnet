@@ -31,9 +31,9 @@ namespace createsend_dotnet
         public int Unsubscribed { get; set; }
         public int Bounced { get; set; }
         public int UniqueOpened { get; set; }
-        public int TwitterTweets { get; set; }
-        public int ForwardToAFriends { get; set; }
-        public int FacebookLikes { get; set; }
+        public int Mentions { get; set; }
+        public int Forwards { get; set; }
+        public int Likes { get; set; }
         public string WebVersionURL { get; set; }
     }
 
