@@ -14,6 +14,17 @@ namespace createsend_dotnet
         public string WebVersionURL { get; set; }
     }
 
+    public class ScheduledCampaignDetail
+    {
+        public string CampaignID { get; set; }
+        public string Subject { get; set; }
+        public string Name { get; set; }
+        public string DateCreated { get; set; }
+        public string PreviewURL { get; set; }
+        public string DateScheduled { get; set; }
+        public string ScheduledTimeZone { get; set; }
+    }
+
     public class DraftDetail
     {
         public string CampaignID { get; set; }

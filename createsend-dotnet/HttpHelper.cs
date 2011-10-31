@@ -6,10 +6,11 @@ using System.Net;
 using System.Collections.Specialized;
 using System.Web;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace createsend_dotnet
 {
-    internal static class CreateSendOptions
+    public static class CreateSendOptions
     {
         static string api_key;
         static string base_uri;
@@ -22,10 +23,8 @@ namespace createsend_dotnet
 
         public static string ApiKey
         {
-            get
-            {
-                return api_key;
-            }
+            get { return api_key; }
+            set { api_key = value; }
         }
 
         public static string BaseUri
@@ -40,13 +39,13 @@ namespace createsend_dotnet
         {
             get
             {
-                return "1.0.12";
+                return "1.0.15";
             }
         }
 
     }
 
-    internal class HttpHelper
+    public class HttpHelper
     {
         private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
 
@@ -101,8 +100,8 @@ namespace createsend_dotnet
             req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
                 Encoding.Default.GetBytes(authCredentials.UserName + ":" + authCredentials.Password));
 
-            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2}",
-                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion);
+            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
+                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion, Assembly.GetExecutingAssembly().FullName);
 
             if (method != "GET")
             {
