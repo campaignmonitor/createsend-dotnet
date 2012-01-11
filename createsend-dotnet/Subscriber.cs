@@ -23,6 +23,14 @@ namespace createsend_dotnet
             return HttpHelper.Get<SubscriberDetail>(string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
 
+        public IEnumerable<HistoryItem> GetHistory(string emailAddress)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("email", emailAddress);
+
+            return HttpHelper.Get<IEnumerable<HistoryItem>>(string.Format("/subscribers/{0}/history.json", ListID), queryArguments);
+        }
+
         public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
