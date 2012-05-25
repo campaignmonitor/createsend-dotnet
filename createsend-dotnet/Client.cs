@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace createsend_dotnet
@@ -132,6 +129,16 @@ namespace createsend_dotnet
         public void Delete()
         {
             HttpHelper.Delete(string.Format("/clients/{0}.json", ClientID), null);
+        }
+
+        public string GetPrimaryContact()
+        {
+            return HttpHelper.Get<PersonResult>(string.Format("/clients/{0}/primarycontact.json", ClientID), null).EmailAddress;
+        }
+
+        public string SetPrimaryContact(string emailAddress)
+        {
+            return HttpHelper.Put<string, PersonResult>(string.Format("/clients/{0}/primarycontact.json", ClientID), null, null).EmailAddress;
         }
     }
 }

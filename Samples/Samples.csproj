@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Campaign.cs" />
     <Compile Include="List.cs" />
+    <Compile Include="People.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
