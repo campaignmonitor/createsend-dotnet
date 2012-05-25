@@ -33,6 +33,10 @@ namespace createsend_dotnet
             {
                 return base_uri;
             }
+            set
+            {
+                base_uri = value;
+            }
         }
 
         public static string VersionNumber

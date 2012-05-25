@@ -61,11 +61,11 @@ namespace Samples
 
         public void List()
         {
-            var person = new Person(clientId);
+            var client = new Client(clientId);
            
             try
             {
-                foreach(var p in person.All())
+                foreach(var p in client.People())
                 {
                     Console.Out.WriteLine("{0}", p.EmailAddress);
                     Console.Out.WriteLine("{0}", p.Name);

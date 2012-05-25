@@ -12,13 +12,7 @@ namespace createsend_dotnet
             this.clientID = clientID;
         }
 
-        private string PeopleUrl { get { return string.Format("/clients/{0}/people.json", clientID); }}
-
-        public IEnumerable<PersonDetails> All()
-        {
-            return HttpHelper.Get<IEnumerable<PersonDetails>>(PeopleUrl, null);
-        }
-
+        private string PeopleUrl { get { return string.Format("/clients/{0}/people.json", clientID); }}        
 
         public PersonDetails Details(string emailAddress)
         {

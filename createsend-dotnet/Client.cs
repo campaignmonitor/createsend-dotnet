@@ -138,7 +138,13 @@ namespace createsend_dotnet
 
         public string SetPrimaryContact(string emailAddress)
         {
-            return HttpHelper.Put<string, PersonResult>(string.Format("/clients/{0}/primarycontact.json", ClientID), null, null).EmailAddress;
+            return HttpHelper.Put<string, PersonResult>(string.Format("/clients/{0}/primarycontact.json", ClientID), new NameValueCollection{{"email", emailAddress}}, null).EmailAddress;
         }
+
+        public IEnumerable<PersonDetails> People()
+        {
+            return HttpHelper.Get<IEnumerable<PersonDetails>>(string.Format("/clients/{0}/people.json", ClientID), null);
+        }
+
     }
 }
