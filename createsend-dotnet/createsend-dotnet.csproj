@@ -43,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="Administrator.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="General.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\Campaign.cs" />
+    <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\CreatesendException.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />

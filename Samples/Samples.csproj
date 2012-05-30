@@ -37,6 +37,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Administrators.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="List.cs" />
     <Compile Include="People.cs" />
