@@ -33,6 +33,11 @@ namespace createsend_dotnet
 
         public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
         {
+            return Add(emailAddress, name, customFields, resubscribe, false);
+        }
+
+        public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe, bool restartSubscriptionBasedAutoresponders)
+        {
             return HttpHelper.Post<Dictionary<string, object>, string>(
                 string.Format("/subscribers/{0}.json", ListID), null,
                 new Dictionary<string, object>() 
@@ -40,11 +45,17 @@ namespace createsend_dotnet
                     { "EmailAddress", emailAddress }, 
                     { "Name", name }, 
                     { "CustomFields", customFields }, 
-                    { "Resubscribe", resubscribe } 
+                    { "Resubscribe", resubscribe },
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
                 });
         }
 
         public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
+        {
+            Update(emailAddress, newEmailAddress, name, customFields, resubscribe, false);
+        }
+
+        public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe, bool restartSubscriptionBasedAutoresponders)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
@@ -56,7 +67,8 @@ namespace createsend_dotnet
                     { "EmailAddress", newEmailAddress }, 
                     { "Name", name }, 
                     { "CustomFields", customFields }, 
-                    { "Resubscribe", resubscribe } 
+                    { "Resubscribe", resubscribe },
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
                 });
         }
 
@@ -74,6 +86,11 @@ namespace createsend_dotnet
         }
 
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe, bool queueSubscriptionBasedAutoResponders)
+        {
+            return Import(subscribers, resubscribe, queueSubscriptionBasedAutoResponders, false);
+        }
+
+        public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe, bool queueSubscriptionBasedAutoResponders, bool restartSubscriptionBasedAutoresponders)
         {
             List<object> reworkedSubscribers = new List<object>();
             foreach (SubscriberDetail subscriber in subscribers)
@@ -93,7 +110,8 @@ namespace createsend_dotnet
                 { 
                     { "Subscribers", reworkedSubscribers }, 
                     { "Resubscribe", resubscribe },
-                    { "QueueSubscriptionBasedAutoResponders", queueSubscriptionBasedAutoResponders }
+                    { "QueueSubscriptionBasedAutoResponders", queueSubscriptionBasedAutoResponders },
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
                 });
         }
 
