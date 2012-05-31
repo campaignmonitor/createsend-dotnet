@@ -7,11 +7,11 @@ namespace Samples
     {
         public void Add()
         {
-            var administrator = new Administrator();
+            Administrator administrator = new Administrator();
            
             try
             {
-                 var administratorDetails = new AdministratorDetails
+                 AdministratorDetails administratorDetails = new AdministratorDetails
                                 {
                                     EmailAddress = "test@notarealdomain.com",
                                     Name = "test",
@@ -21,7 +21,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -33,18 +33,18 @@ namespace Samples
 
         public void Update()
         {
-            var administrator = new Administrator();
+            Administrator administrator = new Administrator();
            
             try
             {
-                var administratorDetails = administrator.Details("test@notarealdomain.com");
+                AdministratorDetails administratorDetails = administrator.Details("test@notarealdomain.com");
                 administratorDetails.Name = "test new name";
 
                 administrator.Update("test@notarealdomain.com", administratorDetails);
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -56,11 +56,11 @@ namespace Samples
 
         public void List()
         {
-            var account = new Account();
+            Account account = new Account();
            
             try
             {
-                foreach(var p in account.Administrators())
+                foreach(AdministratorDetails p in account.Administrators())
                 {
                     Console.Out.WriteLine("{0}", p.EmailAddress);
                     Console.Out.WriteLine("{0}", p.Name);
@@ -68,7 +68,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -80,7 +80,7 @@ namespace Samples
 
         public void Delete()
         {
-            var administrator = new Administrator();
+            Administrator administrator = new Administrator();
            
             try
             {
@@ -88,7 +88,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -100,7 +100,7 @@ namespace Samples
 
         public void SetPrimaryContact()
         {
-            var account = new Account();
+            Account account = new Account();
            
             try
             {
@@ -108,7 +108,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -120,7 +120,7 @@ namespace Samples
 
         public void GetPrimaryContact()
         {
-            var account = new Account();
+            Account account = new Account();
            
             try
             {
@@ -128,7 +128,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }

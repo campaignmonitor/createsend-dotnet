@@ -10,11 +10,11 @@ namespace Samples
 
         public void Add()
         {
-            var person = new Person(clientId);
+            Person person = new Person(clientId);
            
             try
             {
-                 var personDetails = new PersonDetails
+                 PersonDetails personDetails = new PersonDetails
                                 {
                                     EmailAddress = "test@notarealdomain.com",
                                     Name = "test",
@@ -26,7 +26,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -38,18 +38,18 @@ namespace Samples
 
         public void Update()
         {
-            var person = new Person(clientId);
+            Person person = new Person(clientId);
            
             try
             {
-                var personDetails = person.Details("test@notarealdomain.com");
+                PersonDetails personDetails = person.Details("test@notarealdomain.com");
                 personDetails.Name = "test new name";
 
                 person.Update("test@notarealdomain.com", personDetails);
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -61,11 +61,11 @@ namespace Samples
 
         public void List()
         {
-            var client = new Client(clientId);
+            Client client = new Client(clientId);
            
             try
             {
-                foreach(var p in client.People())
+                foreach(PersonDetails p in client.People())
                 {
                     Console.Out.WriteLine("{0}", p.EmailAddress);
                     Console.Out.WriteLine("{0}", p.Name);
@@ -74,7 +74,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -86,7 +86,7 @@ namespace Samples
 
         public void Delete()
         {
-            var person = new Person(clientId);
+            Person person = new Person(clientId);
            
             try
             {
@@ -94,7 +94,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -106,7 +106,7 @@ namespace Samples
 
         public void SetPrimaryContact()
         {
-            var client = new Client(clientId);
+            Client client = new Client(clientId);
            
             try
             {
@@ -114,7 +114,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -126,7 +126,7 @@ namespace Samples
 
         public void GetPrimaryContact()
         {
-            var client = new Client(clientId);
+            Client client = new Client(clientId);
            
             try
             {
@@ -134,7 +134,7 @@ namespace Samples
             }
             catch (CreatesendException ex)
             {
-                var error = (ErrorResult)ex.Data["ErrorResult"];
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }

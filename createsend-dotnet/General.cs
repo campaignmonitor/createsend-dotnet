@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Web;
+using System.Net;
 using System.Collections.Specialized;
-using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
@@ -14,32 +12,54 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("SiteUrl", siteUrl);
 
-            HttpHelper.OverrideAuthenticationCredentials(username, password);
-            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>("/apikey.json", queryArguments);
-            //reset to default authentication
-            HttpHelper.OverrideAuthenticationCredentials(CreateSendOptions.ApiKey, "x");
+            NetworkCredential credential = new NetworkCredential(username, password);
+            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(credential, "/apikey.json", queryArguments);
 
             return result.ApiKey;
         }
 
+        public static DateTime SystemDate(string apiKey)
+        {
+            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            return HttpHelper.Get<SystemDateResult>(credential, "/systemdate.json", null).SystemDate;
+        }
+
         public static DateTime SystemDate()
         {
-            return HttpHelper.Get<SystemDateResult>("/systemdate.json", null).SystemDate;
+            return SystemDate(CreateSendOptions.ApiKey);
+        }
+
+        public static IEnumerable<string> Countries(string apiKey)
+        {
+            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            return HttpHelper.Get<string[]>(credential, "/countries.json", null);
         }
 
         public static IEnumerable<string> Countries()
         {
-            return HttpHelper.Get<string[]>("/countries.json", null);
+            return Countries(CreateSendOptions.ApiKey);
+        }
+
+        public static IEnumerable<string> Timezones(string apiKey)
+        {
+            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            return HttpHelper.Get<string[]>(credential, "/timezones.json", null);
         }
 
         public static IEnumerable<string> Timezones()
         {
-            return HttpHelper.Get<string[]>("/timezones.json", null);
+            return Timezones(CreateSendOptions.ApiKey);
+        }
+
+        public static IEnumerable<BasicClient> Clients(string apiKey)
+        {
+            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            return HttpHelper.Get<Clients>(credential, "/clients.json", null);
         }
 
         public static IEnumerable<BasicClient> Clients()
         {
-            return HttpHelper.Get<Clients>("/clients.json", null);
+            return Clients(CreateSendOptions.ApiKey);
         }
     }
 }

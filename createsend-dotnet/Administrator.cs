@@ -1,32 +1,40 @@
 ﻿using System.Collections.Specialized;
+using System.Net;
 
 namespace createsend_dotnet
 {
     public class Administrator
     {
-        private string AdminsUrl { get { return string.Format("/admins"); }}  
+        public string ApiKey { get; set; }
+
+        private NetworkCredential AuthCredentials
+        {
+            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+        }
+
+        private string AdminsUrl { get { return string.Format("/admins.json"); }}  
 
         public AdministratorDetails Details(string emailAddress)
         {
-            return HttpHelper.Get<AdministratorDetails>(AdminsUrl,
+            return HttpHelper.Get<AdministratorDetails>(AuthCredentials, AdminsUrl,
                                                  new NameValueCollection {{"email", emailAddress}});
         }
 
         public string Add(AdministratorDetails admin)
         {
-            return HttpHelper.Post<AdministratorDetails, AdministratorResult>(AdminsUrl, null, admin).EmailAddress;
+            return HttpHelper.Post<AdministratorDetails, AdministratorResult>(AuthCredentials, AdminsUrl, null, admin).EmailAddress;
         }
 
         public string Update(string emailAddress, AdministratorDetails admin)
         {
             return
-                HttpHelper.Put<AdministratorDetails, AdministratorResult>(AdminsUrl, new NameValueCollection {{"email", emailAddress}},
+                HttpHelper.Put<AdministratorDetails, AdministratorResult>(AuthCredentials, AdminsUrl, new NameValueCollection {{"email", emailAddress}},
                                                             admin).EmailAddress;
         }
 
         public void Delete(string emailAddress)
         {
-            HttpHelper.Delete(AdminsUrl,
+            HttpHelper.Delete(AuthCredentials, AdminsUrl,
                               new NameValueCollection {{"email", emailAddress}});
         }
     }

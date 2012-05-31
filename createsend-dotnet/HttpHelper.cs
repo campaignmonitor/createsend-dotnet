@@ -50,42 +50,40 @@ namespace createsend_dotnet
     }
 
     public class HttpHelper
-    {
-        private static NetworkCredential authCredentials = new NetworkCredential(CreateSendOptions.ApiKey, "x");
-
-        public static U Get<U>(string path, NameValueCollection queryArguments)
+    {    
+        public static U Get<U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments)
         {
-            return Get<U, ErrorResult>(path, queryArguments);
+            return Get<U, ErrorResult>(authCredentials, path, queryArguments);
         }
 
-        public static U Get<U, EX>(string path, NameValueCollection queryArguments) where EX : ErrorResult
+        public static U Get<U, EX>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments) where EX : ErrorResult
         {
-            return MakeRequest<string, U, EX>("GET", path, queryArguments, null);
+            return MakeRequest<string, U, EX>("GET", authCredentials, path, queryArguments, null);
         }
 
-        public static U Post<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Post<T, U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return Post<T, U, ErrorResult>(path, queryArguments, payload);
+            return Post<T, U, ErrorResult>(authCredentials, path, queryArguments, payload);
         }
 
-        public static U Post<T, U, EX>(string path, NameValueCollection queryArguments, T payload)
+        public static U Post<T, U, EX>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload)
             where T : class
             where EX : ErrorResult
         {
-            return MakeRequest<T, U, EX>("POST", path, queryArguments, payload);
+            return MakeRequest<T, U, EX>("POST", authCredentials, path, queryArguments, payload);
         }
 
-        public static U Put<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Put<T, U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return MakeRequest<T, U, ErrorResult>("PUT", path, queryArguments, payload);
+            return MakeRequest<T, U, ErrorResult>("PUT", authCredentials, path, queryArguments, payload);
         }
 
-        public static string Delete(string path, NameValueCollection queryArguments)
+        public static string Delete(NetworkCredential authCredentials, string path, NameValueCollection queryArguments)
         {
-            return MakeRequest<string, string, ErrorResult>("DELETE", path, queryArguments, null);
+            return MakeRequest<string, string, ErrorResult>("DELETE", authCredentials, path, queryArguments, null);
         }
 
-        static U MakeRequest<T, U, EX>(string method, string path, NameValueCollection queryArguments, T payload)
+        static U MakeRequest<T, U, EX>(string method, NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload)
             where T : class
             where EX : ErrorResult
         {
@@ -182,11 +180,6 @@ namespace createsend_dotnet
 
                 return exception;
             }
-        }
-
-        public static void OverrideAuthenticationCredentials(string username, string password)
-        {
-            authCredentials = new NetworkCredential(username, password);
         }
     }
 

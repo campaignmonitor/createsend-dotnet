@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Collections.Specialized;
-using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
     public class Subscriber
     {
+        public string ApiKey { get; set; }
+
+        private NetworkCredential AuthCredentials
+        {
+            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+        }
+
         public string ListID { get; set; }
 
         public Subscriber(string listID)
@@ -20,7 +25,7 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            return HttpHelper.Get<SubscriberDetail>(string.Format("/subscribers/{0}.json", ListID), queryArguments);
+            return HttpHelper.Get<SubscriberDetail>(AuthCredentials, string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
 
         public IEnumerable<HistoryItem> GetHistory(string emailAddress)
@@ -28,12 +33,13 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            return HttpHelper.Get<IEnumerable<HistoryItem>>(string.Format("/subscribers/{0}/history.json", ListID), queryArguments);
+            return HttpHelper.Get<IEnumerable<HistoryItem>>(AuthCredentials, string.Format("/subscribers/{0}/history.json", ListID), queryArguments);
         }
 
         public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
+                AuthCredentials, 
                 string.Format("/subscribers/{0}.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -50,6 +56,7 @@ namespace createsend_dotnet
             queryArguments.Add("email", emailAddress);
 
             HttpHelper.Put<Dictionary<string, object>, string>(
+                AuthCredentials, 
                 string.Format("/subscribers/{0}.json", ListID), queryArguments, 
                 new Dictionary<string, object>() 
                 { 
@@ -64,7 +71,7 @@ namespace createsend_dotnet
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
-            HttpHelper.Delete(string.Format("/subscribers/{0}.json", ListID),
+            HttpHelper.Delete(AuthCredentials, string.Format("/subscribers/{0}.json", ListID),
                               queryArguments);
         }
         
@@ -88,6 +95,7 @@ namespace createsend_dotnet
             }
 
             return HttpHelper.Post<Dictionary<string, object>, BulkImportResults, ErrorResult<BulkImportResults>>(
+                AuthCredentials, 
                 string.Format("/subscribers/{0}/import.json", ListID), null, 
                 new Dictionary<string, object>() 
                 { 
@@ -100,6 +108,7 @@ namespace createsend_dotnet
         public bool Unsubscribe(string emailAddress)
         {
             string result = HttpHelper.Post<Dictionary<string, string>, string>(
+                AuthCredentials, 
                 string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, 
                 new Dictionary<string, string>() 
                 { 

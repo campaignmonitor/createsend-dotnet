@@ -1,10 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
+using System.Net;
 
 namespace createsend_dotnet
 {
     public class Person
     {
+        public string ApiKey { get; set; }
+
+        private NetworkCredential AuthCredentials
+        {
+            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+        }
+
         private readonly string clientID;
 
         public Person(string clientID)
@@ -16,25 +23,25 @@ namespace createsend_dotnet
 
         public PersonDetails Details(string emailAddress)
         {
-            return HttpHelper.Get<PersonDetails>(PeopleUrl,
+            return HttpHelper.Get<PersonDetails>(AuthCredentials, PeopleUrl,
                                                  new NameValueCollection {{"email", emailAddress}});
         }
 
         public string Add(PersonDetails person)
         {
-            return HttpHelper.Post<PersonDetails, PersonResult>(PeopleUrl, null, person).EmailAddress;
+            return HttpHelper.Post<PersonDetails, PersonResult>(AuthCredentials, PeopleUrl, null, person).EmailAddress;
         }
 
         public string Update(string emailAddress, PersonDetails person)
         {
             return
-                HttpHelper.Put<PersonDetails, PersonResult>(PeopleUrl, new NameValueCollection {{"email", emailAddress}},
+                HttpHelper.Put<PersonDetails, PersonResult>(AuthCredentials, PeopleUrl, new NameValueCollection {{"email", emailAddress}},
                                                             person).EmailAddress;
         }
 
         public void Delete(string emailAddress)
         {
-            HttpHelper.Delete(PeopleUrl,
+            HttpHelper.Delete(AuthCredentials, PeopleUrl,
                               new NameValueCollection {{"email", emailAddress}});
         }
     }
