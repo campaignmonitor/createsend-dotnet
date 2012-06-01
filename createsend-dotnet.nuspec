@@ -3,7 +3,7 @@
   <metadata>
     <id>campaignmonitor-api</id>
     <title>Campaign Monitor</title>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <authors>Campaign Monitor</authors>
     <description>A .NET library for v3 of the Campaign Monitor API</description>
     <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>
@@ -12,6 +12,7 @@
     <dependencies>
         <dependency id="Newtonsoft.Json" version="4.0.3" />
     </dependencies>
+	<releaseNotes>Fixed issue with deserializion of some error responses</releaseNotes>
   </metadata>
   <files>
     <file src="createsend-dotnet\bin\release\net20\*" target="lib\net20" />
