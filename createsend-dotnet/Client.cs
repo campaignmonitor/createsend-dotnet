@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
 
@@ -20,6 +21,21 @@ namespace createsend_dotnet
             ClientID = clientID;
         }
 
+		public static string Create(string apiKey, string companyName, string country, string timezone)
+		{
+			return HttpHelper.Post<ClientDetail, string>(
+				new NetworkCredential(apiKey, "x"),
+				"/clients.json",
+				null,
+				new ClientDetail()
+				{
+					CompanyName = companyName,
+					Country = country,
+					TimeZone = timezone
+				});
+		}
+
+		[Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.")]
         public static string Create(string apiKey, string companyName, string contactName, string emailAddress, string country, string timezone)
         {
             return HttpHelper.Post<ClientDetail, string>(
@@ -102,6 +118,7 @@ namespace createsend_dotnet
                 });
         }
 
+		[Obsolete("Access should now be set on individual People in your client (using Person.Add or Person.Update) rather than on the Client itself.")]
         public void SetAccess(string userName, string password, int accessLevel)
         {
             HttpHelper.Put<ClientAccessSettings, string>(
