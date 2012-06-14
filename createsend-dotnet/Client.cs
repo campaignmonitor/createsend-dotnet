@@ -52,9 +52,12 @@ namespace createsend_dotnet
                 });
         }
 
+		[Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.", false)]
         public static string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
         {
+#pragma warning disable 612,618
             return Create(CreateSendOptions.ApiKey, companyName, contactName, emailAddress, country, timezone);
+#pragma warning restore 612,618
         }
 
         public ClientWithSettings Details()
