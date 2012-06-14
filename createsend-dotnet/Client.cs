@@ -103,6 +103,20 @@ namespace createsend_dotnet
             return HttpHelper.Get<BasicTemplate[]>(AuthCredentials, string.Format("/clients/{0}/templates.json", ClientID), null);
         }
 
+		public void SetBasics(string companyName, string country, string timezone)
+		{
+			HttpHelper.Put<ClientDetail, string>(
+				AuthCredentials,
+				string.Format("/clients/{0}/setbasics.json", ClientID), null,
+				new ClientDetail()
+				{
+					CompanyName = companyName,
+					Country = country,
+					TimeZone = timezone
+				});
+		}
+
+		[Obsolete("Use the other version of SetBasics - without contact name and email address - and instead add or edit People in this Client using Person.Add")]
         public void SetBasics(string companyName, string contactName, string emailAddress, string country, string timezone)
         {
             HttpHelper.Put<ClientDetail, string>(
