@@ -35,31 +35,6 @@ namespace createsend_dotnet
 				});
 		}
 
-		[Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.", false)]
-        public static string Create(string apiKey, string companyName, string contactName, string emailAddress, string country, string timezone)
-        {
-            return HttpHelper.Post<ClientDetail, string>(
-                new NetworkCredential(apiKey, "x"), 
-                "/clients.json", 
-                null,
-                new ClientDetail()
-                {
-                    CompanyName = companyName,
-                    ContactName = contactName,
-                    EmailAddress = emailAddress,
-                    Country = country,
-                    TimeZone = timezone
-                });
-        }
-
-		[Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.", false)]
-        public static string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
-        {
-#pragma warning disable 612,618
-            return Create(CreateSendOptions.ApiKey, companyName, contactName, emailAddress, country, timezone);
-#pragma warning restore 612,618
-        }
-
         public ClientWithSettings Details()
         {
             return HttpHelper.Get<ClientWithSettings>(AuthCredentials, string.Format("/clients/{0}.json", ClientID), null);
@@ -119,36 +94,6 @@ namespace createsend_dotnet
 				});
 		}
 
-		[Obsolete("Use the other version of SetBasics - without contact name and email address - and instead add or edit People in this Client using Person.Add", false)]
-        public void SetBasics(string companyName, string contactName, string emailAddress, string country, string timezone)
-        {
-            HttpHelper.Put<ClientDetail, string>(
-                AuthCredentials, 
-                string.Format("/clients/{0}/setbasics.json", ClientID), null,
-                new ClientDetail()
-                {
-                    CompanyName = companyName,
-                    ContactName = contactName,
-                    EmailAddress = emailAddress,
-                    Country = country,
-                    TimeZone = timezone
-                });
-        }
-
-		[Obsolete("Access should now be set on individual People in your client (using Person.Add or Person.Update) rather than on the Client itself.", false)]
-        public void SetAccess(string userName, string password, int accessLevel)
-        {
-            HttpHelper.Put<ClientAccessSettings, string>(
-                AuthCredentials, 
-                string.Format("/clients/{0}/setaccess.json", ClientID), null,
-                new ClientAccessSettings()
-                {
-                    Username = userName,
-                    Password = password,
-                    AccessLevel = accessLevel
-                });
-        }
-
         public void SetPAYGBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, decimal markupOnDelivery, decimal markupPerRecipient, decimal markupOnDesignSpamTest)
         {
             HttpHelper.Put<BillingOptions, string>(
@@ -199,6 +144,64 @@ namespace createsend_dotnet
         {
             return HttpHelper.Get<IEnumerable<PersonDetails>>(AuthCredentials, string.Format("/clients/{0}/people.json", ClientID), null);
         }
+
+        #region Methods made obsolete with the introduction of Team Management
+        // The methods will still work with existing integrations, but won't work perfectly with accounts that start to use Administrators and People
+        [Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.", false)]
+        public static string Create(string apiKey, string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+            return HttpHelper.Post<ClientDetail, string>(
+                new NetworkCredential(apiKey, "x"),
+                "/clients.json",
+                null,
+                new ClientDetail()
+                {
+                    CompanyName = companyName,
+                    ContactName = contactName,
+                    EmailAddress = emailAddress,
+                    Country = country,
+                    TimeZone = timezone
+                });
+        }
+
+        [Obsolete("Use the other version of Create - without contact name and email address - and instead add People to this Client using Person.Add.", false)]
+        public static string Create(string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+#pragma warning disable 612,618
+            return Create(CreateSendOptions.ApiKey, companyName, contactName, emailAddress, country, timezone);
+#pragma warning restore 612,618
+        }
+
+        [Obsolete("Use the other version of SetBasics - without contact name and email address - and instead add or edit People in this Client using Person.Add", false)]
+        public void SetBasics(string companyName, string contactName, string emailAddress, string country, string timezone)
+        {
+            HttpHelper.Put<ClientDetail, string>(
+                AuthCredentials,
+                string.Format("/clients/{0}/setbasics.json", ClientID), null,
+                new ClientDetail()
+                {
+                    CompanyName = companyName,
+                    ContactName = contactName,
+                    EmailAddress = emailAddress,
+                    Country = country,
+                    TimeZone = timezone
+                });
+        }
+
+        [Obsolete("Access should now be set on individual People in your client (using Person.Add or Person.Update) rather than on the Client itself.", false)]
+        public void SetAccess(string userName, string password, int accessLevel)
+        {
+            HttpHelper.Put<ClientAccessSettings, string>(
+                AuthCredentials,
+                string.Format("/clients/{0}/setaccess.json", ClientID), null,
+                new ClientAccessSettings()
+                {
+                    Username = userName,
+                    Password = password,
+                    AccessLevel = accessLevel
+                });
+        }
+        #endregion
 
     }
 }
