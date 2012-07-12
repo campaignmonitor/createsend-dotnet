@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>createsend-dotnet by campaignmonitor</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>createsend-dotnet</h1>
+        <p>A .NET library for v3 of the createsend API</p>
+
+        <p class="view"><a href="https://github.com/campaignmonitor/createsend-dotnet">View the Project on GitHub <small>campaignmonitor/createsend-dotnet</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/campaignmonitor/createsend-dotnet/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/campaignmonitor/createsend-dotnet/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/campaignmonitor/createsend-dotnet">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>createsend-dotnet</h1>
+
+<p>A .NET library which implements the complete functionality of v3 of the CreateSend API.</p>
+
+<p>This library is supported on .NET 2, 3.5, and 4. You will find solution files which target version 2 (createsend-dotnet.net20.sln), version 3.5 (createsend-dotnet.net35.sln), and version 4 (createsend-dotnet.sln) of .NET runtime.</p>
+
+<h2>Installation</h2>
+
+<p>Using NuGet (recommended):</p>
+
+<ol>
+<li>Run <code>Install-Package campaignmonitor-api</code> from the Package Manager Console in Visual Studio. See the <a href="http://nuget.codeplex.com/documentation">NuGet documentation</a> for further details.</li>
+<li>
+<p>Edit the following element which is created in the appSettings section of your configuration file (replacing your_api_key with your actual API Key):</p>
+
+<pre><code>&lt;add key="api_key" value="your_api_key" /&gt;
+</code></pre>
+</li>
+</ol><p>If you don't want to use NuGet:</p>
+
+<ol>
+<li>Open the solution file which targets your preferred version of the runtime. </li>
+<li>Build the solution in Release mode. You will see a sub-directory in the <code>createsend-dotnet/bin/Release directory</code>, which contains the assemblies targeting your preferred version of the runtime. </li>
+<li>Add the resulting assemblies as references in your project. </li>
+<li>
+<p>Add the following element to the appSettings section of your project's configuration file (replacing your_api_key with your actual API Key):</p>
+
+<pre><code>&lt;add key="api_key" value="your_api_key" /&gt;
+</code></pre>
+</li>
+</ol><h2>Example</h2>
+
+<p>Example config file:</p>
+
+<pre><code>&lt;?xml version="1.0"?&gt;
+&lt;configuration&gt;
+  &lt;appSettings&gt;
+    &lt;add key="api_key" value="98wqdu9qw8ud98quwd9q8wud98uq98wu"/&gt;
+  &lt;/appSettings&gt;
+  &lt;startup&gt;&lt;supportedRuntime version="v2.0.50727"/&gt;&lt;/startup&gt;
+&lt;/configuration&gt;
+</code></pre>
+
+<p>Example console app:</p>
+
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Text;
+using createsend_dotnet;
+
+namespace dotnet_api_client
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IEnumerable&lt;BasicClient&gt; clients = General.Clients();
+            foreach (BasicClient c in clients)
+                Console.WriteLine(string.Format("ID: {0}; Name: {1}", c.ClientID, c.Name));
+            Console.ReadLine();
+        }
+    }
+}
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/campaignmonitor">campaignmonitor</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
