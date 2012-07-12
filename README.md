@@ -2,21 +2,23 @@
 
 A .NET library which implements the complete functionality of v3 of the CreateSend API.
 
-As well as the source code for the library, we provide a single merged assembly (createsend-dotnet.dll) as a download, which can be used directly as a reference in .NET projects, if you do not want to worry about building the solution yourself.
+This library is supported on .NET 2, 3.5, and 4. You will find solution files which target version 2 (createsend-dotnet.net20.sln), version 3.5 (createsend-dotnet.net35.sln), and version 4 (createsend-dotnet.sln) of .NET runtime.
 
 ## Installation
 
-The easiest way of getting up and running:
+Using NuGet (recommended):
 
-1. Add the createsend-dotnet.dll assembly as a reference in your project
-2. Add the following element to the appSettings section of your configuration file (replacing your_api_key with your actual API Key)
+1. Run `Install-Package campaignmonitor-api` from the Package Manager Console in Visual Studio. See the [NuGet documentation](http://nuget.codeplex.com/documentation) for further details.
+2. Edit the following element which is created in the appSettings section of your configuration file (replacing your_api_key with your actual API Key):
 
         <add key="api_key" value="your_api_key" />
 
-Using NuGet:
+If you don't want to use NuGet:
 
-1. Install-Package campaignmonitor-api
-2. Edit the following element which is created in the appSettings section of your configuration file (replacing your_api_key with your actual API Key):
+1. Open the solution file which targets your preferred version of the runtime. 
+2. Build the solution in Release mode. You will see a sub-directory in the `createsend-dotnet/bin/Release directory`, which contains the assemblies targeting your preferred version of the runtime. 
+3. Add the resulting assemblies as references in your project. 
+4. Add the following element to the appSettings section of your project's configuration file (replacing your_api_key with your actual API Key):
 
         <add key="api_key" value="your_api_key" />
 

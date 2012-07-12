@@ -18,3 +18,4 @@ user.config
 createsend-dotnet.dll
 createsend-dotnet.pdb
 createsend-dotnet*.zip
+campaignmonitor-api.*.nupkg
