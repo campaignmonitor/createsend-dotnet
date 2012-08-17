@@ -21,7 +21,14 @@ namespace createsend_dotnet
             ListID = listID;
         }
 
-        public static string Create(string apiKey, string clientID, string title, string unsubscribePage, bool confirmedOptIn, string confirmationSuccessPage)
+        public static string Create(
+            string apiKey,
+            string clientID,
+            string title,
+            string unsubscribePage,
+            bool confirmedOptIn,
+            string confirmationSuccessPage,
+            UnsubscribeSetting unsubscribeSetting)
         {
             return HttpHelper.Post<ListDetail, string>(
                 new NetworkCredential(apiKey, "x"), 
@@ -31,26 +38,45 @@ namespace createsend_dotnet
                     Title = title,
                     UnsubscribePage = unsubscribePage,
                     ConfirmedOptIn = confirmedOptIn,
-                    ConfirmationSuccessPage = confirmationSuccessPage
+                    ConfirmationSuccessPage = confirmationSuccessPage,
+                    UnsubscribeSetting = unsubscribeSetting.ToString()
                 });
         }
 
-        public static string Create(string clientID, string title, string unsubscribePage, bool confirmedOptIn, string confirmationSuccessPage)
+        public static string Create(
+            string clientID,
+            string title,
+            string unsubscribePage,
+            bool confirmedOptIn,
+            string confirmationSuccessPage,
+            UnsubscribeSetting unsubscribeSetting)
         {
-            return Create(CreateSendOptions.ApiKey, clientID, title, unsubscribePage, confirmedOptIn, confirmationSuccessPage);
+            return Create(CreateSendOptions.ApiKey, clientID, title,
+                unsubscribePage, confirmedOptIn, confirmationSuccessPage,
+                unsubscribeSetting);
         }
 
-        public void Update(string title, string unsubscribePage, bool confirmedOptIn, string confirmationSuccessPage)
+        public void Update(
+            string title,
+            string unsubscribePage,
+            bool confirmedOptIn,
+            string confirmationSuccessPage,
+            UnsubscribeSetting unsubscribeSetting,
+            bool addUnsubscribesToSuppList,
+            bool scrubActiveWithSuppList)
         {
-            HttpHelper.Put<ListDetail, string>(
+            HttpHelper.Put<ListDetailForUpdate, string>(
                 AuthCredentials, 
                 string.Format("/lists/{0}.json", ListID), null,
-                new ListDetail()
+                new ListDetailForUpdate()
                 {
                     Title = title,
                     UnsubscribePage = unsubscribePage,
                     ConfirmedOptIn = confirmedOptIn,
-                    ConfirmationSuccessPage = confirmationSuccessPage
+                    ConfirmationSuccessPage = confirmationSuccessPage,
+                    UnsubscribeSetting = unsubscribeSetting.ToString(),
+                    AddUnsubscribesToSuppList = addUnsubscribesToSuppList,
+                    ScrubActiveWithSuppList = scrubActiveWithSuppList
                 });
         }
 

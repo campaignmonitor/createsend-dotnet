@@ -20,6 +20,13 @@ namespace createsend_dotnet
         public string UnsubscribePage { get; set; }
         public bool ConfirmedOptIn { get; set; }
         public string ConfirmationSuccessPage { get; set; }
+        public string UnsubscribeSetting { get; set; }
+    }
+
+    public class ListDetailForUpdate : ListDetail
+    {
+        public bool AddUnsubscribesToSuppList { get; set; }
+        public bool ScrubActiveWithSuppList { get; set; }
     }
 
     public class ListCustomField
@@ -28,6 +35,12 @@ namespace createsend_dotnet
         public string Key { get; set; }
         public string DataType { get; set; }
         public List<string> FieldOptions { get; set; }
+    }
+
+    public enum UnsubscribeSetting
+    {
+        AllClientLists,
+        OnlyThisList
     }
 
     public enum CustomFieldDataType

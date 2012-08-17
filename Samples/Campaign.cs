@@ -37,7 +37,8 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                // handle some other failure
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
             }
         }
     }

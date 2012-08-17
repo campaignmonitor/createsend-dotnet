@@ -7,11 +7,11 @@ namespace Samples
 {
     public class ListSamples
     {
-        private string listID = "your_list_id";
+        public string ListID = "your_list_id";
 
-        void CreateCustomField()
+        public void CreateCustomField()
         {
-            List list = new List(listID);
+            List list = new List(ListID);
 
             try
             {
@@ -26,13 +26,14 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                //handle some other failure
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
             }
         }
 
-        void CreateMultiOptionCustomField()
+        public void CreateMultiOptionCustomField()
         {
-            List list = new List(listID);
+            List list = new List(ListID);
 
             try
             {
@@ -48,13 +49,14 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                //handle some other failure
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
             }
         }
 
-        void GetActiveSubscribers()
+        public void GetActiveSubscribers()
         {
-            List list = new List(listID);
+            List list = new List(ListID);
 
             try
             {
@@ -84,7 +86,8 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                //handle some other failure
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
             }
         }
     }
