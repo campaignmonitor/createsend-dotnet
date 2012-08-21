@@ -15,7 +15,6 @@ namespace createsend_dotnet
     public class ListDetail
     {
         public string ListID { get; set; }
-        public DateTime DateCreated { get; set; }
         public string Title { get; set; }
         public string UnsubscribePage { get; set; }
         public bool ConfirmedOptIn { get; set; }

@@ -9,6 +9,34 @@ namespace Samples
     {
         public string ListID = "your_list_id";
 
+        public void GetDetails()
+        {
+            List list = new List(ListID);
+            try
+            {
+                ListDetail ld = list.Details();
+                Console.WriteLine("List Details:\n-----");
+                Console.WriteLine("ListID: {0}", ld.ListID);
+                Console.WriteLine("Title: {0}", ld.Title);
+                Console.WriteLine("ConfirmedOptIn: {0}", ld.ConfirmedOptIn);
+                Console.WriteLine("ConfirmationSuccessPage: {0}", ld.ConfirmationSuccessPage);
+                Console.WriteLine("UnsubscribePage: {0}", ld.UnsubscribePage);
+                Console.WriteLine("UnsubscribeSetting: {0}", ld.UnsubscribeSetting);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+            Console.Read();
+        }
+
         public void CreateCustomField()
         {
             List list = new List(ListID);
