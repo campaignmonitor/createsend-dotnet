@@ -78,4 +78,12 @@ namespace createsend_dotnet
         public int BouncesThisMonth { get; set; }
         public int BouncesThisYear { get; set; }
     }
+
+    public class ListForEmail
+    {
+        public string ListID { get; set; }
+        public string ListName { get; set; }
+        public string SubscriberState { get; set; }
+        public DateTime DateSubscriberAdded { get; set; }
+    }
 }

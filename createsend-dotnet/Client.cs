@@ -60,6 +60,13 @@ namespace createsend_dotnet
             return HttpHelper.Get<BasicList[]>(AuthCredentials, string.Format("/clients/{0}/lists.json", ClientID), null);
         }
 
+        public IEnumerable<ListForEmail> ListsForEmail(string email)
+        {
+            NameValueCollection args = new NameValueCollection();
+            args.Add("email", email);
+            return HttpHelper.Get<ListForEmail[]>(AuthCredentials, string.Format("/clients/{0}/listsforemail.json", ClientID), args);
+        }
+
         public IEnumerable<BasicSegment> Segments()
         {
             return HttpHelper.Get<BasicSegment[]>(AuthCredentials, string.Format("/clients/{0}/segments.json", ClientID), null);
