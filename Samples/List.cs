@@ -34,7 +34,34 @@ namespace Samples
                 // Handle some other failure
                 Console.WriteLine(ex.ToString());
             }
-            Console.Read();
+        }
+
+        public void Update()
+        {
+            List list = new List(ListID);
+            try
+            {
+                list.Update(
+                    "New Title",
+                    "example.com/unsubscribe",
+                    false,
+                    "example.com/success",
+                    UnsubscribeSetting.OnlyThisList,
+                    false,
+                    false);
+                Console.WriteLine("List Successfully Updated.");
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         public void CreateCustomField()
