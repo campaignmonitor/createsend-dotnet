@@ -72,7 +72,7 @@ namespace createsend_dotnet
                 });
         }
 
-        public void Send(string confirmationEmail, DateTime sendDate)
+        public void Send(List<string> confirmationEmail, DateTime sendDate)
         {
             HttpHelper.Post<Dictionary<string, object>, string>(
                 AuthCredentials, 
