@@ -57,6 +57,20 @@ namespace createsend_dotnet
                     { "Personalize", personalize} 
                 });
         }
+        
+        [Obsolete("Please use the multiple emails version", false)]
+        public void Send(string confirmationEmail, DateTime sendDate)
+        {
+            HttpHelper.Post<Dictionary<string, object>, string>(
+                AuthCredentials,
+                string.Format("/campaigns/{0}/send.json", CampaignID),
+                null,
+                new Dictionary<string, object>()
+                { 
+                    { "ConfirmationEmail", confirmationEmail }, 
+                    { "SendDate", sendDate.ToString("yyyy-MM-dd HH:mm:ss") } 
+                });
+        }
 
         public void Send(string confirmationEmail, DateTime sendDate)
         {
