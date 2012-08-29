@@ -21,19 +21,19 @@ namespace createsend_dotnet
             ClientID = clientID;
         }
 
-		public static string Create(string apiKey, string companyName, string country, string timezone)
-		{
-			return HttpHelper.Post<ClientDetail, string>(
-				new NetworkCredential(apiKey, "x"),
-				"/clients.json",
-				null,
-				new ClientDetail()
-				{
-					CompanyName = companyName,
-					Country = country,
-					TimeZone = timezone
-				});
-		}
+        public static string Create(string apiKey, string companyName, string country, string timezone)
+        {
+            return HttpHelper.Post<ClientDetail, string>(
+                new NetworkCredential(apiKey, "x"),
+                "/clients.json",
+                null,
+                new ClientDetail()
+                {
+                    CompanyName = companyName,
+                    Country = country,
+                    TimeZone = timezone
+                });
+        }
 
         public ClientWithSettings Details()
         {
@@ -88,23 +88,23 @@ namespace createsend_dotnet
             return HttpHelper.Get<BasicTemplate[]>(AuthCredentials, string.Format("/clients/{0}/templates.json", ClientID), null);
         }
 
-		public void SetBasics(string companyName, string country, string timezone)
-		{
-			HttpHelper.Put<ClientDetail, string>(
-				AuthCredentials,
-				string.Format("/clients/{0}/setbasics.json", ClientID), null,
-				new ClientDetail()
-				{
-					CompanyName = companyName,
-					Country = country,
-					TimeZone = timezone
-				});
-		}
+        public void SetBasics(string companyName, string country, string timezone)
+        {
+            HttpHelper.Put<ClientDetail, string>(
+                AuthCredentials,
+                string.Format("/clients/{0}/setbasics.json", ClientID), null,
+                new ClientDetail()
+                {
+                    CompanyName = companyName,
+                    Country = country,
+                    TimeZone = timezone
+                });
+        }
 
         public void SetPAYGBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, decimal markupOnDelivery, decimal markupPerRecipient, decimal markupOnDesignSpamTest)
         {
             HttpHelper.Put<BillingOptions, string>(
-                AuthCredentials, 
+                AuthCredentials,
                 string.Format("/clients/{0}/setpaygbilling.json", ClientID), null,
                 new BillingOptions()
                 {
@@ -120,15 +120,26 @@ namespace createsend_dotnet
 
         public void SetMonthlyBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage)
         {
+            SetMonthlyBilling(currency, clientPays, canPurchaseCredits, markupPercentage, null);
+        }
+
+        public void SetMonthlyBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, MonthlyScheme scheme)
+        {
+            SetMonthlyBilling(currency, clientPays, canPurchaseCredits, markupPercentage, (MonthlyScheme?)scheme);
+        }
+
+        private void SetMonthlyBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, MonthlyScheme? scheme)
+        {
             HttpHelper.Put<BillingOptions, string>(
-                AuthCredentials, 
+                AuthCredentials,
                 string.Format("/clients/{0}/setmonthlybilling.json", ClientID), null,
                 new BillingOptions()
                 {
                     Currency = currency,
                     ClientPays = clientPays,
                     CanPurchaseCredits = canPurchaseCredits,
-                    MarkupPercentage = markupPercentage
+                    MarkupPercentage = markupPercentage,
+                    MonthlyScheme = scheme
                 });
         }
 
@@ -144,7 +155,7 @@ namespace createsend_dotnet
 
         public string SetPrimaryContact(string emailAddress)
         {
-            return HttpHelper.Put<string, PersonResult>(AuthCredentials, string.Format("/clients/{0}/primarycontact.json", ClientID), new NameValueCollection{{"email", emailAddress}}, null).EmailAddress;
+            return HttpHelper.Put<string, PersonResult>(AuthCredentials, string.Format("/clients/{0}/primarycontact.json", ClientID), new NameValueCollection { { "email", emailAddress } }, null).EmailAddress;
         }
 
         public IEnumerable<PersonDetails> People()

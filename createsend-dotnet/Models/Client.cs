@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace createsend_dotnet
 {
@@ -39,7 +41,9 @@ namespace createsend_dotnet
         public bool CanPurchaseCredits { get; set; }
         public decimal? MarkupOnDelivery { get; set; }
         public decimal? MarkupPerRecipient { get; set; }
-        public decimal? MarkupOnDesignSpamTest { get; set; }        
+        public decimal? MarkupOnDesignSpamTest { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public MonthlyScheme? MonthlyScheme { get; set; }
     }
 
     public class BillingDetail : BillingOptions
