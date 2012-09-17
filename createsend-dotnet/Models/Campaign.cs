@@ -46,9 +46,10 @@ namespace createsend_dotnet
         public int Forwards { get; set; }
         public int Likes { get; set; }
         public string WebVersionURL { get; set; }
+        public string WorldviewURL { get; set; }
     }
 
-    public class CampaignOpenDetail
+    public class CampaignDetailBase
     {
         public string EmailAddress { get; set; }
         public string ListID { get; set; }
@@ -56,14 +57,26 @@ namespace createsend_dotnet
         public string IPAddress { get; set; }
     }
 
-    public class CampaignUnsubscribeDetail : CampaignOpenDetail { }
+    public class CampaignDetailWithGeoBase : CampaignDetailBase
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string CountryCode { get; set; }
+        public string CountryName { get; set; }
+    }
 
-    public class CampaignClickDetail : CampaignOpenDetail
+    public class CampaignOpenDetail : CampaignDetailWithGeoBase { }
+
+    public class CampaignClickDetail : CampaignDetailWithGeoBase
     {
         public string URL { get; set; }
     }
 
-    public class CampaignBounceDetail : CampaignOpenDetail
+    public class CampaignUnsubscribeDetail : CampaignDetailBase { }
+
+    public class CampaignBounceDetail : CampaignDetailBase
     {
         public string BounceType { get; set; }
         public string Reason { get; set; }
