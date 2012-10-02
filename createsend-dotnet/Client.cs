@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Net;
 
 namespace createsend_dotnet
 {
@@ -9,9 +8,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private NetworkCredential AuthCredentials
+        private CreateSendCredentials AuthCredentials
         {
-            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string ClientID { get; set; }
@@ -24,7 +23,7 @@ namespace createsend_dotnet
         public static string Create(string apiKey, string companyName, string country, string timezone)
         {
             return HttpHelper.Post<ClientDetail, string>(
-                new NetworkCredential(apiKey, "x"),
+                new CreateSendCredentials(apiKey, "x"),
                 "/clients.json",
                 null,
                 new ClientDetail()

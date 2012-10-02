@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Collections.Specialized;
 
 namespace createsend_dotnet
@@ -12,7 +11,7 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("SiteUrl", siteUrl);
 
-            NetworkCredential credential = new NetworkCredential(username, password);
+            CreateSendCredentials credential = new CreateSendCredentials(username, password);
             ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(credential, "/apikey.json", queryArguments);
 
             return result.ApiKey;
@@ -20,7 +19,7 @@ namespace createsend_dotnet
 
         public static DateTime SystemDate(string apiKey)
         {
-            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<SystemDateResult>(credential, "/systemdate.json", null).SystemDate;
         }
 
@@ -31,7 +30,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Countries(string apiKey)
         {
-            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<string[]>(credential, "/countries.json", null);
         }
 
@@ -42,7 +41,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Timezones(string apiKey)
         {
-            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<string[]>(credential, "/timezones.json", null);
         }
 
@@ -53,7 +52,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<BasicClient> Clients(string apiKey)
         {
-            NetworkCredential credential = new NetworkCredential(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<Clients>(credential, "/clients.json", null);
         }
 
