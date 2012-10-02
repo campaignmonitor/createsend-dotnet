@@ -8,9 +8,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private CampMonCredentials AuthCredentials
+        private CreateSendCredentials AuthCredentials
         {
-            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string ClientID { get; set; }
@@ -23,7 +23,7 @@ namespace createsend_dotnet
         public static string Create(string apiKey, string companyName, string country, string timezone)
         {
             return HttpHelper.Post<ClientDetail, string>(
-                new CampMonCredentials(apiKey, "x"),
+                new CreateSendCredentials(apiKey, "x"),
                 "/clients.json",
                 null,
                 new ClientDetail()

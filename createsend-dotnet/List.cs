@@ -8,9 +8,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private CampMonCredentials AuthCredentials
+        private CreateSendCredentials AuthCredentials
         {
-            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string ListID { get; set; }
@@ -30,7 +30,7 @@ namespace createsend_dotnet
             UnsubscribeSetting unsubscribeSetting)
         {
             return HttpHelper.Post<ListDetail, string>(
-                new CampMonCredentials(apiKey, "x"), 
+                new CreateSendCredentials(apiKey, "x"), 
                 string.Format("/lists/{0}.json", clientID), null,
                 new ListDetail()
                 {

@@ -8,9 +8,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private CampMonCredentials AuthCredentials
+        private CreateSendCredentials AuthCredentials
         {
-            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string SegmentID { get; set; }
@@ -23,7 +23,7 @@ namespace createsend_dotnet
         public static string Create(string apiKey, string listID, string title, SegmentRules rules)
         {
             return HttpHelper.Post<Dictionary<string, object>, string, ErrorResult<RuleErrorResults>>(
-                new CampMonCredentials(apiKey, "x"), 
+                new CreateSendCredentials(apiKey, "x"), 
                 string.Format("/segments/{0}.json", listID), null,
                 new Dictionary<string, object>() 
                 { 

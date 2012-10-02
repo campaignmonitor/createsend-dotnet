@@ -7,9 +7,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private CampMonCredentials AuthCredentials
+        private CreateSendCredentials AuthCredentials
         {
-            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string GetPrimaryContact()

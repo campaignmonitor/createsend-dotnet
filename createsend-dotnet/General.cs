@@ -11,7 +11,7 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("SiteUrl", siteUrl);
 
-            CampMonCredentials credential = new CampMonCredentials(username, password);
+            CreateSendCredentials credential = new CreateSendCredentials(username, password);
             ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(credential, "/apikey.json", queryArguments);
 
             return result.ApiKey;
@@ -19,7 +19,7 @@ namespace createsend_dotnet
 
         public static DateTime SystemDate(string apiKey)
         {
-            CampMonCredentials credential = new CampMonCredentials(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<SystemDateResult>(credential, "/systemdate.json", null).SystemDate;
         }
 
@@ -30,7 +30,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Countries(string apiKey)
         {
-            CampMonCredentials credential = new CampMonCredentials(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<string[]>(credential, "/countries.json", null);
         }
 
@@ -41,7 +41,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<string> Timezones(string apiKey)
         {
-            CampMonCredentials credential = new CampMonCredentials(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<string[]>(credential, "/timezones.json", null);
         }
 
@@ -52,7 +52,7 @@ namespace createsend_dotnet
 
         public static IEnumerable<BasicClient> Clients(string apiKey)
         {
-            CampMonCredentials credential = new CampMonCredentials(apiKey, "x");
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
             return HttpHelper.Get<Clients>(credential, "/clients.json", null);
         }
 
