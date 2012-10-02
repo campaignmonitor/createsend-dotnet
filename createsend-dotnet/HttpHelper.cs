@@ -49,41 +49,67 @@ namespace createsend_dotnet
 
     }
 
+    public class CampMonCredentials
+    {
+        string username;
+        string password;
+
+        public CampMonCredentials(
+            string username,
+            string password)
+        {
+            this.username = username;
+            this.password = password;
+        }
+
+        public string UserName
+        {
+            get { return username; }
+            set { username = value; }
+        }
+
+        public string Password
+        {
+            get { return password; }
+            set { password = value; }
+        }
+    }
+
     public class HttpHelper
-    {    
-        public static U Get<U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments)
+    {
+        public static U Get<U>(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments)
         {
             return Get<U, ErrorResult>(authCredentials, path, queryArguments);
         }
 
-        public static U Get<U, EX>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments) where EX : ErrorResult
+        public static U Get<U, EX>(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments) where EX : ErrorResult
         {
             return MakeRequest<string, U, EX>("GET", authCredentials, path, queryArguments, null);
         }
 
-        public static U Post<T, U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Post<T, U>(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
         {
             return Post<T, U, ErrorResult>(authCredentials, path, queryArguments, payload);
         }
 
-        public static U Post<T, U, EX>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload)
+        public static U Post<T, U, EX>(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments, T payload)
             where T : class
             where EX : ErrorResult
         {
             return MakeRequest<T, U, EX>("POST", authCredentials, path, queryArguments, payload);
         }
 
-        public static U Put<T, U>(NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Put<T, U>(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
         {
             return MakeRequest<T, U, ErrorResult>("PUT", authCredentials, path, queryArguments, payload);
         }
 
-        public static string Delete(NetworkCredential authCredentials, string path, NameValueCollection queryArguments)
+        public static string Delete(CampMonCredentials authCredentials, string path, NameValueCollection queryArguments)
         {
             return MakeRequest<string, string, ErrorResult>("DELETE", authCredentials, path, queryArguments, null);
         }
 
-        static U MakeRequest<T, U, EX>(string method, NetworkCredential authCredentials, string path, NameValueCollection queryArguments, T payload)
+        static U MakeRequest<T, U, EX>(string method, CampMonCredentials authCredentials, string path, NameValueCollection queryArguments, T payload)
             where T : class
             where EX : ErrorResult
         {

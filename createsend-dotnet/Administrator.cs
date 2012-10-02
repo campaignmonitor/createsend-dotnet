@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using System.Net;
 
 namespace createsend_dotnet
 {
@@ -7,9 +6,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private NetworkCredential AuthCredentials
+        private CampMonCredentials AuthCredentials
         {
-            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         private string AdminsUrl { get { return string.Format("/admins.json"); }}  

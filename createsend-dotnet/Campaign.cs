@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Collections.Specialized;
 
 namespace createsend_dotnet
@@ -9,9 +8,9 @@ namespace createsend_dotnet
     {
         public string ApiKey { get; set; }
 
-        private NetworkCredential AuthCredentials
+        private CampMonCredentials AuthCredentials
         {
-            get { return new NetworkCredential(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
+            get { return new CampMonCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
         }
 
         public string CampaignID { get; set; }
@@ -24,7 +23,7 @@ namespace createsend_dotnet
         public static string Create(string apiKey, string clientID, string subject, string name, string fromName, string fromEmail, string replyTo, string htmlUrl, string textUrl, List<string> listIDs, List<string> segmentIDs)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                new NetworkCredential(apiKey, "x"), 
+                new CampMonCredentials(apiKey, "x"), 
                 string.Format("/campaigns/{0}.json", clientID), null, 
                 new Dictionary<string, object>() 
                 { 
