@@ -20,7 +20,10 @@ namespace createsend_dotnet
             CampaignID = campaignID;
         }
 
-        public static string Create(string apiKey, string clientID, string subject, string name, string fromName, string fromEmail, string replyTo, string htmlUrl, string textUrl, List<string> listIDs, List<string> segmentIDs)
+        public static string Create(string apiKey, string clientID,
+            string subject, string name, string fromName, string fromEmail,
+            string replyTo, string htmlUrl, string textUrl, List<string>
+            listIDs, List<string> segmentIDs)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
                 new CreateSendCredentials(apiKey, "x"), 
@@ -39,9 +42,46 @@ namespace createsend_dotnet
                 });
         }
 
-        public static string Create(string clientID, string subject, string name, string fromName, string fromEmail, string replyTo, string htmlUrl, string textUrl, List<string> listIDs, List<string> segmentIDs)
+        public static string Create(string clientID, string subject,
+            string name, string fromName, string fromEmail, string replyTo,
+            string htmlUrl, string textUrl, List<string> listIDs,
+            List<string> segmentIDs)
         {
-            return Create(CreateSendOptions.ApiKey, clientID, subject, name, fromName, fromEmail, replyTo, htmlUrl, textUrl, listIDs, segmentIDs);
+            return Create(CreateSendOptions.ApiKey, clientID, subject, name,
+                fromName, fromEmail, replyTo, htmlUrl, textUrl, listIDs,
+                segmentIDs);
+        }
+
+        public static string CreateFromTemplate(string apiKey, string clientID,
+            string subject, string name, string fromName, string fromEmail,
+            string replyTo, List<string> listIDs, List<string> segmentIDs,
+            string templateID, TemplateContent templateContent)
+        {
+            return HttpHelper.Post<Dictionary<string, object>, string>(
+                new CreateSendCredentials(apiKey, "x"),
+                string.Format("/campaigns/{0}/fromtemplate.json", clientID), null,
+                new Dictionary<string, object>()
+                { 
+                    { "Subject", subject }, 
+                    { "Name", name }, 
+                    { "FromName", fromName}, 
+                    { "FromEmail", fromEmail }, 
+                    { "ReplyTo", replyTo }, 
+                    { "ListIDs", listIDs }, 
+                    { "SegmentIDs", segmentIDs },
+                    { "TemplateID", templateID },
+                    { "TemplateContent", templateContent }
+                });
+        }
+
+        public static string CreateFromTemplate(string clientID, string subject,
+            string name, string fromName, string fromEmail, string replyTo,
+            List<string> listIDs, List<string> segmentIDs, string templateID,
+            TemplateContent templateContent)
+        {
+            return CreateFromTemplate(CreateSendOptions.ApiKey, clientID, subject, name,
+                fromName, fromEmail, replyTo, listIDs, segmentIDs, templateID,
+                templateContent);
         }
 
         public void SendPreview(List<string> recipients, string personalize)

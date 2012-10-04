@@ -61,6 +61,7 @@
     <Compile Include="Models\Subscriber.cs" />
     <Compile Include="Models\SubscriberHistory.cs" />
     <Compile Include="Models\Template.cs" />
+    <Compile Include="Models\TemplateContent.cs" />
     <Compile Include="Models\Webhook.cs" />
     <Compile Include="MonthlyScheme.cs" />
     <Compile Include="Person.cs" />
