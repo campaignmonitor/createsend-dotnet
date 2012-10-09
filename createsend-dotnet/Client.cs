@@ -82,6 +82,14 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<SuppressedSubscriber>>(AuthCredentials, string.Format("/clients/{0}/suppressionlist.json", ClientID), queryArguments);
         }
 
+        public void Unsuppress(string email)
+        {
+            HttpHelper.Put<string, PersonResult>(
+                AuthCredentials,
+                string.Format("/clients/{0}/unsuppress.json", ClientID),
+                new NameValueCollection { { "email", email } }, null);
+        }
+
         public IEnumerable<BasicTemplate> Templates()
         {
             return HttpHelper.Get<BasicTemplate[]>(AuthCredentials, string.Format("/clients/{0}/templates.json", ClientID), null);

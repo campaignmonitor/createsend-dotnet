@@ -39,5 +39,26 @@ namespace Samples
                 Console.WriteLine(ex.ToString());
             }
         }
+
+        public void Unsuppress(string email)
+        {
+            Client client = new Client(ClientID);
+            try
+            {
+                client.Unsuppress(email);
+                Console.WriteLine("Successfully unsuppressed {0}", email);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
     }
 }
