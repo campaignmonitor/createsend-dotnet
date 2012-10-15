@@ -128,6 +128,13 @@ namespace createsend_dotnet
             return HttpHelper.Get<CampaignSummary>(AuthCredentials, string.Format("/campaigns/{0}/summary.json", CampaignID), null);
         }
 
+        public IEnumerable<EmailClient> EmailClientUsage()
+        {
+            return HttpHelper.Get<IEnumerable<EmailClient>>(AuthCredentials,
+                string.Format("/campaigns/{0}/emailclientusage.json",
+                CampaignID), null);
+        }
+
         public CampaignListsAndSegments ListsAndSegments()
         {
             return HttpHelper.Get<CampaignListsAndSegments>(AuthCredentials, string.Format("/campaigns/{0}/listsandsegments.json", CampaignID), null);
