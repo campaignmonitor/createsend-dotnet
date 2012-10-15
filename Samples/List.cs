@@ -129,9 +129,10 @@ namespace Samples
                         allSubscribers.AddRange(subsequentPage.Results);
                     }
 
-                //we can now do whatever with every subscriber
                 foreach(SubscriberDetail subscriberDetail in allSubscribers)
-                    Console.WriteLine(subscriberDetail.EmailAddress);
+                    Console.WriteLine(string.Format(
+                        "Subscriber with email address {0} reads mail with {1}.",
+                        subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
             }
             catch (CreatesendException ex)
             {
