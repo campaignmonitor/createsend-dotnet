@@ -135,6 +135,11 @@ namespace createsend_dotnet
             return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
         }
 
+        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
         public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
