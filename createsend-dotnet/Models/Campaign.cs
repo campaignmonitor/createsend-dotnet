@@ -40,6 +40,7 @@ namespace createsend_dotnet
         public int TotalOpened { get; set; }
         public int Clicks { get; set; }
         public int Unsubscribed { get; set; }
+        public int SpamComplaints { get; set; }
         public int Bounced { get; set; }
         public int UniqueOpened { get; set; }
         public int Mentions { get; set; }
@@ -54,10 +55,14 @@ namespace createsend_dotnet
         public string EmailAddress { get; set; }
         public string ListID { get; set; }
         public DateTime Date { get; set; }
+    }
+
+    public class CampaignDetailBaseWithIPAddress : CampaignDetailBase
+    {
         public string IPAddress { get; set; }
     }
 
-    public class CampaignDetailWithGeoBase : CampaignDetailBase
+    public class CampaignDetailWithGeoBase : CampaignDetailBaseWithIPAddress
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
@@ -74,9 +79,11 @@ namespace createsend_dotnet
         public string URL { get; set; }
     }
 
-    public class CampaignUnsubscribeDetail : CampaignDetailBase { }
+    public class CampaignUnsubscribeDetail : CampaignDetailBaseWithIPAddress { }
 
-    public class CampaignBounceDetail : CampaignDetailBase
+    public class CampaignSpamComplaint : CampaignDetailBase { }
+
+    public class CampaignBounceDetail : CampaignDetailBaseWithIPAddress
     {
         public string BounceType { get; set; }
         public string Reason { get; set; }

@@ -175,6 +175,18 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignUnsubscribeDetail>>(AuthCredentials, string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
         }
 
+        public PagedCollection<CampaignSpamComplaint> SpamComplaints(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("page", page.ToString());
+            queryArguments.Add("pagesize", pageSize.ToString());
+            queryArguments.Add("orderfield", orderField);
+            queryArguments.Add("orderdirection", orderDirection);
+
+            return HttpHelper.Get<PagedCollection<CampaignSpamComplaint>>(AuthCredentials, string.Format("/campaigns/{0}/spam.json", CampaignID), queryArguments);
+        }
+
         public PagedCollection<CampaignClickDetail> Clicks(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
