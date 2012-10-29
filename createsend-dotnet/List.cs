@@ -89,16 +89,45 @@ namespace createsend_dotnet
             HttpHelper.Delete(AuthCredentials, string.Format("/lists/{0}.json", ListID), null);
         }
 
-        public string CreateCustomField(string fieldName, CustomFieldDataType dataType, List<string> options)
+        public string CreateCustomField(
+            string fieldName,
+            CustomFieldDataType dataType,
+            List<string> options)
+        {
+            return CreateCustomField(fieldName, dataType, options, true);
+        }
+
+        public string CreateCustomField(
+            string fieldName,
+            CustomFieldDataType dataType,
+            List<string> options,
+            bool visibleInPreferenceCenter)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+                AuthCredentials,
                 string.Format("/lists/{0}/customfields.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "FieldName", fieldName }, 
                     { "DataType", dataType.ToString() }, 
-                    { "Options", options } 
+                    { "Options", options },
+                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
+                });
+        }
+
+        public string UpdateCustomField(
+            string customFieldKey,
+            string fieldName,
+            bool visibleInPreferenceCenter)
+        {
+            return HttpHelper.Put<Dictionary<string, object>, string>(
+                AuthCredentials,
+                string.Format("/lists/{0}/customfields/{1}.json", 
+                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
+                new Dictionary<string, object>() 
+                {
+                    { "FieldName", fieldName },
+                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
                 });
         }
 
