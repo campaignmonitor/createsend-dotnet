@@ -112,12 +112,25 @@ namespace createsend_dotnet
             return HttpHelper.Get<ListCustomField[]>(AuthCredentials, string.Format("/lists/{0}/customfields.json", ListID), null);
         }
 
-        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        public void UpdateCustomFieldOptions(
+            string customFieldKey,
+            List<string> options,
+            bool keepExistingOptions)
         {
             HttpHelper.Put<object, string>(
-                AuthCredentials, 
-                string.Format("/lists/{0}/customfields/{1}/options.json", ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new { KeepExistingOptions = keepExistingOptions, Options = options });
+                AuthCredentials,
+                string.Format("/lists/{0}/customfields/{1}/options.json",
+                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
+                new { 
+                    KeepExistingOptions = keepExistingOptions,
+                    Options = options
+                });
+        }
+
+        [Obsolete("Use UpdateCustomFieldOptions instead. UpdateCustomFields will eventually be removed.", false)]
+        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        {
+            UpdateCustomFieldOptions(customFieldKey, options, keepExistingOptions);
         }
 
         public IEnumerable<BasicSegment> Segments()
