@@ -82,6 +82,14 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<SuppressedSubscriber>>(AuthCredentials, string.Format("/clients/{0}/suppressionlist.json", ClientID), queryArguments);
         }
 
+        public void Suppress(string[] emails)
+        {
+            HttpHelper.Post<SuppressionDetails, string>(
+                AuthCredentials,
+                string.Format("/clients/{0}/suppress.json", ClientID), null,
+                new SuppressionDetails { EmailAddresses = emails });
+        }
+
         public void Unsuppress(string email)
         {
             HttpHelper.Put<string, PersonResult>(

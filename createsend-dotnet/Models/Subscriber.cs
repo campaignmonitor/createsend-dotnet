@@ -35,7 +35,10 @@ namespace createsend_dotnet
     {
         public SubscriberDetail() : base() { }
 
-        public SubscriberDetail(string emailAddress, string name, List<SubscriberCustomField> customFields)
+        public SubscriberDetail(
+            string emailAddress,
+            string name,
+            List<SubscriberCustomField> customFields)
         {
             EmailAddress = emailAddress;
             Name = name;
@@ -44,5 +47,6 @@ namespace createsend_dotnet
 
         public string Name { get; set; }
         public List<SubscriberCustomField> CustomFields { get; set; }
+        public string ReadsEmailWith { get; set; }
     }
 }

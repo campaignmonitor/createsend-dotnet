@@ -34,6 +34,7 @@ namespace createsend_dotnet
         public string Key { get; set; }
         public string DataType { get; set; }
         public List<string> FieldOptions { get; set; }
+        public bool VisibleInPreferenceCenter { get; set; }
     }
 
     public enum UnsubscribeSetting

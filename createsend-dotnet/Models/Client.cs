@@ -61,4 +61,9 @@ namespace createsend_dotnet
         public string Username { get; set; }
         public string Password { get; set; }
     }
+
+    public class SuppressionDetails
+    {
+        public string[] EmailAddresses { get; set; }
+    }
 }

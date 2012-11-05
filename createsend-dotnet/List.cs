@@ -89,16 +89,45 @@ namespace createsend_dotnet
             HttpHelper.Delete(AuthCredentials, string.Format("/lists/{0}.json", ListID), null);
         }
 
-        public string CreateCustomField(string fieldName, CustomFieldDataType dataType, List<string> options)
+        public string CreateCustomField(
+            string fieldName,
+            CustomFieldDataType dataType,
+            List<string> options)
+        {
+            return CreateCustomField(fieldName, dataType, options, true);
+        }
+
+        public string CreateCustomField(
+            string fieldName,
+            CustomFieldDataType dataType,
+            List<string> options,
+            bool visibleInPreferenceCenter)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+                AuthCredentials,
                 string.Format("/lists/{0}/customfields.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "FieldName", fieldName }, 
                     { "DataType", dataType.ToString() }, 
-                    { "Options", options } 
+                    { "Options", options },
+                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
+                });
+        }
+
+        public string UpdateCustomField(
+            string customFieldKey,
+            string fieldName,
+            bool visibleInPreferenceCenter)
+        {
+            return HttpHelper.Put<Dictionary<string, object>, string>(
+                AuthCredentials,
+                string.Format("/lists/{0}/customfields/{1}.json", 
+                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
+                new Dictionary<string, object>() 
+                {
+                    { "FieldName", fieldName },
+                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
                 });
         }
 
@@ -112,12 +141,25 @@ namespace createsend_dotnet
             return HttpHelper.Get<ListCustomField[]>(AuthCredentials, string.Format("/lists/{0}/customfields.json", ListID), null);
         }
 
-        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        public void UpdateCustomFieldOptions(
+            string customFieldKey,
+            List<string> options,
+            bool keepExistingOptions)
         {
             HttpHelper.Put<object, string>(
-                AuthCredentials, 
-                string.Format("/lists/{0}/customfields/{1}/options.json", ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new { KeepExistingOptions = keepExistingOptions, Options = options });
+                AuthCredentials,
+                string.Format("/lists/{0}/customfields/{1}/options.json",
+                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
+                new { 
+                    KeepExistingOptions = keepExistingOptions,
+                    Options = options
+                });
+        }
+
+        [Obsolete("Use UpdateCustomFieldOptions instead. UpdateCustomFields will eventually be removed.", false)]
+        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        {
+            UpdateCustomFieldOptions(customFieldKey, options, keepExistingOptions);
         }
 
         public IEnumerable<BasicSegment> Segments()
@@ -133,6 +175,11 @@ namespace createsend_dotnet
         public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection);
         }
 
         public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)

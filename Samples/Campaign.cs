@@ -138,5 +138,28 @@ namespace Samples
                 Console.WriteLine(ex.ToString());
             }
         }
+
+        public void GetEmailClientUsage()
+        {
+            Campaign campaign = new Campaign(campaignID);
+
+            try
+            {
+                var usage = campaign.EmailClientUsage();
+                foreach (EmailClient client in usage)
+                    Console.WriteLine("{0} ({1}): used by %{2} ({3} subscribers)",
+                        client.Client, client.Version, client.Percentage, client.Subscribers);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
     }
 }

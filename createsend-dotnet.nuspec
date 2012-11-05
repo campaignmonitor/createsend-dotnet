@@ -5,7 +5,7 @@
     <title>Campaign Monitor</title>
     <version>2.3.0</version>
     <authors>Campaign Monitor</authors>
-    <description>A .NET library for v3 of the Campaign Monitor API</description>
+    <description>A .NET library for the Campaign Monitor API</description>
     <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>
     <projectUrl>http://campaignmonitor.github.com/createsend-dotnet/</projectUrl>
     <tags>api campaign monitor .net</tags>

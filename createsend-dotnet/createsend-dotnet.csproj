@@ -54,6 +54,7 @@
     <Compile Include="Models\CreatesendException.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="Models\EmailClient.cs" />
     <Compile Include="Models\List.cs" />
     <Compile Include="Models\PagedCollection.cs" />
     <Compile Include="Models\Person.cs" />

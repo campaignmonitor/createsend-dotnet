@@ -35,7 +35,26 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void Suppress(string[] emails)
+        {
+            Client client = new Client(ClientID);
+            try
+            {
+                client.Suppress(emails);
+                Console.WriteLine("Successfully suppressed email addresses provided.");
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.ToString());
             }
         }
@@ -56,7 +75,6 @@ namespace Samples
             }
             catch (Exception ex)
             {
-                // Handle some other failure
                 Console.WriteLine(ex.ToString());
             }
         }

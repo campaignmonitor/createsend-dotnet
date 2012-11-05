@@ -1,6 +1,6 @@
 # createsend-dotnet
 
-A .NET library which implements the complete functionality of v3 of the CreateSend API.
+A .NET library which implements the complete functionality of the Campaign Monitor API.
 
 This library is supported on .NET 2, 3.5, and 4. You will find solution files which target version 2 (createsend-dotnet.net20.sln), version 3.5 (createsend-dotnet.net35.sln), and version 4 (createsend-dotnet.sln) of .NET runtime.
 

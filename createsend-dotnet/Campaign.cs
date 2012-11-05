@@ -20,6 +20,28 @@ namespace createsend_dotnet
             CampaignID = campaignID;
         }
 
+        /// <summary>
+        /// Creates a campaign using the API key and campaign details provided.
+        /// </summary>
+        /// <param name="apiKey">API key to use</param>
+        /// <param name="clientID">Client ID of the client for whom the
+        /// campaign should be created</param>
+        /// <param name="subject">A subject for the campaign</param>
+        /// <param name="name">A name for the campaign</param>
+        /// <param name="fromName">From name for the campaign</param>
+        /// <param name="fromEmail">From email address for the campaign</param>
+        /// <param name="replyTo">Reply-to address for the campaign</param>
+        /// <param name="htmlUrl">URL for the HTML content for the 
+        /// campaign</param>
+        /// <param name="textUrl">URL for the text content for the campaign.
+        /// Note that you may provide textUrl as null or an empty string and
+        /// the text content for the campaign will be generated from the HTML
+        /// content.</param>
+        /// <param name="listIDs">IDs of the lists to which the campaign
+        /// will be sent</param>
+        /// <param name="segmentIDs">IDs of the segments to which the
+        /// campaign will be sent</param>
+        /// <returns>The ID of the newly created campaign</returns>
         public static string Create(string apiKey, string clientID,
             string subject, string name, string fromName, string fromEmail,
             string replyTo, string htmlUrl, string textUrl, List<string>
@@ -42,6 +64,27 @@ namespace createsend_dotnet
                 });
         }
 
+        /// <summary>
+        /// Creates a campaign using the campaign details provided.
+        /// </summary>
+        /// <param name="clientID">Client ID of the client for whom the
+        /// campaign should be created</param>
+        /// <param name="subject">A subject for the campaign</param>
+        /// <param name="name">A name for the campaign</param>
+        /// <param name="fromName">From name for the campaign</param>
+        /// <param name="fromEmail">From email address for the campaign</param>
+        /// <param name="replyTo">Reply-to address for the campaign</param>
+        /// <param name="htmlUrl">URL for the HTML content for the 
+        /// campaign</param>
+        /// <param name="textUrl">URL for the text content for the campaign.
+        /// Note that you may provide textUrl as null or an empty string and
+        /// the text content for the campaign will be generated from the HTML
+        /// content.</param>
+        /// <param name="listIDs">IDs of the lists to which the campaign
+        /// will be sent</param>
+        /// <param name="segmentIDs">IDs of the segments to which the
+        /// campaign will be sent</param>
+        /// <returns>The ID of the newly created campaign</returns>
         public static string Create(string clientID, string subject,
             string name, string fromName, string fromEmail, string replyTo,
             string htmlUrl, string textUrl, List<string> listIDs,
@@ -128,6 +171,13 @@ namespace createsend_dotnet
             return HttpHelper.Get<CampaignSummary>(AuthCredentials, string.Format("/campaigns/{0}/summary.json", CampaignID), null);
         }
 
+        public IEnumerable<EmailClient> EmailClientUsage()
+        {
+            return HttpHelper.Get<IEnumerable<EmailClient>>(AuthCredentials,
+                string.Format("/campaigns/{0}/emailclientusage.json",
+                CampaignID), null);
+        }
+
         public CampaignListsAndSegments ListsAndSegments()
         {
             return HttpHelper.Get<CampaignListsAndSegments>(AuthCredentials, string.Format("/campaigns/{0}/listsandsegments.json", CampaignID), null);
@@ -166,6 +216,18 @@ namespace createsend_dotnet
             queryArguments.Add("orderdirection", orderDirection);
 
             return HttpHelper.Get<PagedCollection<CampaignUnsubscribeDetail>>(AuthCredentials, string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
+        }
+
+        public PagedCollection<CampaignSpamComplaint> SpamComplaints(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("page", page.ToString());
+            queryArguments.Add("pagesize", pageSize.ToString());
+            queryArguments.Add("orderfield", orderField);
+            queryArguments.Add("orderdirection", orderDirection);
+
+            return HttpHelper.Get<PagedCollection<CampaignSpamComplaint>>(AuthCredentials, string.Format("/campaigns/{0}/spam.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignClickDetail> Clicks(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
