@@ -1,5 +1,23 @@
 # createsend-dotnet history
 
+## v2.4.0 - 5 Nov, 2012   (7a49eacf)
+
+* Added createsend_dotnet.Campaign.EmailClientUsage().
+* Added support for ReadsEmailWith field on subscriber objects.
+* Added support for retrieving unconfirmed subscribers for a list.
+* Added support for suppressing email addresses.
+* Added support for retrieving spam complaints for a campaign, as well as
+adding SpamComplaints field to campaign summary output.
+* Introduced createsend_dotnet.List.UpdateCustomFieldOptions() method to
+replace poorly named createsend_dotnet.List.UpdateCustomFields() method, which
+has been marked as obsolete.
+* Added VisibleInPreferenceCenter field to custom field output.
+* Added support for setting preference center visibility when creating custom
+fields.
+* Added the ability to update a custom field name and preference visibility.
+* Added documentation explaining that textUrl may be provided as null or as
+an empty string when creating a campaign.
+
 ## v2.3.0 - 10 Oct, 2012   (c268b312)
 
 * Added support for creating campaigns from templates.
