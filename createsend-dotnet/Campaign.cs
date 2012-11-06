@@ -140,6 +140,29 @@ namespace createsend_dotnet
                 });
         }
 
+        /// <summary>
+        /// Schedules an existing draft campaign for sending to a custom date and time in the future.
+        /// </summary>
+        /// <param name="confirmationEmails">A maximum of five email addresses to which will be sent a confirmation email once the campaign has been sent.</param>
+        /// <param name="sendDate">The date the campaign should be scheduled to be sent.</param>
+        public void Send(List<string> confirmationEmails, DateTime sendDate)
+        {
+            HttpHelper.Post<Dictionary<string, object>, string>(
+                AuthCredentials, 
+                string.Format("/campaigns/{0}/send.json", CampaignID), 
+                null, 
+                new Dictionary<string, object>()
+                { 
+                    { "ConfirmationEmail", confirmationEmails }, 
+                    { "SendDate", sendDate.ToString("yyyy-MM-dd HH:mm:ss") } 
+                });
+        }
+        
+        /// <summary>
+        /// Schedules an existing draft campaign for sending to a custom date and time in the future.
+        /// </summary>
+        /// <param name="confirmationEmails">An email address to which which will be sent a confirmation email once the campaign has been sent.</param>
+        /// <param name="sendDate">The date the campaign should be scheduled to be sent.</param>
         public void Send(string confirmationEmail, DateTime sendDate)
         {
             HttpHelper.Post<Dictionary<string, object>, string>(
