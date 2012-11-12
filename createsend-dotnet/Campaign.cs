@@ -140,16 +140,26 @@ namespace createsend_dotnet
                 });
         }
 
+        public void Send(string confirmationEmail)
+        {
+            Send(confirmationEmail, "immediately");
+        }
+
         public void Send(string confirmationEmail, DateTime sendDate)
         {
+            Send(confirmationEmail, sendDate.ToString("yyyy-MM-dd HH:mm:ss"));
+        }
+
+        private void Send(string confirmationEmail, string sendDate)
+        {
             HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
-                string.Format("/campaigns/{0}/send.json", CampaignID), 
-                null, 
+                AuthCredentials,
+                string.Format("/campaigns/{0}/send.json", CampaignID),
+                null,
                 new Dictionary<string, object>()
                 { 
                     { "ConfirmationEmail", confirmationEmail }, 
-                    { "SendDate", sendDate.ToString("yyyy-MM-dd HH:mm:ss") } 
+                    { "SendDate", sendDate } 
                 });
         }
 
