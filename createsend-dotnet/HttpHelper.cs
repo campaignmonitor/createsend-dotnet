@@ -18,7 +18,7 @@ namespace createsend_dotnet
         static CreateSendOptions()
         {
             api_key = string.IsNullOrEmpty(ConfigurationManager.AppSettings["api_key"]) ? api_key : ConfigurationManager.AppSettings["api_key"];
-            base_uri = string.IsNullOrEmpty(ConfigurationManager.AppSettings["base_uri"]) ? "http://api.createsend.com/api/v3" : ConfigurationManager.AppSettings["base_uri"];
+            base_uri = string.IsNullOrEmpty(ConfigurationManager.AppSettings["base_uri"]) ? "https://api.createsend.com/api/v3" : ConfigurationManager.AppSettings["base_uri"];
         }
 
         public static string ApiKey
