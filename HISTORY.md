@@ -1,5 +1,10 @@
 # createsend-dotnet history
 
+## v2.5.0 - 12 Nov, 2012  (b282bad)
+
+* Switched to use https by default (can be overridden in web/app.config).
+* Added support for 'send immediate' campaigns. 
+
 ## v2.4.0 - 5 Nov, 2012   (7a49eacf)
 
 * Added createsend_dotnet.Campaign.EmailClientUsage().
