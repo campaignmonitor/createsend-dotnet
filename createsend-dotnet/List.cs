@@ -172,9 +172,19 @@ namespace createsend_dotnet
             return HttpHelper.Get<ListStats>(AuthCredentials, string.Format("/lists/{0}/stats.json", ListID), null);
         }
 
+        public PagedCollection<SubscriberDetail> Active()
+        {
+            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc");
+        }
+
         public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<SubscriberDetail> Unconfirmed()
+        {
+            return GenericPagedSubscriberGet("unconfirmed", "", 1, 1000, "email", "asc");
         }
 
         public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
@@ -182,9 +192,19 @@ namespace createsend_dotnet
             return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection);
         }
 
+        public PagedCollection<SubscriberDetail> Unsubscribed()
+        {
+            return GenericPagedSubscriberGet("unsubscribed", "", 1, 1000, "email", "asc");
+        }
+
         public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<SubscriberDetail> Bounced()
+        {
+            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc");
         }
 
         public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
@@ -192,15 +212,33 @@ namespace createsend_dotnet
             return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
         }
 
+        public PagedCollection<SubscriberDetail> Deleted()
+        {
+            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc");
+        }
+
         public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
         }
 
-        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(
+            string type,
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return GenericPagedSubscriberGet(type,
+                fromDate.ToString("yyyy-MM-dd HH:mm:ss"), page, pageSize,
+                orderField, orderDirection);
+        }
+
+        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, string fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);

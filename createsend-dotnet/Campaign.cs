@@ -204,10 +204,40 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignRecipient>>(AuthCredentials, string.Format("/campaigns/{0}/recipients.json", CampaignID), queryArguments);
         }
 
-        public PagedCollection<CampaignOpenDetail> Opens(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignOpenDetail> Opens()
+        {
+            return Opens(1, 1000, "date", "asc");
+        }
+
+        public PagedCollection<CampaignOpenDetail> Opens(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Opens("", page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<CampaignOpenDetail> Opens(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Opens(fromDate.ToString("yyyy-MM-dd HH:mm:ss"), page,
+                pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<CampaignOpenDetail> Opens(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
@@ -216,10 +246,40 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignOpenDetail>>(AuthCredentials, string.Format("/campaigns/{0}/opens.json", CampaignID), queryArguments);
         }
 
-        public PagedCollection<CampaignUnsubscribeDetail> Unsubscribes(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignUnsubscribeDetail> Unsubscribes()
+        {
+            return Unsubscribes(1, 1000, "date", "asc");
+        }
+
+        public PagedCollection<CampaignUnsubscribeDetail> Unsubscribes(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Unsubscribes("", page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<CampaignUnsubscribeDetail> Unsubscribes(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Unsubscribes(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                page, pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<CampaignUnsubscribeDetail> Unsubscribes(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
@@ -228,10 +288,40 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignUnsubscribeDetail>>(AuthCredentials, string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
         }
 
-        public PagedCollection<CampaignSpamComplaint> SpamComplaints(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignSpamComplaint> SpamComplaints()
+        {
+            return SpamComplaints(1, 1000, "date", "asc");
+        }
+
+        public PagedCollection<CampaignSpamComplaint> SpamComplaints(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return SpamComplaints("", page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<CampaignSpamComplaint> SpamComplaints(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return SpamComplaints(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                page, pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<CampaignSpamComplaint> SpamComplaints(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
@@ -240,10 +330,40 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignSpamComplaint>>(AuthCredentials, string.Format("/campaigns/{0}/spam.json", CampaignID), queryArguments);
         }
 
-        public PagedCollection<CampaignClickDetail> Clicks(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignClickDetail> Clicks()
+        {
+            return Clicks(1, 1000, "date", "asc");
+        }
+
+        public PagedCollection<CampaignClickDetail> Clicks(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Clicks("", page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<CampaignClickDetail> Clicks(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Clicks(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                page, pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<CampaignClickDetail> Clicks(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
@@ -252,10 +372,40 @@ namespace createsend_dotnet
             return HttpHelper.Get<PagedCollection<CampaignClickDetail>>(AuthCredentials, string.Format("/campaigns/{0}/clicks.json", CampaignID), queryArguments);
         }
 
-        public PagedCollection<CampaignBounceDetail> Bounces(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignBounceDetail> Bounces()
+        {
+            return Bounces(1, 1000, "date", "asc");
+        }
+
+        public PagedCollection<CampaignBounceDetail> Bounces(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Bounces("", page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<CampaignBounceDetail> Bounces(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Bounces(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                page, pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<CampaignBounceDetail> Bounces(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);

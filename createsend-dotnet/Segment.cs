@@ -62,10 +62,41 @@ namespace createsend_dotnet
                 });
         }
 
-        public PagedCollection<SubscriberDetail> Subscribers(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Subscribers()
+        {
+            return Subscribers(1, 1000, "email", "asc");
+        }
+
+        public PagedCollection<SubscriberDetail> Subscribers(
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Subscribers("", page, pageSize, orderField,
+                orderDirection);
+        }
+
+        public PagedCollection<SubscriberDetail> Subscribers(
+            DateTime fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
+        {
+            return Subscribers(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                page, pageSize, orderField, orderDirection);
+        }
+
+        private PagedCollection<SubscriberDetail> Subscribers(
+            string fromDate,
+            int page,
+            int pageSize,
+            string orderField,
+            string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            queryArguments.Add("date", fromDate);
             queryArguments.Add("page", page.ToString());
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
