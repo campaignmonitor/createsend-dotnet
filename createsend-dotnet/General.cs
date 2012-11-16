@@ -60,5 +60,16 @@ namespace createsend_dotnet
         {
             return Clients(CreateSendOptions.ApiKey);
         }
+
+        public static BillingDetails BillingDetails(string apiKey)
+        {
+            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
+            return HttpHelper.Get<BillingDetails>(credential, "/billingdetails.json", null);
+        }
+
+        public static BillingDetails BillingDetails()
+        {
+            return BillingDetails(CreateSendOptions.ApiKey);
+        }
     }
 }

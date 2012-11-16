@@ -39,6 +39,7 @@ namespace createsend_dotnet
         public bool ClientPays { get; set; }
         public int MarkupPercentage { get; set; }
         public bool CanPurchaseCredits { get; set; }
+        public int Credits { get; set; }
         public decimal? MarkupOnDelivery { get; set; }
         public decimal? MarkupPerRecipient { get; set; }
         public decimal? MarkupOnDesignSpamTest { get; set; }
