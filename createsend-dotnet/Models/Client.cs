@@ -67,4 +67,16 @@ namespace createsend_dotnet
     {
         public string[] EmailAddresses { get; set; }
     }
+
+    public class CreditsTransferDetails
+    {
+        public int Credits { get; set; }
+        public bool CanUseMyCreditsWhenTheyRunOut { get; set; }
+    }
+
+    public class CreditsTransferResult
+    {
+        public int AccountCredits { get; set; }
+        public int ClientCredits { get; set; }
+    }
 }

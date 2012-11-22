@@ -158,6 +158,35 @@ namespace createsend_dotnet
                 });
         }
 
+        /// <summary>
+        /// Transfer credits to or from this client.
+        /// </summary>
+        /// <param name="credits">The number of credits to transfer. This
+        /// value may be either positive if you want to allocate credits
+        /// from your account to the client, or negative if you want to
+        /// deduct credits from the client back into your account.</param>
+        /// <param name="canUseMyCreditsWhenTheyRunOut">If set to true, will
+        /// allow the client to continue sending using your credits or payment
+        /// details once they run out of credits, and if set to false, will
+        /// prevent the client from using your credits to continue sending
+        /// until you allocate more credits to them.</param>
+        /// <returns>The details of the credits transfer, including the credits
+        /// in your account now, as well as the credits belonging to the client
+        /// now.</returns>
+        public CreditsTransferResult TransferCredits(
+            int credits, bool canUseMyCreditsWhenTheyRunOut)
+        {
+            return HttpHelper.Post<CreditsTransferDetails, CreditsTransferResult>(
+                AuthCredentials,
+                string.Format("/clients/{0}/credits.json", ClientID), null,
+                new CreditsTransferDetails
+                {
+                    Credits = credits,
+                    CanUseMyCreditsWhenTheyRunOut =
+                        canUseMyCreditsWhenTheyRunOut
+                });
+        }
+
         public void Delete()
         {
             HttpHelper.Delete(AuthCredentials, string.Format("/clients/{0}.json", ClientID), null);
