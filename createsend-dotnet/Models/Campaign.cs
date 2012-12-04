@@ -12,6 +12,7 @@ namespace createsend_dotnet
         public string SentDate { get; set; }
         public int TotalRecipients { get; set; }
         public string WebVersionURL { get; set; }
+        public string WebVersionTextURL { get; set; }
     }
 
     public class ScheduledCampaignDetail
@@ -21,6 +22,7 @@ namespace createsend_dotnet
         public string Name { get; set; }
         public string DateCreated { get; set; }
         public string PreviewURL { get; set; }
+        public string PreviewTextURL { get; set; }
         public string DateScheduled { get; set; }
         public string ScheduledTimeZone { get; set; }
     }
@@ -32,6 +34,7 @@ namespace createsend_dotnet
         public string Name { get; set; }
         public string DateCreated { get; set; }
         public string PreviewURL { get; set; }
+        public string PreviewTextURL { get; set; }
     }
 
     public class CampaignSummary
@@ -47,6 +50,7 @@ namespace createsend_dotnet
         public int Forwards { get; set; }
         public int Likes { get; set; }
         public string WebVersionURL { get; set; }
+        public string WebVersionTextURL { get; set; }
         public string WorldviewURL { get; set; }
     }
 
