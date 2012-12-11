@@ -1,5 +1,14 @@
 # createsend-dotnet history
 
+## v2.6.0 - 11 Dec, 2012  (272bf6c)
+
+* Added support for including from name, from email, and reply to email in
+drafts, scheduled, and sent campaigns.
+* Added support for campaign text version urls.
+* Added support for transferring credits to/from a client.
+* Added support for getting account billing details as well as client credits.
+* Made all date fields optional when getting paged results.
+
 ## v2.5.0 - 12 Nov, 2012  (b282bad)
 
 * Switched to use https by default (can be overridden in web/app.config).
