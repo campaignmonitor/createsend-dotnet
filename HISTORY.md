@@ -11,7 +11,7 @@
       ```xml
       <configuration>
           <appSettings>
-          	  <add key="api_key" value="your_api_key" />
+              <add key="api_key" value="your_api_key" />
           </appSettings>
       </configuration>
       ```
@@ -19,23 +19,23 @@
       If you want to authenticate with an API key, you should _now_ authenticate at the instance level. For example, as follows:
 
       ```csharp
-	  using System;
-	  using System.Collections.Generic;
-	  using createsend_dotnet;
+      using System;
+      using System.Collections.Generic;
+      using createsend_dotnet;
 
-	  namespace dotnet_api_client
-	  {
-	      class Program
-	      {
-		      static void Main(string[] args)
-		      {
-		          AuthenticationDetails auth = new ApiKeyAuthenticationDetails(
-		              "your api key");
-		          var general = new General(auth);
-		          var clients = general.Clients();
-		      }
-		  }
-	  }
+      namespace dotnet_api_client
+      {
+          class Program
+          {
+              static void Main(string[] args)
+              {
+                  AuthenticationDetails auth = new ApiKeyAuthenticationDetails(
+                      "your api key");
+                  var general = new General(auth);
+                  var clients = general.Clients();
+              }
+          }
+      }
       ```
 
   * Instances of classes which inherit from `createsend_dotnet.CreateSendBase` are now _always_ created by passing an `AuthenticationDetails` object as the first argument. This may be either an instance of `OAuthAuthenticationDetails`, or `ApiKeyAuthenticationDetails`.

@@ -2,7 +2,7 @@
 
 A .NET library which implements the complete functionality of the Campaign Monitor API.
 
-This library is supported on .NET 2, 3.5, and 4. You will find solution files which target the different .NET runtime versions: createsend-dotnet.net20.sln, createsend-dotnet.net35.sln, and createsend-dotnet.sln.
+This library is supported on .NET 2, 3.5, and 4. You will find solution files which target the different .NET runtime versions: `createsend-dotnet.net20.sln`, `createsend-dotnet.net35.sln`, and `createsend-dotnet.sln`.
 
 ## Installation
 
@@ -46,9 +46,7 @@ namespace dotnet_api_client
 }
 ```
 
-## Basic usage
-
-Example console app:
+### Using an API key
 
 ```csharp
 using System;
@@ -61,10 +59,40 @@ namespace dotnet_api_client
     {
         static void Main(string[] args)
         {
-            IEnumerable<BasicClient> clients = General.Clients();
+            AuthenticationDetails auth = new ApiKeyAuthenticationDetails(
+                "your api key");
+            var general = new General(auth);
+            var clients = general.Clients();
+        }
+    }
+}
+```
+
+## Basic usage
+
+This example of listing all your clients and their campaigns demonstrates basic usage of the library and the data returned from the API:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using createsend_dotnet;
+
+namespace dotnet_api_client
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var general = new General(auth);
+            IEnumerable<BasicClient> clients = general.Clients();
             foreach (BasicClient c in clients)
-                Console.WriteLine(string.Format("ID: {0}; Name: {1}", c.ClientID, c.Name));
-            Console.ReadLine();
+            {
+                Console.WriteLine(string.Format("Client: {0}", c.Name));
+                var cl = new Client(auth, c.ClientID);
+                Console.WriteLine("- Campaigns:");
+                foreach (CampaignDetail cm in cl.Campaigns())
+                    Console.WriteLine(string.Format("  - {0}", cm.Subject));
+            }
         }
     }
 }
