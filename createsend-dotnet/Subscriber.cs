@@ -3,18 +3,12 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class Subscriber
+    public class Subscriber : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         public string ListID { get; set; }
 
-        public Subscriber(string listID)
+        public Subscriber(AuthenticationDetails auth, string listID)
+            : base(auth)
         {
             ListID = listID;
         }
@@ -24,7 +18,8 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            return HttpHelper.Get<SubscriberDetail>(AuthCredentials, string.Format("/subscribers/{0}.json", ListID), queryArguments);
+            return HttpGet<SubscriberDetail>(
+                string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
 
         public IEnumerable<HistoryItem> GetHistory(string emailAddress)
@@ -32,18 +27,22 @@ namespace createsend_dotnet
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            return HttpHelper.Get<IEnumerable<HistoryItem>>(AuthCredentials, string.Format("/subscribers/{0}/history.json", ListID), queryArguments);
+            return HttpGet<IEnumerable<HistoryItem>>(
+                string.Format("/subscribers/{0}/history.json", ListID),
+                queryArguments);
         }
 
-        public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
+        public string Add(string emailAddress, string name,
+            List<SubscriberCustomField> customFields, bool resubscribe)
         {
             return Add(emailAddress, name, customFields, resubscribe, false);
         }
 
-        public string Add(string emailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe, bool restartSubscriptionBasedAutoresponders)
+        public string Add(string emailAddress, string name,
+            List<SubscriberCustomField> customFields, bool resubscribe,
+            bool restartSubscriptionBasedAutoresponders)
         {
-            return HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/subscribers/{0}.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -51,22 +50,27 @@ namespace createsend_dotnet
                     { "Name", name }, 
                     { "CustomFields", customFields }, 
                     { "Resubscribe", resubscribe },
-                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
+                    { "RestartSubscriptionBasedAutoresponders",
+                        restartSubscriptionBasedAutoresponders }
                 });
         }
 
-        public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe)
+        public void Update(string emailAddress, string newEmailAddress,
+            string name, List<SubscriberCustomField> customFields,
+            bool resubscribe)
         {
-            Update(emailAddress, newEmailAddress, name, customFields, resubscribe, false);
+            Update(emailAddress, newEmailAddress, name, customFields,
+                resubscribe, false);
         }
 
-        public void Update(string emailAddress, string newEmailAddress, string name, List<SubscriberCustomField> customFields, bool resubscribe, bool restartSubscriptionBasedAutoresponders)
+        public void Update(string emailAddress, string newEmailAddress,
+            string name, List<SubscriberCustomField> customFields,
+            bool resubscribe, bool restartSubscriptionBasedAutoresponders)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
-            HttpHelper.Put<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPut<Dictionary<string, object>, string>(
                 string.Format("/subscribers/{0}.json", ListID), queryArguments, 
                 new Dictionary<string, object>() 
                 { 
@@ -74,7 +78,8 @@ namespace createsend_dotnet
                     { "Name", name }, 
                     { "CustomFields", customFields }, 
                     { "Resubscribe", resubscribe },
-                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
+                    { "RestartSubscriptionBasedAutoresponders",
+                        restartSubscriptionBasedAutoresponders }
                 });
         }
 
@@ -82,8 +87,7 @@ namespace createsend_dotnet
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
-            HttpHelper.Delete(AuthCredentials, string.Format("/subscribers/{0}.json", ListID),
-                              queryArguments);
+            HttpDelete(string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
         
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
@@ -91,17 +95,22 @@ namespace createsend_dotnet
             return Import(subscribers, resubscribe, false);
         }
 
-        public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe, bool queueSubscriptionBasedAutoResponders)
+        public BulkImportResults Import(List<SubscriberDetail> subscribers,
+            bool resubscribe, bool queueSubscriptionBasedAutoResponders)
         {
-            return Import(subscribers, resubscribe, queueSubscriptionBasedAutoResponders, false);
+            return Import(subscribers, resubscribe,
+                queueSubscriptionBasedAutoResponders, false);
         }
 
-        public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe, bool queueSubscriptionBasedAutoResponders, bool restartSubscriptionBasedAutoresponders)
+        public BulkImportResults Import(List<SubscriberDetail> subscribers,
+            bool resubscribe, bool queueSubscriptionBasedAutoResponders,
+            bool restartSubscriptionBasedAutoresponders)
         {
             List<object> reworkedSubscribers = new List<object>();
             foreach (SubscriberDetail subscriber in subscribers)
             {
-                Dictionary<string, object> subscriberWithoutDate = new Dictionary<string, object>() 
+                Dictionary<string, object> subscriberWithoutDate =
+                    new Dictionary<string, object>() 
                 { 
                     { "EmailAddress", subscriber.EmailAddress }, 
                     { "Name", subscriber.Name }, 
@@ -110,22 +119,23 @@ namespace createsend_dotnet
                 reworkedSubscribers.Add(subscriberWithoutDate);
             }
 
-            return HttpHelper.Post<Dictionary<string, object>, BulkImportResults, ErrorResult<BulkImportResults>>(
-                AuthCredentials, 
+            return HttpPost<Dictionary<string, object>, BulkImportResults,
+                ErrorResult<BulkImportResults>>(
                 string.Format("/subscribers/{0}/import.json", ListID), null, 
                 new Dictionary<string, object>() 
                 { 
                     { "Subscribers", reworkedSubscribers }, 
                     { "Resubscribe", resubscribe },
-                    { "QueueSubscriptionBasedAutoResponders", queueSubscriptionBasedAutoResponders },
-                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
+                    { "QueueSubscriptionBasedAutoResponders",
+                        queueSubscriptionBasedAutoResponders },
+                    { "RestartSubscriptionBasedAutoresponders",
+                        restartSubscriptionBasedAutoresponders }
                 });
         }
 
         public bool Unsubscribe(string emailAddress)
         {
-            string result = HttpHelper.Post<Dictionary<string, string>, string>(
-                AuthCredentials, 
+            string result = HttpPost<Dictionary<string, string>, string>(
                 string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, 
                 new Dictionary<string, string>() 
                 { 

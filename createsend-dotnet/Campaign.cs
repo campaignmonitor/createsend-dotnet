@@ -4,18 +4,12 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class Campaign
+    public class Campaign : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         public string CampaignID { get; set; }
 
-        public Campaign(string campaignID)
+        public Campaign(AuthenticationDetails auth, string campaignID)
+            : base(auth)
         {
             CampaignID = campaignID;
         }
@@ -42,14 +36,13 @@ namespace createsend_dotnet
         /// <param name="segmentIDs">IDs of the segments to which the
         /// campaign will be sent</param>
         /// <returns>The ID of the newly created campaign</returns>
-        public static string Create(string apiKey, string clientID,
+        public static string Create(AuthenticationDetails auth, string clientID,
             string subject, string name, string fromName, string fromEmail,
             string replyTo, string htmlUrl, string textUrl, List<string>
             listIDs, List<string> segmentIDs)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                new CreateSendCredentials(apiKey, "x"), 
-                string.Format("/campaigns/{0}.json", clientID), null, 
+                auth, string.Format("/campaigns/{0}.json", clientID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "Subject", subject }, 
@@ -64,45 +57,13 @@ namespace createsend_dotnet
                 });
         }
 
-        /// <summary>
-        /// Creates a campaign using the campaign details provided.
-        /// </summary>
-        /// <param name="clientID">Client ID of the client for whom the
-        /// campaign should be created</param>
-        /// <param name="subject">A subject for the campaign</param>
-        /// <param name="name">A name for the campaign</param>
-        /// <param name="fromName">From name for the campaign</param>
-        /// <param name="fromEmail">From email address for the campaign</param>
-        /// <param name="replyTo">Reply-to address for the campaign</param>
-        /// <param name="htmlUrl">URL for the HTML content for the 
-        /// campaign</param>
-        /// <param name="textUrl">URL for the text content for the campaign.
-        /// Note that you may provide textUrl as null or an empty string and
-        /// the text content for the campaign will be generated from the HTML
-        /// content.</param>
-        /// <param name="listIDs">IDs of the lists to which the campaign
-        /// will be sent</param>
-        /// <param name="segmentIDs">IDs of the segments to which the
-        /// campaign will be sent</param>
-        /// <returns>The ID of the newly created campaign</returns>
-        public static string Create(string clientID, string subject,
-            string name, string fromName, string fromEmail, string replyTo,
-            string htmlUrl, string textUrl, List<string> listIDs,
-            List<string> segmentIDs)
-        {
-            return Create(CreateSendOptions.ApiKey, clientID, subject, name,
-                fromName, fromEmail, replyTo, htmlUrl, textUrl, listIDs,
-                segmentIDs);
-        }
-
-        public static string CreateFromTemplate(string apiKey, string clientID,
+        public static string CreateFromTemplate(AuthenticationDetails auth, string clientID,
             string subject, string name, string fromName, string fromEmail,
             string replyTo, List<string> listIDs, List<string> segmentIDs,
             string templateID, TemplateContent templateContent)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                new CreateSendCredentials(apiKey, "x"),
-                string.Format("/campaigns/{0}/fromtemplate.json", clientID), null,
+                auth, string.Format("/campaigns/{0}/fromtemplate.json", clientID), null,
                 new Dictionary<string, object>()
                 { 
                     { "Subject", subject }, 
@@ -117,20 +78,9 @@ namespace createsend_dotnet
                 });
         }
 
-        public static string CreateFromTemplate(string clientID, string subject,
-            string name, string fromName, string fromEmail, string replyTo,
-            List<string> listIDs, List<string> segmentIDs, string templateID,
-            TemplateContent templateContent)
-        {
-            return CreateFromTemplate(CreateSendOptions.ApiKey, clientID, subject, name,
-                fromName, fromEmail, replyTo, listIDs, segmentIDs, templateID,
-                templateContent);
-        }
-
         public void SendPreview(List<string> recipients, string personalize)
         {
-            HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPost<Dictionary<string, object>, string>(
                 string.Format("/campaigns/{0}/sendpreview.json", CampaignID), 
                 null,                 
                 new Dictionary<string, object>() 
@@ -152,8 +102,7 @@ namespace createsend_dotnet
 
         private void Send(string confirmationEmail, string sendDate)
         {
-            HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials,
+            HttpPost<Dictionary<string, object>, string>(
                 string.Format("/campaigns/{0}/send.json", CampaignID),
                 null,
                 new Dictionary<string, object>()
@@ -165,35 +114,37 @@ namespace createsend_dotnet
 
         public void Unschedule()
         {
-            HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPost<Dictionary<string, object>, string>(
                 string.Format("/campaigns/{0}/unschedule.json", CampaignID),
                 null, null);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/campaigns/{0}.json", CampaignID), null);
+            HttpDelete(string.Format("/campaigns/{0}.json", CampaignID), null);
         }
 
         public CampaignSummary Summary()
         {
-            return HttpHelper.Get<CampaignSummary>(AuthCredentials, string.Format("/campaigns/{0}/summary.json", CampaignID), null);
+            return HttpGet<CampaignSummary>(
+                string.Format("/campaigns/{0}/summary.json", CampaignID), null);
         }
 
         public IEnumerable<EmailClient> EmailClientUsage()
         {
-            return HttpHelper.Get<IEnumerable<EmailClient>>(AuthCredentials,
+            return HttpGet<IEnumerable<EmailClient>>(
                 string.Format("/campaigns/{0}/emailclientusage.json",
                 CampaignID), null);
         }
 
         public CampaignListsAndSegments ListsAndSegments()
         {
-            return HttpHelper.Get<CampaignListsAndSegments>(AuthCredentials, string.Format("/campaigns/{0}/listsandsegments.json", CampaignID), null);
+            return HttpGet<CampaignListsAndSegments>(
+                string.Format("/campaigns/{0}/listsandsegments.json", CampaignID), null);
         }
 
-        public PagedCollection<CampaignRecipient> Recipients(int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<CampaignRecipient> Recipients(
+            int page, int pageSize, string orderField, string orderDirection)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("page", page.ToString());
@@ -201,7 +152,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignRecipient>>(AuthCredentials, string.Format("/campaigns/{0}/recipients.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignRecipient>>(
+                string.Format("/campaigns/{0}/recipients.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignOpenDetail> Opens()
@@ -243,7 +195,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignOpenDetail>>(AuthCredentials, string.Format("/campaigns/{0}/opens.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignOpenDetail>>(
+                string.Format("/campaigns/{0}/opens.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignUnsubscribeDetail> Unsubscribes()
@@ -285,7 +238,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignUnsubscribeDetail>>(AuthCredentials, string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignUnsubscribeDetail>>(
+                string.Format("/campaigns/{0}/unsubscribes.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignSpamComplaint> SpamComplaints()
@@ -327,7 +281,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignSpamComplaint>>(AuthCredentials, string.Format("/campaigns/{0}/spam.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignSpamComplaint>>(
+                string.Format("/campaigns/{0}/spam.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignClickDetail> Clicks()
@@ -369,7 +324,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignClickDetail>>(AuthCredentials, string.Format("/campaigns/{0}/clicks.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignClickDetail>>(
+                string.Format("/campaigns/{0}/clicks.json", CampaignID), queryArguments);
         }
 
         public PagedCollection<CampaignBounceDetail> Bounces()
@@ -411,7 +367,8 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<CampaignBounceDetail>>(AuthCredentials, string.Format("/campaigns/{0}/bounces.json", CampaignID), queryArguments);
+            return HttpGet<PagedCollection<CampaignBounceDetail>>(
+                string.Format("/campaigns/{0}/bounces.json", CampaignID), queryArguments);
         }        
     }
 }

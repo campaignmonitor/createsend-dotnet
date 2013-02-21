@@ -3,28 +3,23 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class Account
+    public class Account : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
+        public Account(AuthenticationDetails auth) : base(auth) { }
 
         public string GetPrimaryContact()
         {
-            return HttpHelper.Get<PersonResult>(AuthCredentials, "/primarycontact.json", null).EmailAddress;
+            return HttpGet<PersonResult>("/primarycontact.json", null).EmailAddress;
         }
 
         public string SetPrimaryContact(string emailAddress)
         {
-            return HttpHelper.Put<string, PersonResult>(AuthCredentials, "/primarycontact.json", new NameValueCollection{{"email", emailAddress}}, null).EmailAddress;
+            return HttpPut<string, PersonResult>("/primarycontact.json", new NameValueCollection{{"email", emailAddress}}, null).EmailAddress;
         }
 
         public IEnumerable<AdministratorDetails> Administrators()
         {
-            return HttpHelper.Get<IEnumerable<AdministratorDetails>>(AuthCredentials, "/admins.json", null);
+            return HttpGet<IEnumerable<AdministratorDetails>>("/admins.json", null);
         }
     }
 }

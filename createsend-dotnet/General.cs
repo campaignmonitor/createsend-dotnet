@@ -4,72 +4,45 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class General
+    public class General : CreateSendBase
     {
-        public static string ApiKey(string siteUrl, string username, string password)
+        public General() : base(null) { }
+        public General(AuthenticationDetails auth) : base(auth) { }
+
+        public string ApiKey(string siteUrl, string username, string password)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("SiteUrl", siteUrl);
 
-            CreateSendCredentials credential = new CreateSendCredentials(username, password);
-            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(credential, "/apikey.json", queryArguments);
-
+            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(
+                new BasicAuthAuthenticationDetails(username, password),
+                "/apikey.json", queryArguments);
             return result.ApiKey;
         }
 
-        public static DateTime SystemDate(string apiKey)
+        public DateTime SystemDate()
         {
-            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
-            return HttpHelper.Get<SystemDateResult>(credential, "/systemdate.json", null).SystemDate;
+            return HttpGet<SystemDateResult>("/systemdate.json", null).SystemDate;
         }
 
-        public static DateTime SystemDate()
+        public IEnumerable<string> Countries(string apiKey)
         {
-            return SystemDate(CreateSendOptions.ApiKey);
+            return HttpGet<string[]>("/countries.json", null);
         }
 
-        public static IEnumerable<string> Countries(string apiKey)
+        public IEnumerable<string> Timezones()
         {
-            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
-            return HttpHelper.Get<string[]>(credential, "/countries.json", null);
+            return HttpGet<string[]>("/timezones.json", null);
         }
 
-        public static IEnumerable<string> Countries()
+        public IEnumerable<BasicClient> Clients()
         {
-            return Countries(CreateSendOptions.ApiKey);
+            return HttpGet<Clients>("/clients.json", null);
         }
 
-        public static IEnumerable<string> Timezones(string apiKey)
+        public BillingDetails BillingDetails()
         {
-            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
-            return HttpHelper.Get<string[]>(credential, "/timezones.json", null);
-        }
-
-        public static IEnumerable<string> Timezones()
-        {
-            return Timezones(CreateSendOptions.ApiKey);
-        }
-
-        public static IEnumerable<BasicClient> Clients(string apiKey)
-        {
-            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
-            return HttpHelper.Get<Clients>(credential, "/clients.json", null);
-        }
-
-        public static IEnumerable<BasicClient> Clients()
-        {
-            return Clients(CreateSendOptions.ApiKey);
-        }
-
-        public static BillingDetails BillingDetails(string apiKey)
-        {
-            CreateSendCredentials credential = new CreateSendCredentials(apiKey, "x");
-            return HttpHelper.Get<BillingDetails>(credential, "/billingdetails.json", null);
-        }
-
-        public static BillingDetails BillingDetails()
-        {
-            return BillingDetails(CreateSendOptions.ApiKey);
+            return HttpGet<BillingDetails>("/billingdetails.json", null);
         }
     }
 }

@@ -4,24 +4,18 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class List
+    public class List : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         public string ListID { get; set; }
 
-        public List(string listID)
+        public List(AuthenticationDetails auth, string listID)
+            : base(auth)
         {
             ListID = listID;
         }
 
         public static string Create(
-            string apiKey,
+            AuthenticationDetails auth,
             string clientID,
             string title,
             string unsubscribePage,
@@ -30,8 +24,7 @@ namespace createsend_dotnet
             UnsubscribeSetting unsubscribeSetting)
         {
             return HttpHelper.Post<ListDetail, string>(
-                new CreateSendCredentials(apiKey, "x"), 
-                string.Format("/lists/{0}.json", clientID), null,
+                auth, string.Format("/lists/{0}.json", clientID), null,
                 new ListDetail()
                 {
                     Title = title,
@@ -40,19 +33,6 @@ namespace createsend_dotnet
                     ConfirmationSuccessPage = confirmationSuccessPage,
                     UnsubscribeSetting = unsubscribeSetting.ToString()
                 });
-        }
-
-        public static string Create(
-            string clientID,
-            string title,
-            string unsubscribePage,
-            bool confirmedOptIn,
-            string confirmationSuccessPage,
-            UnsubscribeSetting unsubscribeSetting)
-        {
-            return Create(CreateSendOptions.ApiKey, clientID, title,
-                unsubscribePage, confirmedOptIn, confirmationSuccessPage,
-                unsubscribeSetting);
         }
 
         public void Update(
@@ -64,8 +44,7 @@ namespace createsend_dotnet
             bool addUnsubscribesToSuppList,
             bool scrubActiveWithSuppList)
         {
-            HttpHelper.Put<ListDetailForUpdate, string>(
-                AuthCredentials, 
+            HttpPut<ListDetailForUpdate, string>(
                 string.Format("/lists/{0}.json", ListID), null,
                 new ListDetailForUpdate()
                 {
@@ -81,12 +60,13 @@ namespace createsend_dotnet
 
         public ListDetail Details()
         {
-            return HttpHelper.Get<ListDetail>(AuthCredentials, string.Format("/lists/{0}.json", ListID), null);
+            return HttpGet<ListDetail>(
+                string.Format("/lists/{0}.json", ListID), null);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/lists/{0}.json", ListID), null);
+            HttpDelete(string.Format("/lists/{0}.json", ListID), null);
         }
 
         public string CreateCustomField(
@@ -103,8 +83,7 @@ namespace createsend_dotnet
             List<string> options,
             bool visibleInPreferenceCenter)
         {
-            return HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials,
+            return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/customfields.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -120,8 +99,7 @@ namespace createsend_dotnet
             string fieldName,
             bool visibleInPreferenceCenter)
         {
-            return HttpHelper.Put<Dictionary<string, object>, string>(
-                AuthCredentials,
+            return HttpPut<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/customfields/{1}.json", 
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
                 new Dictionary<string, object>() 
@@ -133,12 +111,15 @@ namespace createsend_dotnet
 
         public void DeleteCustomField(string customFieldKey)
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/lists/{0}/customfields/{1}.json", ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null);
+            HttpDelete(
+                string.Format("/lists/{0}/customfields/{1}.json", 
+                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null);
         }
 
         public IEnumerable<ListCustomField> CustomFields()
         {
-            return HttpHelper.Get<ListCustomField[]>(AuthCredentials, string.Format("/lists/{0}/customfields.json", ListID), null);
+            return HttpGet<ListCustomField[]>(
+                string.Format("/lists/{0}/customfields.json", ListID), null);
         }
 
         public void UpdateCustomFieldOptions(
@@ -146,8 +127,7 @@ namespace createsend_dotnet
             List<string> options,
             bool keepExistingOptions)
         {
-            HttpHelper.Put<object, string>(
-                AuthCredentials,
+            HttpPut<object, string>(
                 string.Format("/lists/{0}/customfields/{1}/options.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
                 new { 
@@ -164,12 +144,14 @@ namespace createsend_dotnet
 
         public IEnumerable<BasicSegment> Segments()
         {
-            return HttpHelper.Get<BasicSegment[]>(AuthCredentials, string.Format("/lists/{0}/segments.json", ListID), null);
+            return HttpGet<BasicSegment[]>(
+                string.Format("/lists/{0}/segments.json", ListID), null);
         }
 
         public ListStats Stats()
         {
-            return HttpHelper.Get<ListStats>(AuthCredentials, string.Format("/lists/{0}/stats.json", ListID), null);
+            return HttpGet<ListStats>(
+                string.Format("/lists/{0}/stats.json", ListID), null);
         }
 
         public PagedCollection<SubscriberDetail> Active()
@@ -244,18 +226,19 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<SubscriberDetail>>(AuthCredentials, string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
+            return HttpGet<PagedCollection<SubscriberDetail>>(
+                string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
         }
 
         public IEnumerable<BasicWebhook> Webhooks()
         {
-            return HttpHelper.Get<BasicWebhook[]>(AuthCredentials, string.Format("/lists/{0}/webhooks.json", ListID), null);
+            return HttpGet<BasicWebhook[]>(
+                string.Format("/lists/{0}/webhooks.json", ListID), null);
         }
 
         public string CreateWebhook(List<string> events, string url, string payloadFormat)
         {
-            return HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/webhooks.json", ListID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -267,26 +250,32 @@ namespace createsend_dotnet
 
         public bool TestWebhook(string webhookID)
         {
-            HttpHelper.Get<string, ErrorResult<WebhookTestErrorResult>>(
-                AuthCredentials, 
-                string.Format("/lists/{0}/webhooks/{1}/test.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
+            HttpGet<string, ErrorResult<WebhookTestErrorResult>>(
+                string.Format("/lists/{0}/webhooks/{1}/test.json",
+                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
           
             return true; //an exception will be thrown if there is a problem
         }
 
         public void DeleteWebhook(string webhookID)
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/lists/{0}/webhooks/{1}.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
+            HttpDelete(
+                string.Format("/lists/{0}/webhooks/{1}.json",
+                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
         }
 
         public void ActivateWebhook(string webhookID)
         {
-            HttpHelper.Put<string, string>(AuthCredentials, string.Format("/lists/{0}/webhooks/{1}/activate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
+            HttpPut<string, string>(
+                string.Format("/lists/{0}/webhooks/{1}/activate.json",
+                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
         }
 
         public void DeactivateWebhook(string webhookID)
         {
-            HttpHelper.Put<string, string>(AuthCredentials, string.Format("/lists/{0}/webhooks/{1}/deactivate.json", ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
+            HttpPut<string, string>(
+                string.Format("/lists/{0}/webhooks/{1}/deactivate.json",
+                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
         }
     }
 }

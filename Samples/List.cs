@@ -7,11 +7,14 @@ namespace Samples
 {
     public class ListSamples
     {
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
         public string ListID = "your_list_id";
 
         public void GetDetails()
         {
-            List list = new List(ListID);
+            List list = new List(auth, ListID);
             try
             {
                 ListDetail ld = list.Details();
@@ -38,7 +41,7 @@ namespace Samples
 
         public void Update()
         {
-            List list = new List(ListID);
+            List list = new List(auth, ListID);
             try
             {
                 list.Update(
@@ -66,7 +69,7 @@ namespace Samples
 
         public void CreateCustomField()
         {
-            List list = new List(ListID);
+            List list = new List(auth, ListID);
 
             try
             {
@@ -88,7 +91,7 @@ namespace Samples
 
         public void CreateMultiOptionCustomField()
         {
-            List list = new List(ListID);
+            List list = new List(auth, ListID);
 
             try
             {
@@ -111,7 +114,7 @@ namespace Samples
 
         public void GetActiveSubscribers()
         {
-            List list = new List(ListID);
+            List list = new List(auth, ListID);
 
             try
             {

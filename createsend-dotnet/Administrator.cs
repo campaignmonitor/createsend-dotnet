@@ -2,39 +2,34 @@
 
 namespace createsend_dotnet
 {
-    public class Administrator
+    public class Administrator : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
-        private string AdminsUrl { get { return string.Format("/admins.json"); }}  
+        private string AdminsUrl { get { return string.Format("/admins.json"); } }
+        
+        public Administrator(AuthenticationDetails auth) : base(auth) { }
 
         public AdministratorDetails Details(string emailAddress)
         {
-            return HttpHelper.Get<AdministratorDetails>(AuthCredentials, AdminsUrl,
-                                                 new NameValueCollection {{"email", emailAddress}});
+            return HttpGet<AdministratorDetails>(
+                AdminsUrl, new NameValueCollection {{"email", emailAddress}});
         }
 
         public string Add(AdministratorDetails admin)
         {
-            return HttpHelper.Post<AdministratorDetails, AdministratorResult>(AuthCredentials, AdminsUrl, null, admin).EmailAddress;
+            return HttpPost<AdministratorDetails, AdministratorResult>(
+                AdminsUrl, null, admin).EmailAddress;
         }
 
         public string Update(string emailAddress, AdministratorDetails admin)
         {
-            return
-                HttpHelper.Put<AdministratorDetails, AdministratorResult>(AuthCredentials, AdminsUrl, new NameValueCollection {{"email", emailAddress}},
-                                                            admin).EmailAddress;
+            return HttpPut<AdministratorDetails, AdministratorResult>(
+                AdminsUrl, new NameValueCollection {{ "email", emailAddress }},
+                admin).EmailAddress;
         }
 
         public void Delete(string emailAddress)
         {
-            HttpHelper.Delete(AuthCredentials, AdminsUrl,
-                              new NameValueCollection {{"email", emailAddress}});
+            HttpDelete(AdminsUrl, new NameValueCollection {{"email", emailAddress}});
         }
     }
 }

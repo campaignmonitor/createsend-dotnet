@@ -2,18 +2,12 @@
 
 namespace createsend_dotnet
 {
-    public class Person
+    public class Person : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         private readonly string clientID;
 
-        public Person(string clientID)
+        public Person(AuthenticationDetails auth, string clientID)
+            : base(auth)
         {
             this.clientID = clientID;
         }
@@ -22,26 +16,27 @@ namespace createsend_dotnet
 
         public PersonDetails Details(string emailAddress)
         {
-            return HttpHelper.Get<PersonDetails>(AuthCredentials, PeopleUrl,
-                                                 new NameValueCollection {{"email", emailAddress}});
+            return HttpGet<PersonDetails>(
+                PeopleUrl, new NameValueCollection {{"email", emailAddress}});
         }
 
         public string Add(PersonDetails person)
         {
-            return HttpHelper.Post<PersonDetails, PersonResult>(AuthCredentials, PeopleUrl, null, person).EmailAddress;
+            return HttpPost<PersonDetails, PersonResult>(
+                PeopleUrl, null, person).EmailAddress;
         }
 
         public string Update(string emailAddress, PersonDetails person)
         {
-            return
-                HttpHelper.Put<PersonDetails, PersonResult>(AuthCredentials, PeopleUrl, new NameValueCollection {{"email", emailAddress}},
-                                                            person).EmailAddress;
+            return HttpPut<PersonDetails, PersonResult>(
+                PeopleUrl, new NameValueCollection {{"email", emailAddress}},
+                person).EmailAddress;
         }
 
         public void Delete(string emailAddress)
         {
-            HttpHelper.Delete(AuthCredentials, PeopleUrl,
-                              new NameValueCollection {{"email", emailAddress}});
+            HttpDelete(PeopleUrl,
+                new NameValueCollection {{"email", emailAddress}});
         }
     }
 }

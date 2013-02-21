@@ -5,10 +5,14 @@ namespace Samples
 {
     public class Administrators
     {
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
+
         public void Add()
         {
-            Administrator administrator = new Administrator();
-           
+            Administrator administrator = new Administrator(auth);
+
             try
             {
                  AdministratorDetails administratorDetails = new AdministratorDetails
@@ -34,7 +38,7 @@ namespace Samples
 
         public void Update()
         {
-            Administrator administrator = new Administrator();
+            Administrator administrator = new Administrator(auth);
            
             try
             {
@@ -58,7 +62,7 @@ namespace Samples
 
         public void List()
         {
-            Account account = new Account();
+            Account account = new Account(auth);
            
             try
             {
@@ -83,7 +87,7 @@ namespace Samples
 
         public void Delete()
         {
-            Administrator administrator = new Administrator();
+            Administrator administrator = new Administrator(auth);
            
             try
             {
@@ -104,7 +108,7 @@ namespace Samples
 
         public void SetPrimaryContact()
         {
-            Account account = new Account();
+            Account account = new Account(auth);
            
             try
             {
@@ -125,7 +129,7 @@ namespace Samples
 
         public void GetPrimaryContact()
         {
-            Account account = new Account();
+            Account account = new Account(auth);
            
             try
             {

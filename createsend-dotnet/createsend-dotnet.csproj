@@ -45,8 +45,10 @@
   <ItemGroup>
     <Compile Include="Account.cs" />
     <Compile Include="Administrator.cs" />
+    <Compile Include="AuthenticationDetails.cs" />
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="CreateSendBase.cs" />
     <Compile Include="General.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\BillingDetails.cs" />

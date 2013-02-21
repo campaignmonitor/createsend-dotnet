@@ -4,27 +4,21 @@ using System.Collections.Specialized;
 
 namespace createsend_dotnet
 {
-    public class Segment
+    public class Segment : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         public string SegmentID { get; set; }
 
-        public Segment(string segmentID)
+        public Segment(AuthenticationDetails auth, string segmentID)
+            : base(auth)
         {
             SegmentID = segmentID;
         }
 
-        public static string Create(string apiKey, string listID, string title, SegmentRules rules)
+        public static string Create(
+            AuthenticationDetails auth, string listID, string title, SegmentRules rules)
         {
             return HttpHelper.Post<Dictionary<string, object>, string, ErrorResult<RuleErrorResults>>(
-                new CreateSendCredentials(apiKey, "x"), 
-                string.Format("/segments/{0}.json", listID), null,
+                auth, string.Format("/segments/{0}.json", listID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "ListID", listID }, 
@@ -33,15 +27,9 @@ namespace createsend_dotnet
                 });
         }
 
-        public static string Create(string listID, string title, SegmentRules rules)
-        {
-            return Create(CreateSendOptions.ApiKey, listID, title, rules);
-        }
-
         public void Update(string title, SegmentRules rules)
         {
-            HttpHelper.Put<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPut<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}.json", SegmentID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -52,8 +40,7 @@ namespace createsend_dotnet
 
         public void AddRule(string subject, List<string> clauses)
         {
-            HttpHelper.Post<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPost<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}/rules.json", SegmentID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -102,22 +89,25 @@ namespace createsend_dotnet
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
 
-            return HttpHelper.Get<PagedCollection<SubscriberDetail>>(AuthCredentials, string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
+            return HttpGet<PagedCollection<SubscriberDetail>>(
+                string.Format("/segments/{0}/active.json", SegmentID), queryArguments);
         }
 
         public SegmentDetail Details()
         {
-            return HttpHelper.Get<SegmentDetail>(AuthCredentials, string.Format("/segments/{0}.json", SegmentID), null);
+            return HttpGet<SegmentDetail>(
+                string.Format("/segments/{0}.json", SegmentID), null);
         }
 
         public void ClearRules()
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/segments/{0}/rules.json", SegmentID), null);
+            HttpDelete(
+                string.Format("/segments/{0}/rules.json", SegmentID), null);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/segments/{0}.json", SegmentID), null);
+            HttpDelete(string.Format("/segments/{0}.json", SegmentID), null);
         }
     }
 }

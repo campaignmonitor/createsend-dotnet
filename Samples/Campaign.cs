@@ -7,11 +7,14 @@ namespace Samples
 {
     class CampaignSamples
     {
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
         private string campaignID = "your_campaign_id";
 
         void GetRecipients()
         {
-            Campaign campaign = new Campaign(campaignID);
+            Campaign campaign = new Campaign(auth, campaignID);
 
             try
             {
@@ -113,6 +116,7 @@ namespace Samples
                 // </html>     
 
                 string campaignID = Campaign.CreateFromTemplate(
+                    auth,
                     "Your Client ID",
                     "Campaign Subject",
                     "Campaign Name",
@@ -141,7 +145,7 @@ namespace Samples
 
         public void GetEmailClientUsage()
         {
-            Campaign campaign = new Campaign(campaignID);
+            Campaign campaign = new Campaign(auth, campaignID);
 
             try
             {

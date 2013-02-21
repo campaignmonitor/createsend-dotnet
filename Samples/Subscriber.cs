@@ -7,12 +7,14 @@ namespace Samples
 {
     public class SubscriberSamples
     {
-        //see API documentation on where to get this value
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
         private string listID = "your_list_id";
 
         void BasicAdd()
         {
-            Subscriber subscriber = new Subscriber(listID);
+            Subscriber subscriber = new Subscriber(auth, listID);
 
             try
             {
@@ -34,7 +36,7 @@ namespace Samples
 
         void AddWithCustomFields()
         {
-            Subscriber subscriber = new Subscriber(listID);
+            Subscriber subscriber = new Subscriber(auth, listID);
 
             try
             {
@@ -65,7 +67,7 @@ namespace Samples
         /// </summary>
         void UpdateWithNewEmailAndUnchangedNameDontResubscribe()
         {
-            Subscriber subscriber = new Subscriber(listID);
+            Subscriber subscriber = new Subscriber(auth, listID);
 
             try
             {
@@ -91,7 +93,7 @@ namespace Samples
 
         void BatchAdd()
         {
-            Subscriber subscriber = new Subscriber(listID);
+            Subscriber subscriber = new Subscriber(auth, listID);
 
             List<SubscriberDetail> newSubscribers = new List<SubscriberDetail>();
 
@@ -145,10 +147,8 @@ namespace Samples
 
         void DeleteSubscriber()
         {
-            Subscriber subscriber = new Subscriber(listID);
+            Subscriber subscriber = new Subscriber(auth, listID);
             subscriber.Delete("test1@notarealdomain.com");
         }
-
-
     }
 }

@@ -2,27 +2,21 @@
 
 namespace createsend_dotnet
 {
-    public class Template
+    public class Template : CreateSendBase
     {
-        public string ApiKey { get; set; }
-
-        private CreateSendCredentials AuthCredentials
-        {
-            get { return new CreateSendCredentials(ApiKey != null ? ApiKey : CreateSendOptions.ApiKey, "x"); }
-        }
-
         public string TemplateID { get; set; }
 
-        public Template(string templateID)
+        public Template(AuthenticationDetails auth, string templateID)
+            : base(auth)
         {
             TemplateID = templateID;
         }
 
-        public static string Create(string apiKey, string clientID, string name, string htmlPageUrl, string zipUrl)
+        public static string Create(AuthenticationDetails auth,
+            string clientID, string name, string htmlPageUrl, string zipUrl)
         {
             return HttpHelper.Post<Dictionary<string, object>, string>(
-                new CreateSendCredentials(apiKey, "x"), 
-                string.Format("/templates/{0}.json", clientID), null,
+                auth, string.Format("/templates/{0}.json", clientID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "Name", name }, 
@@ -31,15 +25,9 @@ namespace createsend_dotnet
                 });
         }
 
-        public static string Create(string clientID, string name, string htmlPageUrl, string zipUrl)
-        {
-            return Create(CreateSendOptions.ApiKey, clientID, name, htmlPageUrl, zipUrl);
-        }
-
         public void Update(string name, string htmlPageUrl, string zipUrl)
         {
-            HttpHelper.Put<Dictionary<string, object>, string>(
-                AuthCredentials, 
+            HttpPut<Dictionary<string, object>, string>(
                 string.Format("/templates/{0}.json", TemplateID), null,
                 new Dictionary<string, object>() 
                 { 
@@ -51,12 +39,14 @@ namespace createsend_dotnet
 
         public BasicTemplate Details()
         {
-            return HttpHelper.Get<BasicTemplate>(AuthCredentials, string.Format("/templates/{0}.json", TemplateID), null);
+            return HttpGet<BasicTemplate>(
+                string.Format("/templates/{0}.json", TemplateID), null);
         }
 
         public void Delete()
         {
-            HttpHelper.Delete(AuthCredentials, string.Format("/templates/{0}.json", TemplateID), null);
+            HttpDelete(
+                string.Format("/templates/{0}.json", TemplateID), null);
         }
     }
 }

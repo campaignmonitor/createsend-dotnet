@@ -5,12 +5,14 @@ namespace Samples
 {
     public class People
     {
-        // see API documentation on where to get this value
-        private string clientId = "your_client_id"; 
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
+        private string clientId = "your client id";
 
         public void Add()
         {
-            Person person = new Person(clientId);
+            Person person = new Person(auth, clientId);
            
             try
             {
@@ -39,7 +41,7 @@ namespace Samples
 
         public void Update()
         {
-            Person person = new Person(clientId);
+            Person person = new Person(auth, clientId);
            
             try
             {
@@ -63,7 +65,7 @@ namespace Samples
 
         public void List()
         {
-            Client client = new Client(clientId);
+            Client client = new Client(auth, clientId);
            
             try
             {
@@ -89,7 +91,7 @@ namespace Samples
 
         public void Delete()
         {
-            Person person = new Person(clientId);
+            Person person = new Person(auth, clientId);
            
             try
             {
@@ -110,7 +112,7 @@ namespace Samples
 
         public void SetPrimaryContact()
         {
-            Client client = new Client(clientId);
+            Client client = new Client(auth, clientId);
            
             try
             {
@@ -131,7 +133,7 @@ namespace Samples
 
         public void GetPrimaryContact()
         {
-            Client client = new Client(clientId);
+            Client client = new Client(auth, clientId);
            
             try
             {

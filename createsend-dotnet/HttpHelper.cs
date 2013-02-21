@@ -12,19 +12,11 @@ namespace createsend_dotnet
 {
     public static class CreateSendOptions
     {
-        static string api_key;
         static string base_uri;
 
         static CreateSendOptions()
         {
-            api_key = string.IsNullOrEmpty(ConfigurationManager.AppSettings["api_key"]) ? api_key : ConfigurationManager.AppSettings["api_key"];
             base_uri = string.IsNullOrEmpty(ConfigurationManager.AppSettings["base_uri"]) ? "https://api.createsend.com/api/v3" : ConfigurationManager.AppSettings["base_uri"];
-        }
-
-        public static string ApiKey
-        {
-            get { return api_key; }
-            set { api_key = value; }
         }
 
         public static string BaseUri
@@ -49,67 +41,46 @@ namespace createsend_dotnet
 
     }
 
-    public class CreateSendCredentials
-    {
-        string username;
-        string password;
-
-        public CreateSendCredentials(
-            string username,
-            string password)
-        {
-            this.username = username;
-            this.password = password;
-        }
-
-        public string UserName
-        {
-            get { return username; }
-            set { username = value; }
-        }
-
-        public string Password
-        {
-            get { return password; }
-            set { password = value; }
-        }
-    }
-
     public class HttpHelper
     {
-        public static U Get<U>(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments)
+        public static U Get<U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
         {
-            return Get<U, ErrorResult>(authCredentials, path, queryArguments);
+            return Get<U, ErrorResult>(auth, path, queryArguments);
         }
 
-        public static U Get<U, EX>(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments) where EX : ErrorResult
+        public static U Get<U, EX>(AuthenticationDetails auth, string path, NameValueCollection queryArguments) where EX : ErrorResult
         {
-            return MakeRequest<string, U, EX>("GET", authCredentials, path, queryArguments, null);
+            return MakeRequest<string, U, EX>("GET", auth, path, queryArguments, null);
         }
 
-        public static U Post<T, U>(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Post<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return Post<T, U, ErrorResult>(authCredentials, path, queryArguments, payload);
+            return Post<T, U, ErrorResult>(auth, path, queryArguments, payload);
         }
 
-        public static U Post<T, U, EX>(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments, T payload)
+        public static U Post<T, U, EX>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload)
             where T : class
             where EX : ErrorResult
         {
-            return MakeRequest<T, U, EX>("POST", authCredentials, path, queryArguments, payload);
+            return MakeRequest<T, U, EX>("POST", auth, path, queryArguments, payload);
         }
 
-        public static U Put<T, U>(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Put<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return MakeRequest<T, U, ErrorResult>("PUT", authCredentials, path, queryArguments, payload);
+            return MakeRequest<T, U, ErrorResult>("PUT", auth, path, queryArguments, payload);
         }
 
-        public static string Delete(CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments)
+        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
         {
-            return MakeRequest<string, string, ErrorResult>("DELETE", authCredentials, path, queryArguments, null);
+            return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null);
         }
 
-        static U MakeRequest<T, U, EX>(string method, CreateSendCredentials authCredentials, string path, NameValueCollection queryArguments, T payload)
+        static U MakeRequest<T, U, EX>(
+            string method,
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments,
+            T payload)
             where T : class
             where EX : ErrorResult
         {
@@ -124,9 +95,26 @@ namespace createsend_dotnet
             req.ContentType = "application/json";
             req.AutomaticDecompression = DecompressionMethods.GZip;
 
-            // HttpWebRequest only suppies the network credentials after receiving a 401 response which is retarded. 
-            req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
-                Encoding.Default.GetBytes(authCredentials.UserName + ":" + authCredentials.Password));
+            if (auth != null)
+            {
+                if (auth is OAuthAuthenticationDetails)
+                {
+                    OAuthAuthenticationDetails oauthDetails = auth as OAuthAuthenticationDetails;
+                    req.Headers["Authorization"] = "Bearer " + oauthDetails.AccessToken;
+                }
+                else if (auth is ApiKeyAuthenticationDetails)
+                {
+                    ApiKeyAuthenticationDetails apiKeyDetails = auth as ApiKeyAuthenticationDetails;
+                    req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
+                        Encoding.Default.GetBytes(apiKeyDetails.ApiKey + ":x"));
+                }
+                else if (auth is BasicAuthAuthenticationDetails)
+                {
+                    BasicAuthAuthenticationDetails basicDetails = auth as BasicAuthAuthenticationDetails;
+                    req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
+                        Encoding.Default.GetBytes(basicDetails.Username + ":" + basicDetails.Password));
+                }
+            }
 
             req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
                 CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion, Assembly.GetExecutingAssembly().FullName);

@@ -8,11 +8,14 @@ namespace Samples
 {
     public class ClientSamples
     {
+        private AuthenticationDetails auth =
+            new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
         public string ClientID = "your client id";
 
         public void ListsForEmail(string email)
         {
-            Client client = new Client(ClientID);
+            Client client = new Client(auth, ClientID);
             try
             {
                 IEnumerable<ListForEmail> lists = client.ListsForEmail(email);
@@ -41,7 +44,7 @@ namespace Samples
 
         public void Suppress(string[] emails)
         {
-            Client client = new Client(ClientID);
+            Client client = new Client(auth, ClientID);
             try
             {
                 client.Suppress(emails);
@@ -61,7 +64,7 @@ namespace Samples
 
         public void Unsuppress(string email)
         {
-            Client client = new Client(ClientID);
+            Client client = new Client(auth, ClientID);
             try
             {
                 client.Unsuppress(email);
