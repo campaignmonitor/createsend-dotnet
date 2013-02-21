@@ -1,5 +1,78 @@
 # createsend-dotnet history
 
+## v3.0.0 - Whenever this is released
+
+* Added support for authenticating using OAuth. See the [README](README.md#authenticating) for full usage instructions.
+* Refactored authentication so that it is done at the instance level. This introduces some breaking changes, which are clearly explained below.
+  * Authentication using an API key is no longer supported using the `api_key` config.
+
+      So if you _previously_ entered an API key into a your `app.config` file (or similar) as follows:
+
+      ```xml
+      <configuration>
+          <appSettings>
+          	  <add key="api_key" value="your_api_key" />
+          </appSettings>
+      </configuration>
+      ```
+
+      If you want to authenticate with an API key, you should _now_ authenticate at the instance level. For example, as follows:
+
+      ```csharp
+	  using System;
+	  using System.Collections.Generic;
+	  using createsend_dotnet;
+
+	  namespace dotnet_api_client
+	  {
+	      class Program
+	      {
+		      static void Main(string[] args)
+		      {
+		          AuthenticationDetails auth = new ApiKeyAuthenticationDetails(
+		              "your api key");
+		          var general = new General(auth);
+		          var clients = general.Clients();
+		      }
+		  }
+	  }
+      ```
+
+  * Instances of classes which inherit from `createsend_dotnet.CreateSendBase` are now _always_ created by passing an `AuthenticationDetails` object as the first argument. This may be either an instance of `OAuthAuthenticationDetails`, or `ApiKeyAuthenticationDetails`.
+
+      So for example, when you _previously_ would have set your API key using the `api_key` config setting and then instantiated `createsend_dotnet.Client` instances like so:
+
+      ```csharp
+      var cl = new Client("your client id");
+      ```
+
+      You would _now_ do this:
+
+      ```csharp
+      AuthenticationDetails auth = new ApiKeyAuthenticationDetails("your api key");
+      var cl = new Client("your client id");
+      ```
+
+  * Any of the static methods on classes which inherit from `createsend_dotnet.CreateSendBase` are now _always_ called by passing an `AuthenticationDetails` object as the first argument.
+
+      So for example, when you _previously_ would have set your API key using the `api_key` config setting and then called `createsend_dotnet.List.Create()` like so:
+
+      ```csharp
+      var newListID = List.Create("Client ID", "My List", 
+          "http://example.com/unsubscribe", false, "",
+          UnsubscribeSetting.AllClientLists);
+      ```
+
+      You _now_ call `createsend_dotnet.List.Create()` like so:
+
+      ```csharp
+      AuthenticationDetails auth = new ApiKeyAuthenticationDetails(
+          "your api key");
+      var newListID = List.Create(auth, "Client ID", "My List", 
+          "http://example.com/unsubscribe", false, "",
+          UnsubscribeSetting.AllClientLists);
+      ```
+
 ## v2.6.0 - 11 Dec, 2012  (272bf6c)
 
 * Added support for including from name, from email, and reply to email in

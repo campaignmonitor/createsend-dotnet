@@ -29,7 +29,6 @@ Once you have an access token and refresh token for your user, you can authentic
 ```csharp
 using System;
 using System.Collections.Generic;
-using System.Text;
 using createsend_dotnet;
 
 namespace dotnet_api_client
@@ -41,10 +40,7 @@ namespace dotnet_api_client
             AuthenticationDetails auth = new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
             var general = new General(auth);
-            IEnumerable<BasicClient> clients = general.Clients();
-            foreach (BasicClient c in clients)
-                Console.WriteLine(string.Format("ID: {0}; Name: {1}", c.ClientID, c.Name));
-            Console.ReadLine();
+            var clients = general.Clients();
         }
     }
 }
@@ -57,7 +53,6 @@ Example console app:
 ```csharp
 using System;
 using System.Collections.Generic;
-using System.Text;
 using createsend_dotnet;
 
 namespace dotnet_api_client

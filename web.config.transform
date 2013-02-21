@@ -1,6 +1,5 @@
 <configuration>
   <appSettings>
-    <add key="api_key" value="your_api_key" />
     <add key="base_uri" value="https://api.createsend.com/api/v3" />
   </appSettings>
 </configuration>
