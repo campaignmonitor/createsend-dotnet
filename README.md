@@ -83,6 +83,8 @@ namespace dotnet_api_client
     {
         static void Main(string[] args)
         {
+            AuthenticationDetails auth = new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
             var general = new General(auth);
             IEnumerable<BasicClient> clients = general.Clients();
             foreach (BasicClient c in clients)
