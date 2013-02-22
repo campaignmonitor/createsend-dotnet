@@ -49,12 +49,12 @@ namespace createsend_dotnet
             string code)
         {
             string body = "grant_type=authorization_code";
-            body += string.Format("&client_id=", clientID.ToString());
-            body += string.Format("&client_secret=", HttpUtility.UrlEncode(clientSecret));
-            body += string.Format("&redirect_uri=", HttpUtility.UrlEncode(redirectUri));
-            body += string.Format("&code=", HttpUtility.UrlEncode(code));
+            body += string.Format("&client_id={0}", clientID.ToString());
+            body += string.Format("&client_secret={0}", HttpUtility.UrlEncode(clientSecret));
+            body += string.Format("&redirect_uri={0}", HttpUtility.UrlEncode(redirectUri));
+            body += string.Format("&code={0}", HttpUtility.UrlEncode(code));
 
-            return HttpHelper.Post<string, OAuthTokenDetails, ErrorResult>(
+            return HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(
                 null, "/token", new NameValueCollection(), body,
                 CreateSendOptions.BaseOAuthUri,
                 HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);

@@ -20,6 +20,13 @@ namespace createsend_dotnet
     }
 
     [Serializable]
+    public class OAuthErrorResult : ErrorResult
+    {
+        public string error { get; set; }
+        public string error_description { get; set; }
+    }
+
+    [Serializable]
     public class ErrorResult
     {
         public string Code { get; set; }

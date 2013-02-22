@@ -36,10 +36,8 @@ namespace createsend_dotnet
                 "grant_type=refresh_token&refresh_token={0}",
                 HttpUtility.UrlEncode(refreshToken));
 
-            // TODO: Use a new custom error handler for the following post.
-
             OAuthTokenDetails newTokenDetails =
-                HttpHelper.Post<string, OAuthTokenDetails, ErrorResult>(
+                HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(
                     null, "/token", new NameValueCollection(), body,
                     CreateSendOptions.BaseOAuthUri,
                     HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);

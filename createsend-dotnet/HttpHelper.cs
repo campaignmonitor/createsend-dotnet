@@ -231,10 +231,17 @@ namespace createsend_dotnet
             {
                 string response = sr.ReadToEnd().Trim();
                 ErrorResult result = JsonConvert.DeserializeObject<EX>(response);
+                string message;
 
-                string message = string.Format(
-                    "The CreateSend API responded with the following error - {0}: {1}", 
-                    result.Code, result.Message);
+                if (result is OAuthErrorResult)
+                    message = string.Format(
+                        "The CreateSend OAuth receiver responded with the following error - {0}: {1}",
+                        (result as OAuthErrorResult).error,
+                        (result as OAuthErrorResult).error_description);
+                else // Regular ErrorResult format.
+                    message = string.Format(
+                        "The CreateSend API responded with the following error - {0}: {1}", 
+                        result.Code, result.Message);
 
                 CreatesendException exception;
                 if (result.Code == "121")
