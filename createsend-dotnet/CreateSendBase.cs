@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Web;
 
 namespace createsend_dotnet
 {
@@ -18,6 +19,35 @@ namespace createsend_dotnet
         public void Authenticate(AuthenticationDetails auth)
         {
             AuthDetails = auth;
+        }
+
+        public OAuthTokenDetails RefreshToken()
+        {
+            if (AuthDetails == null ||
+                !(AuthDetails is OAuthAuthenticationDetails) ||
+                string.IsNullOrEmpty(
+                    (AuthDetails as OAuthAuthenticationDetails)
+                    .RefreshToken))
+                throw new InvalidOperationException(
+                    "You cannot refresh an OAuth token when you don't have a refresh token.");
+
+            string refreshToken = (this.AuthDetails as OAuthAuthenticationDetails)
+                .RefreshToken;
+            string body = string.Format(
+                "grant_type=refresh_token&refresh_token={0}",
+                HttpUtility.UrlEncode(refreshToken));
+
+            // TODO: Use a new custom error handler for the following post.
+
+            OAuthTokenDetails newTokenDetails =
+                HttpHelper.Post<string, OAuthTokenDetails, ErrorResult>(
+                    null, "/token", new NameValueCollection(), body,
+                    CreateSendOptions.BaseOAuthUri,
+                    HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);
+            Authenticate(
+                new OAuthAuthenticationDetails(
+                    newTokenDetails.access_token, newTokenDetails.refresh_token));
+            return newTokenDetails;
         }
 
         public U HttpGet<U>(string path, NameValueCollection queryArguments)

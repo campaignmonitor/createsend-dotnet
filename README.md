@@ -1,8 +1,8 @@
 # createsend-dotnet
 
-A .NET library which implements the complete functionality of the Campaign Monitor API.
+A .NET library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/).
 
-This library is supported on .NET 2, 3.5, and 4. You will find solution files which target the different .NET runtime versions: `createsend-dotnet.net20.sln`, `createsend-dotnet.net35.sln`, and `createsend-dotnet.sln`.
+This library is supported on .NET 2, .NET 3.5, and .NET 4. You will find solution files which target the different .NET runtime versions: `createsend-dotnet.net20.sln`, `createsend-dotnet.net35.sln`, and `createsend-dotnet.sln`.
 
 ## Installation
 
@@ -35,7 +35,7 @@ string authorizeUrl = createsend_dotnet.General.AuthorizeUrl(
 // Redirect your users to authorizeUrl.
 ```
 
-TODO: Add full instructions...
+TODO: Add exchange token instructions...
 
 Once you have an access token and refresh token for your user, you can authenticate and make further API calls like so:
 
@@ -54,6 +54,38 @@ namespace dotnet_api_client
                 "your access token", "your refresh token");
             var general = new General(auth);
             var clients = general.Clients();
+        }
+    }
+}
+```
+
+All OAuth tokens have an expiry time, and can be renewed with a corresponding refresh token. If your access token expires when attempting to make an API call, a `createsend_dotnet.ExpiredOAuthTokenException` will be thrown, so your code should handle this. Here's an example of how you could do this:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using createsend_dotnet;
+
+namespace dotnet_api_client
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            AuthenticationDetails auth = new OAuthAuthenticationDetails(
+                "your access token", "your refresh token");
+            var general = new General(auth);
+            IEnumerable<BasicClient> clients;
+            try
+            {
+                clients = general.Clients();
+            }
+            catch (ExpiredOAuthTokenException ex)
+            {
+                OAuthTokenDetails newTokenDetails = general.RefreshToken();
+                // Save your updated access token, 'expires in' value, and refresh token
+                clients = general.Clients();
+            }
         }
     }
 }

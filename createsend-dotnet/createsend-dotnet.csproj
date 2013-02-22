@@ -59,6 +59,9 @@
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Models\EmailClient.cs" />
     <Compile Include="Models\List.cs" />
+    <Compile Include="Models\OAuthTokenDetails.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\PagedCollection.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Segment.cs" />

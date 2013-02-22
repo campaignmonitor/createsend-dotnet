@@ -51,26 +51,58 @@ namespace createsend_dotnet
 
     public class HttpHelper
     {
-        public static U Get<U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
+        public const string APPLICATION_JSON_CONTENT_TYPE = "application/json";
+        public const string APPLICATION_FORM_URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+
+        public static U Get<U>(
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments)
         {
             return Get<U, ErrorResult>(auth, path, queryArguments);
         }
 
-        public static U Get<U, EX>(AuthenticationDetails auth, string path, NameValueCollection queryArguments) where EX : ErrorResult
+        public static U Get<U, EX>(
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments)
+            where EX : ErrorResult
         {
             return MakeRequest<string, U, EX>("GET", auth, path, queryArguments, null);
         }
 
-        public static U Post<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload) where T : class
+        public static U Post<T, U>(
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments,
+            T payload)
+            where T : class
         {
             return Post<T, U, ErrorResult>(auth, path, queryArguments, payload);
         }
 
-        public static U Post<T, U, EX>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload)
+        public static U Post<T, U, EX>(
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments,
+            T payload)
             where T : class
             where EX : ErrorResult
         {
             return MakeRequest<T, U, EX>("POST", auth, path, queryArguments, payload);
+        }
+
+        public static U Post<T, U, EX>(
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments,
+            T payload,
+            string baseUri,
+            string contentType)
+            where T : class
+            where EX : ErrorResult
+        {
+            return MakeRequest<T, U, EX>("POST", auth, path, queryArguments, payload, baseUri, contentType);
         }
 
         public static U Put<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload) where T : class
@@ -92,15 +124,30 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
+            return MakeRequest<T, U, EX>(method, auth, path, queryArguments,
+                payload, CreateSendOptions.BaseUri, APPLICATION_JSON_CONTENT_TYPE);
+        }
+
+        static U MakeRequest<T, U, EX>(
+            string method,
+            AuthenticationDetails auth,
+            string path,
+            NameValueCollection queryArguments,
+            T payload,
+            string baseUri,
+            string contentType)
+            where T : class
+            where EX : ErrorResult
+        {
             JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
             serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
             serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
 
-            string uri = CreateSendOptions.BaseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
+            string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
             req.Method = method;
-            req.ContentType = "application/json";
+            req.ContentType = contentType;
             req.AutomaticDecompression = DecompressionMethods.GZip;
 
             if (auth != null)
@@ -133,14 +180,15 @@ namespace createsend_dotnet
                 {
                     using (System.IO.StreamWriter os = new System.IO.StreamWriter(req.GetRequestStream()))
                     {
-                        os.Write(JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings));
+                        if (contentType == APPLICATION_FORM_URLENCODED_CONTENT_TYPE)
+                            os.Write(payload);
+                        else
+                            os.Write(JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings));
                         os.Close();
                     }
                 }
                 else
-                {
                     req.ContentLength = 0;
-                }
             }
 
             try
@@ -182,16 +230,20 @@ namespace createsend_dotnet
             using (System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream()))
             {
                 string response = sr.ReadToEnd().Trim();
-                ErrorResult result;
+                ErrorResult result = JsonConvert.DeserializeObject<EX>(response);
 
-                result = JsonConvert.DeserializeObject<EX>(response);                
+                string message = string.Format(
+                    "The CreateSend API responded with the following error - {0}: {1}", 
+                    result.Code, result.Message);
 
-                CreatesendException exception = new CreatesendException(
-                    string.Format("The CreateSend API responded with the following error - {0}: {1}", 
-                    result.Code, result.Message));
+                CreatesendException exception;
+                if (result.Code == "121")
+                    exception = new ExpiredOAuthTokenException(message);
+                else
+                    exception = new CreatesendException(message);
+
                 exception.Data.Add("ErrorResponse", response);
                 exception.Data.Add("ErrorResult", result);
-
                 return exception;
             }
         }
