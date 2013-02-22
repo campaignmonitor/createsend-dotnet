@@ -42,6 +42,24 @@ namespace createsend_dotnet
             return result;
         }
 
+        public static OAuthTokenDetails ExchangeToken(
+            int clientID,
+            string clientSecret,
+            string redirectUri,
+            string code)
+        {
+            string body = "grant_type=authorization_code";
+            body += string.Format("&client_id=", clientID.ToString());
+            body += string.Format("&client_secret=", HttpUtility.UrlEncode(clientSecret));
+            body += string.Format("&redirect_uri=", HttpUtility.UrlEncode(redirectUri));
+            body += string.Format("&code=", HttpUtility.UrlEncode(code));
+
+            return HttpHelper.Post<string, OAuthTokenDetails, ErrorResult>(
+                null, "/token", new NameValueCollection(), body,
+                CreateSendOptions.BaseOAuthUri,
+                HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);
+        }
+
         public string ApiKey(string siteUrl, string username, string password)
         {
             NameValueCollection queryArguments = new NameValueCollection();

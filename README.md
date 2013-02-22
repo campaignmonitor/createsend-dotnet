@@ -35,7 +35,17 @@ string authorizeUrl = createsend_dotnet.General.AuthorizeUrl(
 // Redirect your users to authorizeUrl.
 ```
 
-TODO: Add exchange token instructions...
+If your user approves your application, they will then be redirected to the redirect URI you specified, which will include a `code` parameter, and optionally a `state` parameter in the query string. Your application should implement a handler which can exchange the code passed to it for an access token, using `createsend_dotnet.General.ExchangeToken()` like so:
+
+```csharp
+createsend_dotnet.OAuthTokenDetails tokenDetails = createsend_dotnet.General.ExchangeToken(
+    32132,                 // The Client ID for your application
+    "982u39823r928398",    // The Client Secret for your application
+    "http://example.com/", // Redirect URI for your application
+    "8dw9uq98wu98d"        // The unique code for your user found in the query string
+);
+// Save your access token, 'expires in' value, and refresh token (in tokenDetails).
+```
 
 Once you have an access token and refresh token for your user, you can authenticate and make further API calls like so:
 
