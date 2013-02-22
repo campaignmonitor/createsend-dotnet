@@ -12,15 +12,28 @@ Using NuGet (recommended):
 
 If you don't want to use NuGet:
 
-1. Open the solution file which targets your preferred version of the runtime. 
-2. Build the solution in Release mode. You will see a sub-directory in the `createsend-dotnet/bin/Release directory`, which contains the assemblies targeting your preferred version of the runtime. 
-3. Add the resulting assemblies as references in your project. 
+1. Open the solution file which targets your preferred version of the runtime.
+2. Build the solution in Release mode. You will see a sub-directory in the `createsend-dotnet/bin/Release` directory, which contains the assemblies targeting your preferred version of the runtime.
+3. Add the resulting assemblies as references in your project.
 
 ## Authenticating
 
 The Campaign Monitor API supports authentication using either OAuth or an API key.
 
 ### Using OAuth
+
+The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using `createsend_dotnet.General.AuthorizeUrl()`, like so:
+
+```csharp
+string authorizeUrl = createsend_dotnet.General.AuthorizeUrl(
+    32132,                 // The Client ID for your application
+    "982u39823r928398",    // The Client Secret for your application
+    "http://example.com/", // Redirect URI for your application
+    "ViewReports",         // The permission level your application requires
+    "some state data"      // Optional state data to be included
+);
+// Redirect your users to authorizeUrl.
+```
 
 TODO: Add full instructions...
 
