@@ -22,6 +22,8 @@ The Campaign Monitor API supports authentication using either OAuth or an API ke
 
 ### Using OAuth
 
+This library helps you authenticate using OAuth, as described in the Campaign Monitor API [documentation](http://www.campaignmonitor.com/api/getting-started/#authenticating_with_oauth). You may also wish to reference this ASP.NET MVC [example application](https://github.com/jdennes/dotnetcreatesendoauthtest). The authentication process is described below.
+
 The first thing your application should do is redirect your user to the Campaign Monitor authorization URL where they will have the opportunity to approve your application to access their Campaign Monitor account. You can get this authorization URL by using `createsend_dotnet.General.AuthorizeUrl()`, like so:
 
 ```csharp
