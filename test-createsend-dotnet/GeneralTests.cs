@@ -16,27 +16,25 @@ namespace test_createsend_dotnet
         public void AuthorizeUrl_WithoutState_Test()
         {
             var clientID = 8998879;
-            var clientSecret = "iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd";
             var redirectUri = "http://example.com/auth";
             var scope = "ViewReports,CreateCampaigns,SendCampaigns";
 
-            var url = General.AuthorizeUrl(clientID, clientSecret, redirectUri, scope);
+            var url = General.AuthorizeUrl(clientID, redirectUri, scope);
 
-            url.ShouldBe("https://api.createsend.com/oauth?client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3a%2f%2fexample.com%2fauth&scope=ViewReports%2cCreateCampaigns%2cSendCampaigns");
+            url.ShouldBe("https://api.createsend.com/oauth?client_id=8998879&redirect_uri=http%3a%2f%2fexample.com%2fauth&scope=ViewReports%2cCreateCampaigns%2cSendCampaigns");
         }
 
         [Test]
         public void AuthorizeUrl_WithState_Test()
         {
             var clientID = 8998879;
-            var clientSecret = "iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd";
             var redirectUri = "http://example.com/auth";
             var scope = "ViewReports,CreateCampaigns,SendCampaigns";
             var state = "89879287";
 
-            var url = General.AuthorizeUrl(clientID, clientSecret, redirectUri, scope, state);
+            var url = General.AuthorizeUrl(clientID, redirectUri, scope, state);
 
-            url.ShouldBe("https://api.createsend.com/oauth?client_id=8998879&client_secret=iou0q9wud0q9wd0q9wid0q9iwd0q9wid0q9wdqwd&redirect_uri=http%3a%2f%2fexample.com%2fauth&scope=ViewReports%2cCreateCampaigns%2cSendCampaigns&state=89879287");
+            url.ShouldBe("https://api.createsend.com/oauth?client_id=8998879&redirect_uri=http%3a%2f%2fexample.com%2fauth&scope=ViewReports%2cCreateCampaigns%2cSendCampaigns&state=89879287");
         }
     }
 }

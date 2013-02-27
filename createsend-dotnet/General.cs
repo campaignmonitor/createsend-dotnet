@@ -12,13 +12,11 @@ namespace createsend_dotnet
 
         public static string AuthorizeUrl(
             int clientID,
-            string clientSecret,
             string redirectUri,
             string scope)
         {
             return AuthorizeUrl(
                 clientID,
-                clientSecret,
                 redirectUri,
                 scope,
                 null);
@@ -26,16 +24,14 @@ namespace createsend_dotnet
 
         public static string AuthorizeUrl(
             int clientID,
-            string clientSecret,
             string redirectUri,
             string scope,
             string state)
         {
             string result = CreateSendOptions.BaseOAuthUri;
             result += string.Format(
-                "?client_id={0}&client_secret={1}&redirect_uri={2}&scope={3}",
-                clientID.ToString(), HttpUtility.UrlEncode(clientSecret),
-                HttpUtility.UrlEncode(redirectUri),
+                "?client_id={0}&redirect_uri={1}&scope={2}",
+                clientID.ToString(), HttpUtility.UrlEncode(redirectUri),
                 HttpUtility.UrlEncode(scope));
             if (!string.IsNullOrEmpty(state))
                 result += "&state=" + HttpUtility.UrlEncode(state);
