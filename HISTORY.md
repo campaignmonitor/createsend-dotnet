@@ -50,7 +50,7 @@
 
       ```csharp
       AuthenticationDetails auth = new ApiKeyAuthenticationDetails("your api key");
-      var cl = new Client("your client id");
+      var cl = new Client(auth, "your client id");
       ```
 
   * Any of the static methods on classes which inherit from `createsend_dotnet.CreateSendBase` are now _always_ called by passing an `AuthenticationDetails` object as the first argument.
