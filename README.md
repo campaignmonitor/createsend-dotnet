@@ -157,8 +157,5 @@ namespace dotnet_api_client
 ```
 
 ## Contributing
-1. Fork the repository
-2. Make your changes.
-3. Ensure that the build passes for all three solutions (`createsend-dotnet.sln`, `createsend-dotnet.net35.sln`, and `createsend-dotnet.net20.sln`)
-4. It should go without saying, but do not increment the version number in your commits.
-5. Submit a pull request.
+
+Please check the [guidelines for contributing](https://github.com/campaignmonitor/createsend-dotnet/blob/master/CONTRIBUTING.md) to this repository.
