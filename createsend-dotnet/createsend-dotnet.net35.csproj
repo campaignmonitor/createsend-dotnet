@@ -57,6 +57,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Models\EmailClient.cs" />
+    <Compile Include="Models\ExternalSession.cs" />
     <Compile Include="Models\List.cs" />
     <Compile Include="Models\OAuthTokenDetails.cs" />
     <Compile Include="Models\PagedCollection.cs" />

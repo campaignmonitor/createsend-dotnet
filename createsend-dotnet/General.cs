@@ -91,5 +91,12 @@ namespace createsend_dotnet
         {
             return HttpGet<BillingDetails>("/billingdetails.json", null);
         }
+
+        public string ExternalSessionUrl(
+            ExternalSessionOptions options)
+        {
+            return HttpPut<ExternalSessionOptions, ExternalSessionResult>(
+                "/externalsession.json", null, options).SessionUrl;
+        }
     }
 }
