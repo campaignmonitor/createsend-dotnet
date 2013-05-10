@@ -159,3 +159,7 @@ namespace dotnet_api_client
 ## Contributing
 
 Please check the [guidelines for contributing](https://github.com/campaignmonitor/createsend-dotnet/blob/master/CONTRIBUTING.md) to this repository.
+
+## Releasing
+
+Please check the [instructions for releasing](https://github.com/campaignmonitor/createsend-dotnet/blob/master/RELEASE.md) this library.
