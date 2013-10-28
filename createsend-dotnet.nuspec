@@ -14,9 +14,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="createsend-dotnet\bin\release\net20\*" target="lib\net20" />
-    <file src="createsend-dotnet\bin\release\net35\*" target="lib\net35" />
-    <file src="createsend-dotnet\bin\release\net40\*" target="lib\net40" />
+    <file src="createsend-dotnet\bin\release\net20\createsend-dotnet.*" target="lib\net20" />
+    <file src="createsend-dotnet\bin\release\net35\createsend-dotnet.*" target="lib\net35" />
+    <file src="createsend-dotnet\bin\release\net40\createsend-dotnet.*" target="lib\net40" />
     <file src="app.config.transform" target="content" />
     <file src="web.config.transform" target="content" />
   </files>
