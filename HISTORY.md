@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v3.1.1 - 28 Oct, 2013
+
+* Removed Newtonsoft dll's from the published nuget package. 
+
 ## v3.1.0 - 16 Apr, 2013
 
 * Added support for [single sign on](http://www.campaignmonitor.com/api/account/#single_sign_on) which allows initiation of external login sessions to Campaign Monitor.
