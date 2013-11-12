@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v3.1.2 - 13 Nov, 2013
+
+* Now using the correct ErrorResult objects when an exception is thrown. 
+
 ## v3.1.1 - 28 Oct, 2013
 
 * Removed Newtonsoft dll's from the published nuget package. 
