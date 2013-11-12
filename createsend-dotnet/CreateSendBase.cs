@@ -68,7 +68,7 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
-            return HttpHelper.Post<T, U, ErrorResult>(AuthDetails, path, queryArguments, payload);
+            return HttpHelper.Post<T, U, EX>(AuthDetails, path, queryArguments, payload);
         }
 
         public U HttpPut<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
