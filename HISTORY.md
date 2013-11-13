@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v3.1.3 - 13 Nov, 2013
+
+* Updated reference to Newtonsoft to use 4.5.0
+
 ## v3.1.2 - 13 Nov, 2013
 
 * Now using the correct ErrorResult objects when an exception is thrown. 

@@ -43,7 +43,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "3.1.2";
+                return "3.1.3";
             }
         }
 
