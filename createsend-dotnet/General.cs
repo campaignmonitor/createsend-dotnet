@@ -56,17 +56,6 @@ namespace createsend_dotnet
                 HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);
         }
 
-        public string ApiKey(string siteUrl, string username, string password)
-        {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("SiteUrl", siteUrl);
-
-            ApiKeyResult result = HttpHelper.Get<ApiKeyResult>(
-                new BasicAuthAuthenticationDetails(username, password),
-                "/apikey.json", queryArguments);
-            return result.ApiKey;
-        }
-
         public DateTime SystemDate()
         {
             return HttpGet<SystemDateResult>("/systemdate.json", null).SystemDate;

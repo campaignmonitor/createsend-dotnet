@@ -16,15 +16,22 @@ namespace createsend_dotnet
     public class SegmentDetail : BasicSegment
     {
         public int ActiveSubscribers { get; set; }
-        public SegmentRules Rules { get; set; }
+        public SegmentRuleGroups RuleGroups { get; set; }
     }
 
     public class SegmentRules : List<Rule> { }
 
     public class Rule
     {
-        public string Subject { get; set; }
-        public List<string> Clauses { get; set; }
+        public string RuleType { get; set; }
+        public string Clause { get; set; }
+    }
+
+    public class SegmentRuleGroups : List<SegmentRuleGroup> { }
+
+    public class SegmentRuleGroup
+    {
+        public SegmentRules Rules { get; set; }
     }
 
     public class RuleErrorResults : List<RuleErrorResult> { }

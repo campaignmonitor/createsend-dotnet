@@ -15,7 +15,7 @@ namespace createsend_dotnet
         }
 
         public static string Create(
-            AuthenticationDetails auth, string listID, string title, SegmentRules rules)
+            AuthenticationDetails auth, string listID, string title, SegmentRuleGroups ruleGroups)
         {
             return HttpHelper.Post<Dictionary<string, object>, string, ErrorResult<RuleErrorResults>>(
                 auth, string.Format("/segments/{0}.json", listID), null,
@@ -23,29 +23,28 @@ namespace createsend_dotnet
                 { 
                     { "ListID", listID }, 
                     { "Title", title }, 
-                    { "Rules", rules } 
+                    { "RuleGroups", ruleGroups }
                 });
         }
 
-        public void Update(string title, SegmentRules rules)
+        public void Update(string title, SegmentRuleGroups ruleGroups)
         {
             HttpPut<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}.json", SegmentID), null,
                 new Dictionary<string, object>() 
                 { 
                     { "Title", title }, 
-                    { "Rules", rules } 
+                    { "RuleGroups", ruleGroups } 
                 });
         }
 
-        public void AddRule(string subject, List<string> clauses)
+        public void AddRuleGroup(SegmentRuleGroup ruleGroup)
         {
             HttpPost<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}/rules.json", SegmentID), null,
                 new Dictionary<string, object>() 
                 { 
-                    { "Subject", subject }, 
-                    { "Clauses", clauses } 
+                    { "Rules", ruleGroup.Rules } 
                 });
         }
 

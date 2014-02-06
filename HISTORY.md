@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v4.0.0 - 6 Feb, 2014
+
+* Updated to v3.1 API
+
 ## v3.1.3 - 13 Nov, 2013
 
 * Updated reference to Newtonsoft to use 4.5.0
