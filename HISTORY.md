@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v4.0.1 - 12 Feb, 2014
+
+* Fixed an issue with the config transformations
+
 ## v4.0.0 - 6 Feb, 2014
 
 * Updated to v3.1 API
