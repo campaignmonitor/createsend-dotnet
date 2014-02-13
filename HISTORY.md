@@ -7,6 +7,43 @@
 ## v4.0.0 - 6 Feb, 2014
 
 * Updated to v3.1 API
+* Added support for new segments structure
+  * Create and Update calls now require the new `SegmentRuleGroups` structure, instead of a `SegmentRules` structure.
+
+    ```csharp
+    Segment.Create(AuthenticationDetails auth, string listID, string title, SegmentRuleGroups ruleGroups)
+    Segment.Update(string title, SegmentRuleGroups ruleGroups)
+    ```
+
+    So for example, when you _previously_ would have created an argument like so:
+
+    ```csharp
+    rules = new SegmentRules {new Rule {Subject = "EmailAddress", Clauses = new List<string> {"CONTAINS example.com"}}}
+    ```
+
+    You would _now_ do this:
+
+    ```csharp
+    rule_groups = new SegmentRuleGroups {new SegmentRuleGroup {Rules = new SegmentRules {new Rule {RuleType = "EmailAddress", Clause = "CONTAINS example.com"}}}};
+    ```
+    
+  * The Add Rule call is now Add Rule Group, taking a `SegmentRuleGroup` in a single `ruleGroup` argument instead of separate `subject` & `clauses` arguments.
+
+    ```csharp
+    Segment.AddRuleGroup(SegmentRuleGroup ruleGroup)
+    ```
+
+    So for example, when you _previously_ would have added a rule like so:
+
+    ```csharp
+    segment.AddRule("EmailAddress", new List<string> {"CONTAINS @hello.com"});
+    ```
+
+    You would _now_ do this:
+
+    ```csharp
+    segment.AddRuleGroup(new SegmentRuleGroup {Rules = new SegmentRules {new Rule {RuleType = "EmailAddress", Clause = "CONTAINS @hello.com"}}});
+    ```
 
 ## v3.1.3 - 13 Nov, 2013
 
