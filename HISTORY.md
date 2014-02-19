@@ -44,6 +44,7 @@
     ```csharp
     segment.AddRuleGroup(new SegmentRuleGroup {Rules = new SegmentRules {new Rule {RuleType = "EmailAddress", Clause = "CONTAINS @hello.com"}}});
     ```
+* Removed the ApiKey method to promote usage of oAuth authentication
 
 ## v3.1.3 - 13 Nov, 2013
 
