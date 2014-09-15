@@ -112,6 +112,35 @@ namespace Samples
             }
         }
 
+        public void GetCustomFields()
+        {
+            List list = new List(auth, ListID);
+            try
+            {
+                var allFields = list.CustomFields();
+                foreach (ListCustomField field in allFields)
+                {
+                    Console.WriteLine(string.Format(
+                        "Field \"{0}\" of type {1}: {2}visible in the preference centre",
+                        field.FieldName,
+                        field.DataType,
+                        field.VisibleInPreferenceCenter ? "" : "not "));
+                }
+
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
         public void GetActiveSubscribers()
         {
             List list = new List(auth, ListID);
