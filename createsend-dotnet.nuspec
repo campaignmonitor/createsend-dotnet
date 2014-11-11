@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>campaignmonitor-api</id>
+    <title>Campaign Monitor</title>
+    <version>4.0.1</version>
+    <authors>Campaign Monitor</authors>
+    <description>A .NET library for the Campaign Monitor API</description>
+    <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>
+    <projectUrl>http://campaignmonitor.github.io/createsend-dotnet/</projectUrl>
+    <tags>api campaign monitor .net</tags>
+    <dependencies>
+        <dependency id="Newtonsoft.Json" version="4.5.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="createsend-dotnet\bin\release\net20\createsend-dotnet.*" target="lib\net20" />
+    <file src="createsend-dotnet\bin\release\net35\createsend-dotnet.*" target="lib\net35" />
+    <file src="createsend-dotnet\bin\release\net40\createsend-dotnet.*" target="lib\net40" />
+    <file src="app.config.transform" target="content" />
+    <file src="web.config.transform" target="content" />
+  </files>
+</package>

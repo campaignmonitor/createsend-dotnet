@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "createsend-dotnet", "createsend-dotnet\createsend-dotnet.csproj", "{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23495137-57D3-41AB-AB55-01FD382D9964}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.csproj", "{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-createsend-dotnet", "test-createsend-dotnet\test-createsend-dotnet.csproj", "{32D38695-BA7D-41E4-A5B9-90C130364958}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = createsend-dotnet.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}.Release|x86.ActiveCfg = Release|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}.Release|x86.ActiveCfg = Release|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{32D38695-BA7D-41E4-A5B9-90C130364958}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
