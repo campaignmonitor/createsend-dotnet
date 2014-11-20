@@ -1,19 +1,21 @@
-<?xml version="1.0"?>
-<package >
+<?xml version="1.0" encoding="utf-8"?>
+<package>
   <metadata>
     <id>$id$</id>
+    <title>Campaign Monitor</title>
     <version>$version$</version>
     <authors>Campaign Monitor</authors>
-    <owners>Campaign Monitor</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>createsend-dotnet wrapper with Transactional enhancements.</description>
-    <releaseNotes>Includes ability to call Transactional API.</releaseNotes>
-    <copyright>Copyright 2014</copyright>
+    <description>A .NET library for the Campaign Monitor API with enhancements for Transactional</description>
+    <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>
+    <projectUrl>http://campaignmonitor.github.io/createsend-dotnet/</projectUrl>
+    <tags>api campaign monitor .net transactional</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json.dll" version="4.5.11.15520" />
+        <dependency id="Newtonsoft.Json" version="4.5.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\createsend-dotnet.dll"/>
+    <file src="bin\release\net40\createsend-dotnet.*" target="lib\net40" />
+    <file src="app.config.transform" target="content" />
+    <file src="web.config.transform" target="content" />
   </files>
 </package>
