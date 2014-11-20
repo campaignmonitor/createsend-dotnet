@@ -48,7 +48,11 @@
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="CreateSendBase.cs" />
+    <Compile Include="CreateSendOptions.cs" />
+    <Compile Include="CreateSendOptionsWrapper.cs" />
+    <Compile Include="CustomCreateSendOptions.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="ICreateSendOptions.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\BillingDetails.cs" />
