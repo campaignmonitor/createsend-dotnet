@@ -15,7 +15,5 @@
   </metadata>
   <files>
     <file src="bin\release\net40\createsend-dotnet.*" target="lib\net40" />
-    <file src="app.config.transform" target="content" />
-    <file src="web.config.transform" target="content" />
   </files>
 </package>
