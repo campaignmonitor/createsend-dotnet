@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>$id$</id>
-    <title>Campaign Monitor</title>
+    <title>createsend-dotnet</title>
     <version>$version$</version>
     <authors>Campaign Monitor</authors>
     <description>A .NET library for the Campaign Monitor API with enhancements for Transactional</description>
