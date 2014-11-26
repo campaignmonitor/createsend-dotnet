@@ -6,9 +6,9 @@ namespace createsend_dotnet
 {
     public class RateLimitStatus
     {
-        public int Remaining { get; set; }
-        public int Credit { get; set; }
-        public int Reset { get; set; }
+        public uint Remaining { get; set; }
+        public uint Credit { get; set; }
+        public uint Reset { get; set; }
     }
 
     public class EmailAddress
