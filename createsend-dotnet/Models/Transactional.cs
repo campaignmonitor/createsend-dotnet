@@ -48,6 +48,7 @@ namespace createsend_dotnet
         public bool TrackClicks { get; set; }
         public bool InlineCSS { get; set; }
         public string SubscriberListToJoin { get; set; }
+        public string EmailGroupName { get; set; }
 
         public SendBasicInfo()
         {
