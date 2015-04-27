@@ -58,7 +58,7 @@ namespace createsend_dotnet
         public U HttpGet<U, EX>(string path, NameValueCollection queryArguments)
             where EX : ErrorResult
         {
-            return HttpHelper.Get<U, EX>(AuthDetails, path, queryArguments);
+            return HttpHelper.Get<U, EX>(AuthDetails, options.BaseUri, path, queryArguments);
         }
 
         public U HttpPost<T, U>(string path, NameValueCollection queryArguments, T payload)
