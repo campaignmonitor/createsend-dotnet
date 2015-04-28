@@ -73,14 +73,19 @@ namespace createsend_dotnet.Transactional
             return query;
         }
 
-        internal static string EncodeIso8601DateOnly(this DateTime date)
+        internal static string Encode(this string value)
         {
-            return Encode(date.ToString("yyyy-MM-dd"));
+            return value;
         }
 
         internal static string Encode(this bool value)
         {
             return Encode(value.ToString().ToLowerInvariant());
+        }
+
+        internal static string Encode(this Enum value)
+        {
+            return value == null ? null : Encode(value.ToString().ToLowerInvariant());
         }
 
         internal static string Encode(this Guid value)
@@ -98,19 +103,14 @@ namespace createsend_dotnet.Transactional
             return Encode(value.ToString(CultureInfo.InvariantCulture));
         }
 
-        internal static string Encode(this Enum value)
-        {
-            return value == null ? null : Encode(value.ToString().ToLowerInvariant());
-        }
-
         internal static string Encode(this int? value)
         {
             return value.HasValue ? Encode(value.Value) : null;
         }
 
-        internal static string Encode(this string value)
+        internal static string EncodeIso8601DateOnly(this DateTime date)
         {
-            return value;
+            return Encode(date.ToString("yyyy-MM-dd"));
         }
 
         internal static string EncodeIso8601DateOnly(this DateTime? date)
