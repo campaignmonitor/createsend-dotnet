@@ -57,7 +57,7 @@ namespace createsend_dotnet.Transactional
 
         private RateLimited<BasicEmailDetail[]> Groups(NameValueCollection query)
         {
-            return HttpGet<RateLimited<BasicEmailDetail[]>>("/transactional/basicemail", query);
+            return HttpGet<RateLimited<BasicEmailDetail[]>>("/transactional/basicemail/groups", query);
         }
     }
 
