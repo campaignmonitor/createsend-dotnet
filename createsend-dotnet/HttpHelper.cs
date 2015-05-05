@@ -188,7 +188,7 @@ namespace createsend_dotnet
                         using (var sr = new System.IO.StreamReader(resp.GetResponseStream()))
                         {
                             var type = typeof(U);
-                            if (type.GetGenericTypeDefinition() == typeof(RateLimited<>))
+                            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RateLimited<>))
                             {
                                 var responseType = type.GetGenericArguments().Single();
                                 var response = JsonConvert.DeserializeObject(sr.ReadToEnd().Trim(), responseType, serialiserSettings);
