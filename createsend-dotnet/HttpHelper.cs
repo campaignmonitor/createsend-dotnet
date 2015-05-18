@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net;
 using System.Collections.Specialized;
@@ -8,7 +7,6 @@ using System.Web;
 using createsend_dotnet.Transactional;
 using Newtonsoft.Json;
 using System.Reflection;
-using Newtonsoft.Json.Converters;
 
 namespace createsend_dotnet
 {
@@ -190,7 +188,7 @@ namespace createsend_dotnet
                             var type = typeof(U);
                             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RateLimited<>))
                             {
-                                var responseType = type.GetGenericArguments().Single();
+                                var responseType = type.GetGenericArguments()[0];
                                 var response = JsonConvert.DeserializeObject(sr.ReadToEnd().Trim(), responseType, serialiserSettings);
                                 var status = new RateLimitStatus
                                     {
