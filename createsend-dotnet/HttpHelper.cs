@@ -1,11 +1,12 @@
-﻿using System;
+﻿extern alias json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Collections.Specialized;
 using System.Web;
 using createsend_dotnet.Transactional;
-using Newtonsoft.Json;
+using json::Newtonsoft.Json;
 using System.Reflection;
 
 namespace createsend_dotnet
