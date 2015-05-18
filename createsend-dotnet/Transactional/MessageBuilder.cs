@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace createsend_dotnet.Transactional
 {
@@ -109,7 +107,7 @@ namespace createsend_dotnet.Transactional
         public IMessageBuilder To(EmailAddress[] to)
         {
             if(to == null) throw new ArgumentNullException("to");
-            if(!to.Any()) throw new ArgumentException("Cannot be empty", "to");
+            if(to.Length == 0) throw new ArgumentException("Cannot be empty", "to");
 
             this.to.AddRange(to);
             return this;
@@ -126,7 +124,7 @@ namespace createsend_dotnet.Transactional
         public IMessageBuilder CC(EmailAddress[] cc)
         {
             if(cc == null) throw new ArgumentNullException("cc");
-            if (!cc.Any()) throw new ArgumentException("Cannot be empty", "cc");
+            if (cc.Length == 0) throw new ArgumentException("Cannot be empty", "cc");
 
             this.cc.AddRange(cc);
             return this;
@@ -143,7 +141,7 @@ namespace createsend_dotnet.Transactional
         public IMessageBuilder BCC(EmailAddress[] bcc)
         {
             if (bcc == null) throw new ArgumentNullException("bcc");
-            if (!bcc.Any()) throw new ArgumentException("Cannot be empty", "bcc");
+            if (bcc.Length == 0) throw new ArgumentException("Cannot be empty", "bcc");
             this.bcc.AddRange(bcc);
             return this;
         }
@@ -175,7 +173,7 @@ namespace createsend_dotnet.Transactional
         public IMessageBuilder Attachment(Attachment[] attachments)
         {
             if(attachments == null) throw new ArgumentNullException("attachments");
-            if (!attachments.Any()) throw new ArgumentException("Cannot be empty", "attachments");
+            if (attachments.Length == 0) throw new ArgumentException("Cannot be empty", "attachments");
 
             this.attachments.AddRange(attachments);
             return this;
@@ -192,7 +190,7 @@ namespace createsend_dotnet.Transactional
         public IMessageBuilder Image(Image[] images)
         {
             if(images == null) throw new ArgumentNullException("images");
-            if(!images.Any()) throw new ArgumentException("Cannot be empty", "images");
+            if(images.Length == 0) throw new ArgumentException("Cannot be empty", "images");
 
             this.images.AddRange(images);
             return this;
