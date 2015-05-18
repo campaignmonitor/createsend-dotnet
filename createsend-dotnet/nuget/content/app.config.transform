@@ -1,0 +1,6 @@
+<configuration>
+  <appSettings>
+    <add key="base_uri" value="https://api.createsend.com/api/v3.1" />
+    <add key="base_oauth_uri" value="https://api.createsend.com/oauth" />
+  </appSettings>
+</configuration>
