@@ -17,6 +17,5 @@
     <file src="content\*.transform" target="content" />
     <file src="lib\net40\createsend-dotnet.*" target="lib\net40" />
     <file src="lib\net35\createsend-dotnet.*" target="lib\net35" />
-    <file src="lib\net20\createsend-dotnet.*" target="lib\net20" />
   </files>
 </package>
