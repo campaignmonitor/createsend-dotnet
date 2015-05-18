@@ -113,6 +113,12 @@
     <Compile Include="Transactional\RequiredClientIdentifierException.cs" />
     <Compile Include="Transactional\SubscriberAction.cs" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="nuget\campaignmonitor-api.nuspec" />
+    <None Include="nuget\content\app.config.transform" />
+    <None Include="nuget\content\web.config.transform" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
