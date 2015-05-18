@@ -8,15 +8,15 @@ namespace createsend_dotnet.Transactional
 {
     public interface ISmartEmail
     {
-        RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to);
         RateLimited<SmartEmailDetail> Details(Guid smartEmailId);
         RateLimited<SmartEmailListDetail[]> List(SmartEmailListStatus status = SmartEmailListStatus.All);
     }
 
     public interface IAgencySmartEmail : ISmartEmail
     {
-        
-        RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, params EmailAddress[] to);
+
+        RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to);
         RateLimited<SmartEmailDetail> Details(string clientId, Guid smartEmailId);
         RateLimited<SmartEmailListDetail[]> List(string clientId, SmartEmailListStatus status = SmartEmailListStatus.All);
     }
@@ -29,16 +29,16 @@ namespace createsend_dotnet.Transactional
 
         }
 
-        public RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to)
         {
-            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data), this.CreateQueryString());
+            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList), this.CreateQueryString());
         }
 
-        public RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to)
         {
             if (clientId == null) throw new ArgumentNullException("clientId");
 
-            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data), this.CreateQueryString(clientId));
+            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList), this.CreateQueryString(clientId));
         }
 
         private RateLimited<RecipientStatus[]> Send(Guid smartEmailId, SmartEmail payload, NameValueCollection query)
@@ -96,15 +96,17 @@ namespace createsend_dotnet.Transactional
         public EmailAddress[] BCC { get; private set; }
         public Attachment[] Attachments { get; private set; }
         public IDictionary<string, object> Data { get; private set; }
+        public bool AddRecipientsToList { get; private set; }
 
         public SmartEmail(EmailAddress[] to, EmailAddress[] cc, EmailAddress[] bcc, Attachment[] attachments,
-            IDictionary<string, object> data)
+            IDictionary<string, object> data, bool addRecipientsToList)
         {
             To = to;
             CC = cc;
             BCC = bcc;
             Attachments = attachments;
             Data = data;
+            AddRecipientsToList = addRecipientsToList;
         }
     }
 }

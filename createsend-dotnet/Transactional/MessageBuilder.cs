@@ -27,6 +27,9 @@ namespace createsend_dotnet.Transactional
         IMessageBuilder TrackClicks(bool trackClicks = true);
         IMessageBuilder InlineCss(bool inlineCss = true);
         IMessageBuilder BasicGroup(string basicGroup);
+        IMessageBuilder AddRecipientsToList(bool addRecipientsToList);
+        IMessageBuilder AddRecipientsToListId(string addRecipientsToListId);
+        
         RateLimited<RecipientStatus[]> Send();
         RateLimited<RecipientStatus[]> Send(Guid smartEmailId);
     }
@@ -56,6 +59,8 @@ namespace createsend_dotnet.Transactional
         private bool trackClicks = true;
         private bool inlineCss = true;
         private string basicGroup;
+        private bool addRecipientsToList = true;
+        private string listId;
 
         public MessageBuilder(SmartEmailContext smart, BasicEmailContext basic)
         {
@@ -230,16 +235,30 @@ namespace createsend_dotnet.Transactional
             return this;
         }
 
+        public IMessageBuilder AddRecipientsToList(bool addRecipientsToList)
+        {
+            this.addRecipientsToList = addRecipientsToList;
+
+            return this;
+        }
+
+        public IMessageBuilder AddRecipientsToListId(string listId)
+        {
+            this.listId = listId;
+
+            return this;
+        }
+
         public RateLimited<RecipientStatus[]> Send()
         {
             return basic.Send(from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, to.ToArray());
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, listId, to.ToArray());
         }
 
         public RateLimited<RecipientStatus[]> Send(string clientId)
         {
             return basic.Send(clientId, from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, to.ToArray());
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, listId, to.ToArray());
         }
 
 
@@ -251,6 +270,7 @@ namespace createsend_dotnet.Transactional
                bcc.ToArray(),
                attachments.ToArray(),
                data,
+               addRecipientsToList,
                to.ToArray());
         }
 
@@ -263,6 +283,7 @@ namespace createsend_dotnet.Transactional
                bcc.ToArray(),
                attachments.ToArray(),
                data,
+               addRecipientsToList,
                to.ToArray());
         }
     }

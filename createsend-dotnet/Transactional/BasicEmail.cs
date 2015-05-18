@@ -8,13 +8,13 @@ namespace createsend_dotnet.Transactional
 {
     public interface IBasicEmail
     {
-        RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, string addRecipientsToListId = null, params EmailAddress[] to);
         RateLimited<BasicEmailDetail[]> Groups();
     }
 
     public interface IAgencyBasicEmail : IBasicEmail
     {
-        RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, string addRecipientsToListId = null, params EmailAddress[] to);
         RateLimited<BasicEmailDetail[]> Groups(string clientId);
     }
 
@@ -26,16 +26,16 @@ namespace createsend_dotnet.Transactional
 
         }
 
-        public RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, string addRecipientsToListId = null, params EmailAddress[] to)
         {
-            return Send(new BasicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, basicGroup), this.CreateQueryString());
+            return Send(new BasicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, basicGroup, addRecipientsToListId), this.CreateQueryString());
         }
 
-        public RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string basicGroup = null, string addRecipientsToListId = null, params EmailAddress[] to)
         {
             if (clientId == null) throw new ArgumentNullException("clientId");
 
-            return Send(new BasicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, basicGroup), this.CreateQueryString(clientId));
+            return Send(new BasicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, basicGroup, addRecipientsToListId), this.CreateQueryString(clientId));
         }
 
         private RateLimited<RecipientStatus[]> Send(BasicEmail payload, NameValueCollection query)
@@ -77,10 +77,11 @@ namespace createsend_dotnet.Transactional
         public bool TrackClicks { get; set; }
         public bool InlineCss { get; set; }
         public string BasicGroup { get; set; }
+        public string AddRecipientsToListId { get; set; }
 
         public BasicEmail(EmailAddress from, EmailAddress replyTo, EmailAddress[] to, EmailAddress[] cc,
             EmailAddress[] bcc, string subject, string html, string text, Image[] images, Attachment[] attachments,
-            bool trackOpens, bool trackClicks, bool inlineCss, string basicGroup)
+            bool trackOpens, bool trackClicks, bool inlineCss, string basicGroup, string addRecipientsToListId)
         {
             From = from;
             ReplyTo = replyTo;
@@ -96,6 +97,7 @@ namespace createsend_dotnet.Transactional
             TrackClicks = trackClicks;
             InlineCss = inlineCss;
             BasicGroup = basicGroup;
+            AddRecipientsToListId = addRecipientsToListId;
         }
     }
 }
