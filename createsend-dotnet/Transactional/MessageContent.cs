@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace createsend_dotnet.Transactional
 {
     public class MessageContent
@@ -10,5 +12,7 @@ namespace createsend_dotnet.Transactional
         public EmailAddress[] CC { get; set; }
         public EmailAddress BCC { get; set; }
         public MessageBody Body { get; set; }
+        public Dictionary<string, string> Data { get; set; }
+        public AttachmentMetadata[] Attachments { get; set; }
     }
 }

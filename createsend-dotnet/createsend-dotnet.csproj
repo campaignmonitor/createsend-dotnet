@@ -84,6 +84,7 @@
     <Compile Include="Subscriber.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Transactional\Attachment.cs" />
+    <Compile Include="Transactional\AttachmentMetadata.cs" />
     <Compile Include="Transactional\Authenticate.cs" />
     <Compile Include="Transactional\BasicEmail.cs" />
     <Compile Include="Transactional\BasicEmailDetail.cs" />
