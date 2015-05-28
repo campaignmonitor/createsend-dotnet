@@ -12,8 +12,6 @@ namespace createsend_dotnet.Transactional
 
     public interface IAgencyMessages : IMessages
     {
-        RateLimited<RecipientStatus> Resend(string clientId, Guid messageId);
-        RateLimited<MessageDetail> Details(string clientId, Guid messageId, bool statistics = false);
         RateLimited<MessageListDetail[]> List(string clientId, Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string basicGroup = null, MessageListStatus status = MessageListStatus.All);
     }
 
@@ -29,15 +27,7 @@ namespace createsend_dotnet.Transactional
         {
             if (messageId == Guid.Empty) throw new ArgumentException("Must not be empty", "messageId");
 
-            return Resend(messageId, this.CreateQueryString());
-        }
-
-        public RateLimited<RecipientStatus> Resend(string clientId, Guid messageId)
-        {
-            if (clientId == null) throw new ArgumentNullException("clientId");
-            if (messageId == Guid.Empty) throw new ArgumentException("Must not be empty", "messageId");
-
-            return Resend(messageId, this.CreateQueryString(clientId));
+            return Resend(messageId, new NameValueCollection());
         }
 
         private RateLimited<RecipientStatus> Resend(Guid messageId, NameValueCollection query)
@@ -48,13 +38,6 @@ namespace createsend_dotnet.Transactional
         public RateLimited<MessageDetail> Details(Guid messageId, bool statistics = false)
         {
             return Details(messageId, CreateQueryString(statistics));
-        }
-
-        public RateLimited<MessageDetail> Details(string clientId, Guid messageId, bool statistics = false)
-        {
-            if (clientId == null) throw new ArgumentNullException("clientId");
-
-            return Details(messageId, CreateQueryString(statistics, clientId));
         }
 
         private RateLimited<MessageDetail> Details(Guid messageId, NameValueCollection query)
@@ -79,14 +62,12 @@ namespace createsend_dotnet.Transactional
             return HttpGet<RateLimited<MessageListDetail[]>>("/transactional/messages", query);
         }
 
-        private NameValueCollection CreateQueryString(bool statistics, string clientId = null)
+        private NameValueCollection CreateQueryString(bool statistics)
         {
-            return this.CreateQueryString(
-                clientId,
-                query: new NameValueCollection
+            return new NameValueCollection
                     {
                         { "statistics", statistics.Encode() },
-                    });
+                    };
         }
 
         private NameValueCollection CreateQueryString(string basicGroup, Guid? sentAfterId, Guid? sentBeforeId, int count, MessageListStatus status, string clientId = null)

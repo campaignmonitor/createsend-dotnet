@@ -13,9 +13,6 @@ namespace createsend_dotnet.Transactional
 
     public interface IAgencySmartEmail : ISmartEmail
     {
-
-        RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to);
-        RateLimited<SmartEmailDetail> Details(string clientId, Guid smartEmailId);
         RateLimited<SmartEmailListDetail[]> List(string clientId, SmartEmailListStatus status = SmartEmailListStatus.All);
     }
 
@@ -29,14 +26,7 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to)
         {
-            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList), this.CreateQueryString());
-        }
-
-        public RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null, IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to)
-        {
-            if (clientId == null) throw new ArgumentNullException("clientId");
-
-            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList), this.CreateQueryString(clientId));
+            return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList), new NameValueCollection());
         }
 
         private RateLimited<RecipientStatus[]> Send(Guid smartEmailId, SmartEmail payload, NameValueCollection query)
@@ -63,12 +53,7 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<SmartEmailDetail> Details(Guid smartEmailId)
         {
-            return Details(smartEmailId, this.CreateQueryString());
-        }
-
-        public RateLimited<SmartEmailDetail> Details(string clientId, Guid smartEmailId)
-        {
-            return Details(smartEmailId, this.CreateQueryString(clientId));
+            return Details(smartEmailId, new NameValueCollection());
         }
 
         private RateLimited<SmartEmailDetail> Details(Guid smartEmailId, NameValueCollection query)

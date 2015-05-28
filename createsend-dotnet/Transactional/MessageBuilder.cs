@@ -35,7 +35,6 @@ namespace createsend_dotnet.Transactional
     public interface IAgencyMessageBuilder : IMessageBuilder
     {
         RateLimited<RecipientStatus[]> Send(string clientId);
-        RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId);
     }
 
     internal class MessageBuilder : IMessageBuilder, IAgencyMessageBuilder
@@ -263,19 +262,6 @@ namespace createsend_dotnet.Transactional
         public RateLimited<RecipientStatus[]> Send(Guid smartEmailId)
         {
             return smart.Send(
-               smartEmailId,
-               cc.ToArray(),
-               bcc.ToArray(),
-               attachments.ToArray(),
-               data,
-               addRecipientsToList,
-               to.ToArray());
-        }
-
-        public RateLimited<RecipientStatus[]> Send(string clientId, Guid smartEmailId)
-        {
-            return smart.Send(
-               clientId,
                smartEmailId,
                cc.ToArray(),
                bcc.ToArray(),
