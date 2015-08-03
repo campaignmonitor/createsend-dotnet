@@ -2,9 +2,9 @@
 
 namespace createsend_dotnet.Transactional
 {
-    public class BasicEmailDetail
+    public class ClassicEmailDetail
     {
-        public string BasicGroup { get; set; }
+        public string Group { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
     }
 }

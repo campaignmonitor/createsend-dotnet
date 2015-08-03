@@ -7,12 +7,12 @@ namespace createsend_dotnet.Transactional
     {
         RateLimited<RecipientStatus> Resend(Guid messageId);
         RateLimited<MessageDetail> Details(Guid messageId, bool statistics = false);
-        RateLimited<MessageListDetail[]> List(Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string basicGroup = null, MessageListStatus status = MessageListStatus.All);
+        RateLimited<MessageListDetail[]> List(Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string @group = null, MessageListStatus status = MessageListStatus.All);
     }
 
     public interface IAgencyMessages : IMessages
     {
-        RateLimited<MessageListDetail[]> List(string clientId, Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string basicGroup = null, MessageListStatus status = MessageListStatus.All);
+        RateLimited<MessageListDetail[]> List(string clientId, Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string @group = null, MessageListStatus status = MessageListStatus.All);
     }
 
     internal class MessagesContext : CreateSendBase, IMessages, IAgencyMessages
@@ -45,16 +45,16 @@ namespace createsend_dotnet.Transactional
             return HttpGet<RateLimited<MessageDetail>>(String.Format("/transactional/messages/{0}", messageId), query);
         }
 
-        public RateLimited<MessageListDetail[]> List(Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string basicGroup = null, MessageListStatus status = MessageListStatus.All)
+        public RateLimited<MessageListDetail[]> List(Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string @group = null, MessageListStatus status = MessageListStatus.All)
         {
-            return ListMessages(CreateQueryString(basicGroup, sentAfterId, sentBeforeId, count, status));
+            return ListMessages(CreateQueryString(@group, sentAfterId, sentBeforeId, count, status));
         }
 
-        public RateLimited<MessageListDetail[]> List(string clientId, Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string basicGroup = null, MessageListStatus status = MessageListStatus.All)
+        public RateLimited<MessageListDetail[]> List(string clientId, Guid? sentAfterId = null, Guid? sentBeforeId = null, int count = 50, string @group = null, MessageListStatus status = MessageListStatus.All)
         {
             if (clientId == null) throw new ArgumentNullException("clientId");
 
-            return ListMessages(CreateQueryString(basicGroup, sentAfterId, sentBeforeId, count, status, clientId));
+            return ListMessages(CreateQueryString(@group, sentAfterId, sentBeforeId, count, status, clientId));
         }
 
         private RateLimited<MessageListDetail[]> ListMessages(NameValueCollection query)
@@ -70,13 +70,13 @@ namespace createsend_dotnet.Transactional
                     };
         }
 
-        private NameValueCollection CreateQueryString(string basicGroup, Guid? sentAfterId, Guid? sentBeforeId, int count, MessageListStatus status, string clientId = null)
+        private NameValueCollection CreateQueryString(string @group, Guid? sentAfterId, Guid? sentBeforeId, int count, MessageListStatus status, string clientId = null)
         {
             return this.CreateQueryString(
                 clientId,
                 query: new NameValueCollection
                     {
-                        { "basicgroup", basicGroup.Encode() },
+                        { "group", @group.Encode() },
                         { "sentAfterId", sentAfterId.Encode() },
                         { "sentBeforeId", sentBeforeId.Encode() },
                         { "count", count.Encode() },

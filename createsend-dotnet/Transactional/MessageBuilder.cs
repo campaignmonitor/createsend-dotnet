@@ -24,7 +24,7 @@ namespace createsend_dotnet.Transactional
         IMessageBuilder TrackOpens(bool trackOpens = true);
         IMessageBuilder TrackClicks(bool trackClicks = true);
         IMessageBuilder InlineCss(bool inlineCss = true);
-        IMessageBuilder BasicGroup(string basicGroup);
+        IMessageBuilder Group(string @group);
         IMessageBuilder AddRecipientsToList(bool addRecipientsToList);
         IMessageBuilder AddRecipientsToListId(string addRecipientsToListId);
         
@@ -40,7 +40,7 @@ namespace createsend_dotnet.Transactional
     internal class MessageBuilder : IMessageBuilder, IAgencyMessageBuilder
     {
         private readonly SmartEmailContext smart;
-        private readonly BasicEmailContext basic;
+        private readonly ClassicEmailContext classic;
         private readonly List<EmailAddress> to;
         private readonly List<EmailAddress> cc;
         private readonly List<EmailAddress> bcc;
@@ -55,14 +55,14 @@ namespace createsend_dotnet.Transactional
         private bool trackOpens = true;
         private bool trackClicks = true;
         private bool inlineCss = true;
-        private string basicGroup;
+        private string @group;
         private bool addRecipientsToList = true;
         private string listId;
 
-        public MessageBuilder(SmartEmailContext smart, BasicEmailContext basic)
+        public MessageBuilder(SmartEmailContext smart, ClassicEmailContext classic)
         {
             this.smart = smart;
-            this.basic = basic;
+            this.classic = classic;
 
             to = new List<EmailAddress>();
             cc = new List<EmailAddress>();
@@ -224,11 +224,11 @@ namespace createsend_dotnet.Transactional
             return this;
         }
 
-        public IMessageBuilder BasicGroup(string basicGroup)
+        public IMessageBuilder Group(string @group)
         {
-            if(basicGroup == null) throw new ArgumentNullException("basicGroup");
+            if(@group == null) throw new ArgumentNullException("group");
 
-            this.basicGroup = basicGroup;
+            this.@group = @group;
             return this;
         }
 
@@ -248,14 +248,14 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<RecipientStatus[]> Send()
         {
-            return basic.Send(from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, listId, to.ToArray());
+            return classic.Send(from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
         }
 
         public RateLimited<RecipientStatus[]> Send(string clientId)
         {
-            return basic.Send(clientId, from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, basicGroup, listId, to.ToArray());
+            return classic.Send(clientId, from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
         }
 
 

@@ -12,7 +12,7 @@ namespace createsend_dotnet.Transactional
         public EmailAddress Recipient { get; set; }
 
         public MessageContent Message { get; set; }
-        public string BasicGroup { get; set; }
+        public string Group { get; set; }
         public Guid? SmartEmailId { get; set; }
         
         public long TotalOpens { get; set; }

@@ -4,7 +4,7 @@ namespace createsend_dotnet.Transactional
 {
     public interface ITransactional : IStatistics
     {
-        IBasicEmail BasicEmail { get; }
+        IClassicEmail ClassicEmail { get; }
         ISmartEmail SmartEmail { get; }
         IMessageBuilder MessageBuilder();
         IMessages Messages { get; }
@@ -12,7 +12,7 @@ namespace createsend_dotnet.Transactional
 
     public interface IAgencyTransactional : IAgencyStatistics
     {
-        IAgencyBasicEmail BasicEmail { get; }
+        IAgencyClassicEmail ClassicEmail { get; }
         IAgencySmartEmail SmartEmail { get; }
         IAgencyMessageBuilder MessageBuilder();
         IAgencyMessages Messages { get; }
@@ -20,27 +20,27 @@ namespace createsend_dotnet.Transactional
 
     internal class TransactionalContext : ITransactional, IAgencyTransactional
     {
-        private readonly BasicEmailContext basicEmail;
+        private readonly ClassicEmailContext classicEmail;
         private readonly SmartEmailContext smartEmail;
         private readonly MessagesContext messages;
         private readonly StatisticsContext statistics;
 
         public TransactionalContext(AuthenticationDetails auth, ICreateSendOptions options)
         {
-            basicEmail = new BasicEmailContext(auth, options);
+            classicEmail = new ClassicEmailContext(auth, options);
             smartEmail = new SmartEmailContext(auth, options);
             messages = new MessagesContext(auth, options);
             statistics = new StatisticsContext(auth, options);
         }
 
-        IBasicEmail ITransactional.BasicEmail
+        IClassicEmail ITransactional.ClassicEmail
         {
-            get { return basicEmail; }
+            get { return classicEmail; }
         }
 
-        IAgencyBasicEmail IAgencyTransactional.BasicEmail
+        IAgencyClassicEmail IAgencyTransactional.ClassicEmail
         {
-            get { return basicEmail; }
+            get { return classicEmail; }
         }
 
         ISmartEmail ITransactional.SmartEmail
@@ -65,22 +65,22 @@ namespace createsend_dotnet.Transactional
 
         IMessageBuilder ITransactional.MessageBuilder()
         {
-            return new MessageBuilder(smartEmail, basicEmail);
+            return new MessageBuilder(smartEmail, classicEmail);
         }
 
         IAgencyMessageBuilder IAgencyTransactional.MessageBuilder()
         {
-            return new MessageBuilder(smartEmail, basicEmail);
+            return new MessageBuilder(smartEmail, classicEmail);
         }
 
-        public RateLimited<Statistics> Statistics(Guid? smartEmailId = null, string basicGroup = null, DateTime? from = null, DateTime? to = null, DisplayedTimeZone timezone = DisplayedTimeZone.Client)
+        public RateLimited<Statistics> Statistics(Guid? smartEmailId = null, string @group = null, DateTime? from = null, DateTime? to = null, DisplayedTimeZone timezone = DisplayedTimeZone.Client)
         {
-            return statistics.Statistics(smartEmailId, basicGroup, from, to, timezone);
+            return statistics.Statistics(smartEmailId, @group, from, to, timezone);
         }
 
-        public RateLimited<Statistics> Statistics(string clientId, Guid? smartEmailId = null, string basicGroup = null, DateTime? from = null, DateTime? to = null, DisplayedTimeZone timezone = DisplayedTimeZone.Client)
+        public RateLimited<Statistics> Statistics(string clientId, Guid? smartEmailId = null, string @group = null, DateTime? from = null, DateTime? to = null, DisplayedTimeZone timezone = DisplayedTimeZone.Client)
         {
-            return statistics.Statistics(clientId, smartEmailId, basicGroup, from, to, timezone);
+            return statistics.Statistics(clientId, smartEmailId, @group, from, to, timezone);
         }
     }
 }

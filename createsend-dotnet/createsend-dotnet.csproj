@@ -86,8 +86,8 @@
     <Compile Include="Transactional\Attachment.cs" />
     <Compile Include="Transactional\AttachmentMetadata.cs" />
     <Compile Include="Transactional\Authenticate.cs" />
-    <Compile Include="Transactional\BasicEmail.cs" />
-    <Compile Include="Transactional\BasicEmailDetail.cs" />
+    <Compile Include="Transactional\ClassicEmail.cs" />
+    <Compile Include="Transactional\ClassicEmailDetail.cs" />
     <Compile Include="Transactional\DisplayedTimeZone.cs" />
     <Compile Include="Transactional\EmailAddress.cs" />
     <Compile Include="Transactional\EmailAddressConverter.cs" />
