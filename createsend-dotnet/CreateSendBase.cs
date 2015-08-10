@@ -9,9 +9,12 @@ namespace createsend_dotnet
     public abstract class CreateSendBase
     {
         public AuthenticationDetails AuthDetails { get; set; }
+        private readonly ICreateSendOptions options;
 
-        public CreateSendBase(AuthenticationDetails auth)
+        public CreateSendBase(AuthenticationDetails auth, ICreateSendOptions options = null)
         {
+            this.options = options ?? new CreateSendOptionsWrapper();
+
             Authenticate(auth);
         }
 
@@ -39,7 +42,7 @@ namespace createsend_dotnet
             OAuthTokenDetails newTokenDetails =
                 HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(
                     null, "/token", new NameValueCollection(), body,
-                    CreateSendOptions.BaseOAuthUri,
+                    options.BaseOAuthUri,
                     HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);
             Authenticate(
                 new OAuthAuthenticationDetails(
@@ -55,7 +58,7 @@ namespace createsend_dotnet
         public U HttpGet<U, EX>(string path, NameValueCollection queryArguments)
             where EX : ErrorResult
         {
-            return HttpHelper.Get<U, EX>(AuthDetails, path, queryArguments);
+            return HttpHelper.Get<U, EX>(AuthDetails, options.BaseUri, path, queryArguments);
         }
 
         public U HttpPost<T, U>(string path, NameValueCollection queryArguments, T payload)
@@ -68,17 +71,17 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
-            return HttpHelper.Post<T, U, EX>(AuthDetails, path, queryArguments, payload);
+            return HttpHelper.Post<T, U, EX>(AuthDetails, path, queryArguments, payload, options.BaseUri, HttpHelper.APPLICATION_JSON_CONTENT_TYPE);
         }
 
         public U HttpPut<T, U>(string path, NameValueCollection queryArguments, T payload) where T : class
         {
-            return HttpHelper.Put<T, U>(AuthDetails, path, queryArguments, payload);
+            return HttpHelper.Put<T, U>(AuthDetails, path, queryArguments, payload, options.BaseUri, HttpHelper.APPLICATION_JSON_CONTENT_TYPE);
         }
 
         public string HttpDelete(string path, NameValueCollection queryArguments)
         {
-            return HttpHelper.Delete(AuthDetails, path, queryArguments);
+            return HttpHelper.Delete(AuthDetails, path, queryArguments, options.BaseUri, HttpHelper.APPLICATION_JSON_CONTENT_TYPE);
         }
     }
 }

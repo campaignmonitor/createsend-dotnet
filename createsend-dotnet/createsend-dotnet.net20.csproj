@@ -31,8 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' != 'v2.0' ">
+    <DefineConstants>SUPPORTED_FRAMEWORK_VERSION</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\JSON.Net\Net20\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -48,7 +52,10 @@
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="CreateSendBase.cs" />
+    <Compile Include="CreateSendOptions.cs" />
+    <Compile Include="CreateSendOptionsWrapper.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="ICreateSendOptions.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\BillingDetails.cs" />

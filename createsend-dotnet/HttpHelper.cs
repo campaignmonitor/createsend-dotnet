@@ -1,55 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Configuration;
 using System.Net;
 using System.Collections.Specialized;
 using System.Web;
-using Newtonsoft.Json;
 using System.Reflection;
+#if SUPPORTED_FRAMEWORK_VERSION
+using createsend_dotnet.Transactional;
+#endif
+using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
-    public static class CreateSendOptions
-    {
-        static string base_uri;
-        static string base_oauth_uri;
-
-        static CreateSendOptions()
-        {
-            base_uri = string.IsNullOrEmpty(
-                ConfigurationManager.AppSettings["base_uri"]) ?
-                "https://api.createsend.com/api/v3.1" :
-                ConfigurationManager.AppSettings["base_uri"];
-            base_oauth_uri = string.IsNullOrEmpty(
-                ConfigurationManager.AppSettings["base_oauth_uri"]) ?
-                "https://api.createsend.com/oauth" :
-                ConfigurationManager.AppSettings["base_oauth_uri"];
-        }
-
-        public static string BaseUri
-        {
-            get { return base_uri; }
-            set { base_uri = value; }
-        }
-
-        public static string BaseOAuthUri
-        {
-            get { return base_oauth_uri; }
-            set { base_oauth_uri = value; }
-        }
-
-        public static string VersionNumber
-        {
-            get
-            {
-                return "4.0.1";
-            }
-        }
-
-    }
-
-    public class HttpHelper
+    public static class HttpHelper
     {
         public const string APPLICATION_JSON_CONTENT_TYPE = "application/json";
         public const string APPLICATION_FORM_URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
@@ -69,6 +32,16 @@ namespace createsend_dotnet
             where EX : ErrorResult
         {
             return MakeRequest<string, U, EX>("GET", auth, path, queryArguments, null);
+        }
+
+        public static U Get<U, EX>(
+            AuthenticationDetails auth,
+            string baseUri,
+            string path,
+            NameValueCollection queryArguments)
+            where EX : ErrorResult
+        {
+            return MakeRequest<string, U, EX>("GET", auth, path, queryArguments, null, baseUri, APPLICATION_JSON_CONTENT_TYPE);
         }
 
         public static U Post<T, U>(
@@ -110,9 +83,21 @@ namespace createsend_dotnet
             return MakeRequest<T, U, ErrorResult>("PUT", auth, path, queryArguments, payload);
         }
 
+        // NEW
+        public static U Put<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload, string baseUri, string contentType) where T : class
+        {
+            return MakeRequest<T, U, ErrorResult>("PUT", auth, path, queryArguments, payload, baseUri, contentType);
+        }
+
         public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
         {
             return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null);
+        }
+
+        // NEW
+        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments, string baseUri, string contentType)
+        {
+            return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null, baseUri, contentType);
         }
 
         static U MakeRequest<T, U, EX>(
@@ -142,7 +127,9 @@ namespace createsend_dotnet
             JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
             serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
             serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-
+            #if SUPPORTED_FRAMEWORK_VERSION
+            serialiserSettings.Converters.Add(new EmailAddressConverter());
+            #endif
             string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
@@ -193,14 +180,31 @@ namespace createsend_dotnet
 
             try
             {
-                using (System.Net.HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+                using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     if (resp == null)
                         return default(U);
                     else
                     {
-                        System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream());
-                        return JsonConvert.DeserializeObject<U>(sr.ReadToEnd().Trim(), serialiserSettings);
+                        using (var sr = new System.IO.StreamReader(resp.GetResponseStream()))
+                        {
+                            #if SUPPORTED_FRAMEWORK_VERSION
+                            var type = typeof(U);
+                            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RateLimited<>))
+                            {
+                                var responseType = type.GetGenericArguments()[0];
+                                var response = JsonConvert.DeserializeObject(sr.ReadToEnd().Trim(), responseType, serialiserSettings);
+                                var status = new RateLimitStatus
+                                    {
+                                        Credit = resp.Headers["X-RateLimit-Limit"].UInt(0),
+                                        Remaining = resp.Headers["X-RateLimit-Remaining"].UInt(0),
+                                        Reset = resp.Headers["X-RateLimit-Reset"].UInt(0)
+                                    };
+                                return (U)Activator.CreateInstance(type, response, status);
+                            }
+                            #endif
+                            return JsonConvert.DeserializeObject<U>(sr.ReadToEnd().Trim(), serialiserSettings);
+                        }
                     }
                 }
             }
@@ -224,6 +228,18 @@ namespace createsend_dotnet
                 }
             }
         }
+
+        #if SUPPORTED_FRAMEWORK_VERSION
+        private static uint UInt(this string value, uint defaultValue)
+        {
+            uint v;
+            if (uint.TryParse(value, out v))
+            {
+                return v;
+            }
+            return defaultValue;
+        }
+        #endif
 
         private static Exception ThrowReworkedCustomException<EX>(WebException we) where EX : ErrorResult
         {
@@ -273,9 +289,15 @@ namespace createsend_dotnet
             foreach (string key in nvc.AllKeys)
             {
                 string encodedKey = HttpUtility.UrlEncode(key) + "=";
-
-                foreach (string value in nvc.GetValues(key))
-                    keyValuePair.Add(encodedKey + HttpUtility.UrlEncode(value));
+                var values = nvc.GetValues(key);
+                
+                if(values != null)
+                foreach (string value in values)
+                {
+                    
+                        keyValuePair.Add(encodedKey + HttpUtility.UrlEncode(value));
+                    
+                }
             }
 
             return keyValuePair.ToArray();

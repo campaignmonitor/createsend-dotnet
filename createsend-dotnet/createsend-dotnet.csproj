@@ -31,9 +31,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFrameworkVersion)' != 'v2.0' ">
+    <DefineConstants>SUPPORTED_FRAMEWORK_VERSION</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>lib\JSON.Net\Net\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -48,7 +52,11 @@
     <Compile Include="Campaign.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="CreateSendBase.cs" />
+    <Compile Include="CreateSendOptions.cs" />
+    <Compile Include="CreateSendOptionsWrapper.cs" />
+    <Compile Include="CustomCreateSendOptions.cs" />
     <Compile Include="General.cs" />
+    <Compile Include="ICreateSendOptions.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\BillingDetails.cs" />
     <Compile Include="Models\Campaign.cs" />
@@ -77,6 +85,45 @@
     <Compile Include="Segment.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="Template.cs" />
+    <Compile Include="Transactional\Attachment.cs" />
+    <Compile Include="Transactional\AttachmentMetadata.cs" />
+    <Compile Include="Transactional\Authenticate.cs" />
+    <Compile Include="Transactional\ClassicEmail.cs" />
+    <Compile Include="Transactional\ClassicEmailDetail.cs" />
+    <Compile Include="Transactional\DisplayedTimeZone.cs" />
+    <Compile Include="Transactional\EmailAddress.cs" />
+    <Compile Include="Transactional\EmailAddressConverter.cs" />
+    <Compile Include="Transactional\MessageBuilder.cs" />
+    <Compile Include="Transactional\Geolocation.cs" />
+    <Compile Include="Transactional\Image.cs" />
+    <Compile Include="Transactional\MailClient.cs" />
+    <Compile Include="Transactional\MessageBody.cs" />
+    <Compile Include="Transactional\MessageContent.cs" />
+    <Compile Include="Transactional\MessageDetail.cs" />
+    <Compile Include="Transactional\MessageListDetail.cs" />
+    <Compile Include="Transactional\MessageListStatus.cs" />
+    <Compile Include="Transactional\Messages.cs" />
+    <Compile Include="Transactional\PropertyContent.cs" />
+    <Compile Include="Transactional\RateLimited`1.cs" />
+    <Compile Include="Transactional\RateLimitStatus.cs" />
+    <Compile Include="Transactional\RecipientStatus.cs" />
+    <Compile Include="Transactional\SmartEmail.cs" />
+    <Compile Include="Transactional\SmartEmailDetail.cs" />
+    <Compile Include="Transactional\SmartEmailListDetail.cs" />
+    <Compile Include="Transactional\SmartEmailListStatus.cs" />
+    <Compile Include="Transactional\SmartEmailProperties.cs" />
+    <Compile Include="Transactional\Statistics.cs" />
+    <Compile Include="Transactional\StatisticsQuery.cs" />
+    <Compile Include="Transactional\Transactional.cs" />
+    <Compile Include="Transactional\RequiredClientIdentifierException.cs" />
+    <Compile Include="Transactional\SubscriberAction.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="nuget\campaignmonitor-api.nuspec" />
+    <None Include="nuget\content\app.config.transform" />
+    <None Include="nuget\content\web.config.transform" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
