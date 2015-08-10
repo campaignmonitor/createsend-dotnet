@@ -1,13 +1,14 @@
-﻿extern alias json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Collections.Specialized;
 using System.Web;
-using createsend_dotnet.Transactional;
-using json::Newtonsoft.Json;
 using System.Reflection;
+#if SUPPORTED_FRAMEWORK_VERSION
+using createsend_dotnet.Transactional;
+#endif
+using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
@@ -126,8 +127,9 @@ namespace createsend_dotnet
             JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
             serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
             serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+            #if SUPPORTED_FRAMEWORK_VERSION
             serialiserSettings.Converters.Add(new EmailAddressConverter());
-
+            #endif
             string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
 
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
@@ -186,6 +188,7 @@ namespace createsend_dotnet
                     {
                         using (var sr = new System.IO.StreamReader(resp.GetResponseStream()))
                         {
+                            #if SUPPORTED_FRAMEWORK_VERSION
                             var type = typeof(U);
                             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RateLimited<>))
                             {
@@ -199,7 +202,7 @@ namespace createsend_dotnet
                                     };
                                 return (U)Activator.CreateInstance(type, response, status);
                             }
-                          
+                            #endif
                             return JsonConvert.DeserializeObject<U>(sr.ReadToEnd().Trim(), serialiserSettings);
                         }
                     }
@@ -226,6 +229,7 @@ namespace createsend_dotnet
             }
         }
 
+        #if SUPPORTED_FRAMEWORK_VERSION
         private static uint UInt(this string value, uint defaultValue)
         {
             uint v;
@@ -235,6 +239,7 @@ namespace createsend_dotnet
             }
             return defaultValue;
         }
+        #endif
 
         private static Exception ThrowReworkedCustomException<EX>(WebException we) where EX : ErrorResult
         {

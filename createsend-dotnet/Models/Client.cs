@@ -1,10 +1,9 @@
-﻿extern alias json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using json::Newtonsoft.Json;
-using json::Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace createsend_dotnet
 {

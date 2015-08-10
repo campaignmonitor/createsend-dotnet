@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>$id$</id>
+    <id>campaignmonitor-api</id>
     <title>Campaign Monitor</title>
-    <version>$version$</version>
+    <version>4.1.0</version>
     <authors>Campaign Monitor</authors>
     <description>A .NET library for the Campaign Monitor API with enhancements for Transactional</description>
     <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>
     <projectUrl>http://campaignmonitor.github.io/createsend-dotnet/</projectUrl>
     <tags>api campaign monitor .net transactional</tags>
     <dependencies>
-        <dependency id="Newtonsoft.Json" version="4.5.0" />
+        <dependency id="Newtonsoft.Json" version="6.0.0.0" />
     </dependencies>
   </metadata>
   <files>

@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v4.1.0 - 10 Aug, 2015
+
+* Transactional API added to the dotnet 4/3.5 wrappers
+
 ## v4.0.1 - 12 Feb, 2014
 
 * Fixed an issue with the config transformations

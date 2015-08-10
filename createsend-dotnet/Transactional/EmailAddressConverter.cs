@@ -1,6 +1,5 @@
-﻿extern alias json;
-using System;
-using json::Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace createsend_dotnet.Transactional
 {
