@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace createsend_dotnet
 {
@@ -97,7 +98,7 @@ namespace createsend_dotnet
 
         public void Send(string confirmationEmail, DateTime sendDate)
         {
-            Send(confirmationEmail, sendDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            Send(confirmationEmail, sendDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
         }
 
         private void Send(string confirmationEmail, string sendDate)
@@ -177,7 +178,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return Opens(fromDate.ToString("yyyy-MM-dd HH:mm:ss"), page,
+            return Opens(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), page,
                 pageSize, orderField, orderDirection);
         }
 
@@ -220,7 +221,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return Unsubscribes(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+            return Unsubscribes(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 page, pageSize, orderField, orderDirection);
         }
 
@@ -263,7 +264,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return SpamComplaints(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+            return SpamComplaints(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 page, pageSize, orderField, orderDirection);
         }
 
@@ -306,7 +307,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return Clicks(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+            return Clicks(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 page, pageSize, orderField, orderDirection);
         }
 
@@ -349,7 +350,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return Bounces(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+            return Bounces(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 page, pageSize, orderField, orderDirection);
         }
 

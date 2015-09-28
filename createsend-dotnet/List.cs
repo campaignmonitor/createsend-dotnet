@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace createsend_dotnet
 {
@@ -213,7 +214,7 @@ namespace createsend_dotnet
             string orderDirection)
         {
             return GenericPagedSubscriberGet(type,
-                fromDate.ToString("yyyy-MM-dd HH:mm:ss"), page, pageSize,
+                fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), page, pageSize,
                 orderField, orderDirection);
         }
 

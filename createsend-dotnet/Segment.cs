@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 
 namespace createsend_dotnet
 {
@@ -70,7 +71,7 @@ namespace createsend_dotnet
             string orderField,
             string orderDirection)
         {
-            return Subscribers(fromDate.ToString("yyyy-MM-dd HH:mm:ss"),
+            return Subscribers(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 page, pageSize, orderField, orderDirection);
         }
 
