@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v4.2.1 - 29 Sep, 2015
+
+* Fixed an issue with date formatting on other cultures
+
 ## v4.2.0 - 10 Aug, 2015
 
 * Transactional API added to the dotnet 4/3.5 wrappers
