@@ -3,7 +3,7 @@
 desc "Build solutions for release"
 task :solutions do
   puts "Building solutions for release..."
-  msbuild = "/cygdrive/c/Windows/Microsoft.NET/Framework64/v4.0.30319/msbuild.exe"
+  msbuild = "c:/Windows/Microsoft.NET/Framework64/v4.0.30319/msbuild.exe"
   system "#{msbuild} createsend-dotnet.sln /t:Clean,Build /p:Configuration=Release"
   system "#{msbuild} createsend-dotnet.net35.sln /t:Clean,Build /p:Configuration=Release"
   system "#{msbuild} createsend-dotnet.net20.sln /t:Clean,Build /p:Configuration=Release"

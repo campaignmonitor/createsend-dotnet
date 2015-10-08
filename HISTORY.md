@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v4.2.2 - 8 Oct, 2015
+
+* Actually upgraded the createsend package set to Nuget
+
 ## v4.2.1 - 29 Sep, 2015
 
 * Fixed an issue with date formatting on other cultures
