@@ -11,13 +11,13 @@ namespace createsend_dotnet
         static CreateSendOptions()
         {
             base_uri = string.IsNullOrEmpty(
-                ConfigurationManager.AppSettings["base_uri"]) ?
+                ConfigurationManager.AppSettings["createsend_api_base_uri"]) ?
                 "https://api.createsend.com/api/v3.1" :
-                ConfigurationManager.AppSettings["base_uri"];
+                ConfigurationManager.AppSettings["createsend_api_base_uri"];
             base_oauth_uri = string.IsNullOrEmpty(
-                ConfigurationManager.AppSettings["base_oauth_uri"]) ?
+                ConfigurationManager.AppSettings["createsend_api_base_oauth_uri"]) ?
                 "https://api.createsend.com/oauth" :
-                ConfigurationManager.AppSettings["base_oauth_uri"];
+                ConfigurationManager.AppSettings["createsend_api_base_oauth_uri"];
         }
 
         public static string BaseUri
