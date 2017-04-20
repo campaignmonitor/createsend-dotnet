@@ -164,8 +164,12 @@ namespace createsend_dotnet
                 }
             }
 
-            client.DefaultRequestHeaders.Add("User-Agent", string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
-                CreateSendOptions.VersionNumber, RuntimeInformation.FrameworkDescription, RuntimeInformation.OSDescription, typeof(HttpHelper).GetTypeInfo().Assembly));
+            /*client.DefaultRequestHeaders.Add("User-Agent",
+            string.Format(@"createsend -dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
+            CreateSendOptions.VersionNumber "1.0.0.0",
+            RuntimeInformation.FrameworkDescription,
+            RuntimeInformation.OSDescription,
+            typeof(HttpHelper).GetTypeInfo().Assembly));*/
 
             HttpContent content;
 
@@ -288,6 +292,10 @@ namespace createsend_dotnet
         public static string ToQueryString(NameValueCollection nvc)
         {
             string url = string.Empty;
+            if (nvc == null)
+            {
+                return url;
+            }
 
             foreach (KeyValuePair<string, string> nv in nvc)
             {
