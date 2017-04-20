@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.IO;
+using createsend_dotnet.Transactional;
 
 #if SUPPORTED_FRAMEWORK_VERSION
 using createsend_dotnet.Transactional;
@@ -128,73 +129,83 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
-            JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
-            serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
-            serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-#if SUPPORTED_FRAMEWORK_VERSION
-            serialiserSettings.Converters.Add(new EmailAddressConverter());
-#endif
-            string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
-
-            HttpClient client = new HttpClient();
-
-            //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
-            //req.Method = method;
-            //req.ContentType = contentType;
-            //req.AutomaticDecompression = DecompressionMethods.GZip;
-
-            if (auth != null)
+            try
             {
-                if (auth is OAuthAuthenticationDetails)
-                {
-                    OAuthAuthenticationDetails oauthDetails = auth as OAuthAuthenticationDetails;
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + oauthDetails.AccessToken);
-                }
-                else if (auth is ApiKeyAuthenticationDetails)
-                {
-                    ApiKeyAuthenticationDetails apiKeyDetails = auth as ApiKeyAuthenticationDetails;
-                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
-                        Encoding.GetEncoding(0).GetBytes(apiKeyDetails.ApiKey + ":x")));
-                }
-                else if (auth is BasicAuthAuthenticationDetails)
-                {
-                    BasicAuthAuthenticationDetails basicDetails = auth as BasicAuthAuthenticationDetails;
-                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
-                        Encoding.GetEncoding(0).GetBytes(basicDetails.Username + ":" + basicDetails.Password)));
-                }
-            }
+                JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
+                serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
+                serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
+                serialiserSettings.Converters.Add(new EmailAddressConverter());
 
-            /*client.DefaultRequestHeaders.Add("User-Agent",
-            string.Format(@"createsend -dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
-            CreateSendOptions.VersionNumber "1.0.0.0",
-            RuntimeInformation.FrameworkDescription,
-            RuntimeInformation.OSDescription,
-            typeof(HttpHelper).GetTypeInfo().Assembly));*/
+                string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
 
-            HttpContent content;
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.AutomaticDecompression = System.Net.DecompressionMethods.GZip;
 
-            if (method != "GET")
-            {
-                Stream s = new MemoryStream();
+                HttpClient client = new HttpClient(handler);
 
-                if (payload != null)
+                if (auth != null)
                 {
-                    using (System.IO.StreamWriter os = new System.IO.StreamWriter(s))
+                    if (auth is OAuthAuthenticationDetails)
                     {
-                        if (contentType == APPLICATION_FORM_URLENCODED_CONTENT_TYPE)
-                            os.Write(payload);
-                        else
-                            os.Write(JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings));
-                        os.Dispose();
+                        OAuthAuthenticationDetails oauthDetails = auth as OAuthAuthenticationDetails;
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + oauthDetails.AccessToken);
+                    }
+                    else if (auth is ApiKeyAuthenticationDetails)
+                    {
+                        ApiKeyAuthenticationDetails apiKeyDetails = auth as ApiKeyAuthenticationDetails;
+                        client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
+                            Encoding.GetEncoding(0).GetBytes(apiKeyDetails.ApiKey + ":x")));
+                    }
+                    else if (auth is BasicAuthAuthenticationDetails)
+                    {
+                        BasicAuthAuthenticationDetails basicDetails = auth as BasicAuthAuthenticationDetails;
+                        client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
+                            Encoding.GetEncoding(0).GetBytes(basicDetails.Username + ":" + basicDetails.Password)));
                     }
                 }
 
-                content = new StreamContent(s);
-            }
+                /*client.DefaultRequestHeaders.Add("User-Agent",
+                string.Format(@"createsend -dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
+                CreateSendOptions.VersionNumber "1.0.0.0",
+                RuntimeInformation.FrameworkDescription,
+                RuntimeInformation.OSDescription,
+                typeof(HttpHelper).GetTypeInfo().Assembly));*/
 
-            try
-            {
-                var response = await client.PostAsync(uri, null);
+                HttpContent content = null;
+                HttpResponseMessage response = null;
+
+                if (method != "GET")
+                {
+                    Stream s = new MemoryStream();
+                    Stream requestStream = new MemoryStream();
+
+                    if (payload != null)
+                    {
+                        using (System.IO.StreamWriter os = new System.IO.StreamWriter(s))
+                        {
+                            if (contentType == APPLICATION_FORM_URLENCODED_CONTENT_TYPE)
+                                os.Write(payload);
+                            else
+                            {
+                                string json = JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings);
+                                os.Write(json);
+                            }
+
+                            await os.FlushAsync();
+                            s.Seek(0, SeekOrigin.Begin);
+                            await s.CopyToAsync(requestStream);
+                            os.Dispose();
+                        }
+
+                        requestStream.Seek(0, SeekOrigin.Begin);
+                        content = new StreamContent(requestStream);
+                        response = await client.PostAsync(uri, content);
+                    }
+                    else
+                    {
+                        response = await client.PostAsync(uri, null);
+                    }
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -297,9 +308,9 @@ namespace createsend_dotnet
                 return url;
             }
 
-            foreach (KeyValuePair<string, string> nv in nvc)
+            foreach (string key in nvc)
             {
-                url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, nv.Key, nv.Value);
+                url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, key, nvc[key]);
             }
 
             return url;

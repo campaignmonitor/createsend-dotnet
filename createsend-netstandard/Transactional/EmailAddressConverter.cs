@@ -5,7 +5,6 @@ namespace createsend_dotnet.Transactional
 {
     internal class EmailAddressConverter : JsonConverter
     {
-
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(EmailAddress);
@@ -22,13 +21,14 @@ namespace createsend_dotnet.Transactional
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value == null)
+            if (value == null || value.GetType() != typeof(EmailAddress))
             {
                 writer.WriteNull();
             }
             else
             {
-                writer.WriteValue(value.ToString());
+                EmailAddress e = (EmailAddress)value;
+                writer.WriteValue(string.Format("{0} <{1}>", e.Name, e.Email));
             }
         }
     }
