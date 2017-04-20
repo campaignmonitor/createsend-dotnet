@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Web;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace createsend_dotnet
 {
     public class General : CreateSendBase
     {
-        public General() : base(null) { }
-        public General(AuthenticationDetails auth) : base(auth) { }
+        public General() : base(null)
+        {
+        }
+
+        public General(AuthenticationDetails auth) : base(auth)
+        {
+        }
 
         public static string AuthorizeUrl(
             int clientID,
@@ -29,12 +34,12 @@ namespace createsend_dotnet
             string state)
         {
             string result = CreateSendOptions.BaseOAuthUri;
-            result += string.Format(
-                "?client_id={0}&redirect_uri={1}&scope={2}",
-                clientID.ToString(), HttpUtility.UrlEncode(redirectUri),
-                HttpUtility.UrlEncode(scope));
+            result += QueryHelpers.AddQueryString(result, "client_id", clientID.ToString());
+            result += QueryHelpers.AddQueryString(result, "redirect_uri", redirectUri);
             if (!string.IsNullOrEmpty(state))
-                result += "&state=" + HttpUtility.UrlEncode(state);
+                result += QueryHelpers.AddQueryString(result, "state", state);
+            result += QueryHelpers.AddQueryString(result, "scope", scope);
+
             return result;
         }
 
@@ -45,10 +50,10 @@ namespace createsend_dotnet
             string code)
         {
             string body = "grant_type=authorization_code";
-            body += string.Format("&client_id={0}", clientID.ToString());
-            body += string.Format("&client_secret={0}", HttpUtility.UrlEncode(clientSecret));
-            body += string.Format("&redirect_uri={0}", HttpUtility.UrlEncode(redirectUri));
-            body += string.Format("&code={0}", HttpUtility.UrlEncode(code));
+            body += QueryHelpers.AddQueryString(body, "client_id", clientID.ToString());
+            body += QueryHelpers.AddQueryString(body, "client_secret", clientSecret);
+            body += QueryHelpers.AddQueryString(body, "redirect_uri", redirectUri);
+            body += QueryHelpers.AddQueryString(body, "code", code);
 
             return HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(
                 null, "/token", new NameValueCollection(), body,
@@ -56,19 +61,9 @@ namespace createsend_dotnet
                 HttpHelper.APPLICATION_FORM_URLENCODED_CONTENT_TYPE);
         }
 
-        public DateTime SystemDate()
+        public BillingDetails BillingDetails()
         {
-            return HttpGet<SystemDateResult>("/systemdate.json", null).SystemDate;
-        }
-
-        public IEnumerable<string> Countries(string apiKey)
-        {
-            return HttpGet<string[]>("/countries.json", null);
-        }
-
-        public IEnumerable<string> Timezones()
-        {
-            return HttpGet<string[]>("/timezones.json", null);
+            return HttpGet<BillingDetails>("/billingdetails.json", null);
         }
 
         public IEnumerable<BasicClient> Clients()
@@ -76,9 +71,9 @@ namespace createsend_dotnet
             return HttpGet<Clients>("/clients.json", null);
         }
 
-        public BillingDetails BillingDetails()
+        public IEnumerable<string> Countries(string apiKey)
         {
-            return HttpGet<BillingDetails>("/billingdetails.json", null);
+            return HttpGet<string[]>("/countries.json", null);
         }
 
         public string ExternalSessionUrl(
@@ -86,6 +81,16 @@ namespace createsend_dotnet
         {
             return HttpPut<ExternalSessionOptions, ExternalSessionResult>(
                 "/externalsession.json", null, options).SessionUrl;
+        }
+
+        public DateTime SystemDate()
+        {
+            return HttpGet<SystemDateResult>("/systemdate.json", null).SystemDate;
+        }
+
+        public IEnumerable<string> Timezones()
+        {
+            return HttpGet<string[]>("/timezones.json", null);
         }
     }
 }

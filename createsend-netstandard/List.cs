@@ -7,13 +7,13 @@ namespace createsend_dotnet
 {
     public class List : CreateSendBase
     {
-        public string ListID { get; set; }
-
         public List(AuthenticationDetails auth, string listID)
             : base(auth)
         {
             ListID = listID;
         }
+
+        public string ListID { get; set; }
 
         public static string Create(
             AuthenticationDetails auth,
@@ -36,38 +36,31 @@ namespace createsend_dotnet
                 });
         }
 
-        public void Update(
-            string title,
-            string unsubscribePage,
-            bool confirmedOptIn,
-            string confirmationSuccessPage,
-            UnsubscribeSetting unsubscribeSetting,
-            bool addUnsubscribesToSuppList,
-            bool scrubActiveWithSuppList)
+        public void ActivateWebhook(string webhookID)
         {
-            HttpPut<ListDetailForUpdate, string>(
-                string.Format("/lists/{0}.json", ListID), null,
-                new ListDetailForUpdate()
-                {
-                    Title = title,
-                    UnsubscribePage = unsubscribePage,
-                    ConfirmedOptIn = confirmedOptIn,
-                    ConfirmationSuccessPage = confirmationSuccessPage,
-                    UnsubscribeSetting = unsubscribeSetting.ToString(),
-                    AddUnsubscribesToSuppList = addUnsubscribesToSuppList,
-                    ScrubActiveWithSuppList = scrubActiveWithSuppList
-                });
+            HttpPut<string, string>(
+                string.Format("/lists/{0}/webhooks/{1}/activate.json",
+                ListID, System.Net.WebUtility.HtmlEncode(webhookID)), null, null);
         }
 
-        public ListDetail Details()
+        public PagedCollection<SubscriberDetail> Active()
         {
-            return HttpGet<ListDetail>(
-                string.Format("/lists/{0}.json", ListID), null);
+            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc");
         }
 
-        public void Delete()
+        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
         {
-            HttpDelete(string.Format("/lists/{0}.json", ListID), null);
+            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
+        public PagedCollection<SubscriberDetail> Bounced()
+        {
+            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc");
+        }
+
+        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
         }
 
         public string CreateCustomField(
@@ -86,35 +79,25 @@ namespace createsend_dotnet
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/customfields.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "FieldName", fieldName }, 
-                    { "DataType", dataType.ToString() }, 
+                new Dictionary<string, object>()
+                {
+                    { "FieldName", fieldName },
+                    { "DataType", dataType.ToString() },
                     { "Options", options },
                     { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
                 });
         }
 
-        public string UpdateCustomField(
-            string customFieldKey,
-            string fieldName,
-            bool visibleInPreferenceCenter)
+        public string CreateWebhook(List<string> events, string url, string payloadFormat)
         {
-            return HttpPut<Dictionary<string, object>, string>(
-                string.Format("/lists/{0}/customfields/{1}.json", 
-                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new Dictionary<string, object>() 
+            return HttpPost<Dictionary<string, object>, string>(
+                string.Format("/lists/{0}/webhooks.json", ListID), null,
+                new Dictionary<string, object>()
                 {
-                    { "FieldName", fieldName },
-                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
+                    { "Events", events },
+                    { "Url", url },
+                    { "PayloadFormat", payloadFormat }
                 });
-        }
-
-        public void DeleteCustomField(string customFieldKey)
-        {
-            HttpDelete(
-                string.Format("/lists/{0}/customfields/{1}.json", 
-                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null);
         }
 
         public IEnumerable<ListCustomField> CustomFields()
@@ -123,24 +106,46 @@ namespace createsend_dotnet
                 string.Format("/lists/{0}/customfields.json", ListID), null);
         }
 
-        public void UpdateCustomFieldOptions(
-            string customFieldKey,
-            List<string> options,
-            bool keepExistingOptions)
+        public void DeactivateWebhook(string webhookID)
         {
-            HttpPut<object, string>(
-                string.Format("/lists/{0}/customfields/{1}/options.json",
-                ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new { 
-                    KeepExistingOptions = keepExistingOptions,
-                    Options = options
-                });
+            HttpPut<string, string>(
+                string.Format("/lists/{0}/webhooks/{1}/deactivate.json",
+                ListID, System.Net.WebUtility.HtmlEncode(webhookID)), null, null);
         }
 
-        [Obsolete("Use UpdateCustomFieldOptions instead. UpdateCustomFields will eventually be removed.", false)]
-        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
+        public void Delete()
         {
-            UpdateCustomFieldOptions(customFieldKey, options, keepExistingOptions);
+            HttpDelete(string.Format("/lists/{0}.json", ListID), null);
+        }
+
+        public void DeleteCustomField(string customFieldKey)
+        {
+            HttpDelete(
+                string.Format("/lists/{0}/customfields/{1}.json",
+                ListID, System.Net.WebUtility.HtmlEncode(customFieldKey)), null);
+        }
+
+        public PagedCollection<SubscriberDetail> Deleted()
+        {
+            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc");
+        }
+
+        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        {
+            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
+        }
+
+        public void DeleteWebhook(string webhookID)
+        {
+            HttpDelete(
+                string.Format("/lists/{0}/webhooks/{1}.json",
+                ListID, System.Net.WebUtility.HtmlEncode(webhookID)), null);
+        }
+
+        public ListDetail Details()
+        {
+            return HttpGet<ListDetail>(
+                string.Format("/lists/{0}.json", ListID), null);
         }
 
         public IEnumerable<BasicSegment> Segments()
@@ -155,14 +160,13 @@ namespace createsend_dotnet
                 string.Format("/lists/{0}/stats.json", ListID), null);
         }
 
-        public PagedCollection<SubscriberDetail> Active()
+        public bool TestWebhook(string webhookID)
         {
-            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc");
-        }
+            HttpGet<string, ErrorResult<WebhookTestErrorResult>>(
+                string.Format("/lists/{0}/webhooks/{1}/test.json",
+                ListID, System.Net.WebUtility.HtmlEncode(webhookID)), null);
 
-        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
-        {
-            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+            return true; //an exception will be thrown if there is a problem
         }
 
         public PagedCollection<SubscriberDetail> Unconfirmed()
@@ -185,28 +189,73 @@ namespace createsend_dotnet
             return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
         }
 
-        public PagedCollection<SubscriberDetail> Bounced()
+        public void Update(
+                                                                                                                                                                                                    string title,
+            string unsubscribePage,
+            bool confirmedOptIn,
+            string confirmationSuccessPage,
+            UnsubscribeSetting unsubscribeSetting,
+            bool addUnsubscribesToSuppList,
+            bool scrubActiveWithSuppList)
         {
-            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc");
+            HttpPut<ListDetailForUpdate, string>(
+                string.Format("/lists/{0}.json", ListID), null,
+                new ListDetailForUpdate()
+                {
+                    Title = title,
+                    UnsubscribePage = unsubscribePage,
+                    ConfirmedOptIn = confirmedOptIn,
+                    ConfirmationSuccessPage = confirmationSuccessPage,
+                    UnsubscribeSetting = unsubscribeSetting.ToString(),
+                    AddUnsubscribesToSuppList = addUnsubscribesToSuppList,
+                    ScrubActiveWithSuppList = scrubActiveWithSuppList
+                });
         }
 
-        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public string UpdateCustomField(
+            string customFieldKey,
+            string fieldName,
+            bool visibleInPreferenceCenter)
         {
-            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
+            return HttpPut<Dictionary<string, object>, string>(
+                string.Format("/lists/{0}/customfields/{1}.json",
+                ListID, System.Net.WebUtility.HtmlEncode(customFieldKey)), null,
+                new Dictionary<string, object>()
+                {
+                    { "FieldName", fieldName },
+                    { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
+                });
         }
 
-        public PagedCollection<SubscriberDetail> Deleted()
+        public void UpdateCustomFieldOptions(
+            string customFieldKey,
+            List<string> options,
+            bool keepExistingOptions)
         {
-            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc");
+            HttpPut<object, string>(
+                string.Format("/lists/{0}/customfields/{1}/options.json",
+                ListID, System.Net.WebUtility.HtmlEncode(customFieldKey)), null,
+                new
+                {
+                    KeepExistingOptions = keepExistingOptions,
+                    Options = options
+                });
         }
 
-        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        [Obsolete("Use UpdateCustomFieldOptions instead. UpdateCustomFields will eventually be removed.", false)]
+        public void UpdateCustomFields(string customFieldKey, List<string> options, bool keepExistingOptions)
         {
-            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
+            UpdateCustomFieldOptions(customFieldKey, options, keepExistingOptions);
+        }
+
+        public IEnumerable<BasicWebhook> Webhooks()
+        {
+            return HttpGet<BasicWebhook[]>(
+                string.Format("/lists/{0}/webhooks.json", ListID), null);
         }
 
         private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(
-            string type,
+                    string type,
             DateTime fromDate,
             int page,
             int pageSize,
@@ -229,54 +278,6 @@ namespace createsend_dotnet
 
             return HttpGet<PagedCollection<SubscriberDetail>>(
                 string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
-        }
-
-        public IEnumerable<BasicWebhook> Webhooks()
-        {
-            return HttpGet<BasicWebhook[]>(
-                string.Format("/lists/{0}/webhooks.json", ListID), null);
-        }
-
-        public string CreateWebhook(List<string> events, string url, string payloadFormat)
-        {
-            return HttpPost<Dictionary<string, object>, string>(
-                string.Format("/lists/{0}/webhooks.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "Events", events }, 
-                    { "Url", url }, 
-                    { "PayloadFormat", payloadFormat } 
-                });
-        }
-
-        public bool TestWebhook(string webhookID)
-        {
-            HttpGet<string, ErrorResult<WebhookTestErrorResult>>(
-                string.Format("/lists/{0}/webhooks/{1}/test.json",
-                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
-          
-            return true; //an exception will be thrown if there is a problem
-        }
-
-        public void DeleteWebhook(string webhookID)
-        {
-            HttpDelete(
-                string.Format("/lists/{0}/webhooks/{1}.json",
-                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
-        }
-
-        public void ActivateWebhook(string webhookID)
-        {
-            HttpPut<string, string>(
-                string.Format("/lists/{0}/webhooks/{1}/activate.json",
-                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
-        }
-
-        public void DeactivateWebhook(string webhookID)
-        {
-            HttpPut<string, string>(
-                string.Format("/lists/{0}/webhooks/{1}/deactivate.json",
-                ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null, null);
         }
     }
 }

@@ -1,24 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Net;
+using System.Net.Http;
 using System.Collections.Specialized;
-using System.Web;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.IO;
+
 #if SUPPORTED_FRAMEWORK_VERSION
 using createsend_dotnet.Transactional;
 #endif
+
 using Newtonsoft.Json;
 
 namespace createsend_dotnet
 {
     public static class HttpHelper
     {
-        public const string APPLICATION_JSON_CONTENT_TYPE = "application/json";
         public const string APPLICATION_FORM_URLENCODED_CONTENT_TYPE = "application/x-www-form-urlencoded";
+        public const string APPLICATION_JSON_CONTENT_TYPE = "application/json";
+
+        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
+        {
+            return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null);
+        }
+
+        // NEW
+        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments, string baseUri, string contentType)
+        {
+            return MakeRequestAsync<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null, baseUri, contentType).Result;
+        }
 
         public static U Get<U>(
-            AuthenticationDetails auth,
+                            AuthenticationDetails auth,
             string path,
             NameValueCollection queryArguments)
         {
@@ -41,7 +56,7 @@ namespace createsend_dotnet
             NameValueCollection queryArguments)
             where EX : ErrorResult
         {
-            return MakeRequest<string, U, EX>("GET", auth, path, queryArguments, null, baseUri, APPLICATION_JSON_CONTENT_TYPE);
+            return MakeRequestAsync<string, U, EX>("GET", auth, path, queryArguments, null, baseUri, APPLICATION_JSON_CONTENT_TYPE).Result;
         }
 
         public static U Post<T, U>(
@@ -75,7 +90,7 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
-            return MakeRequest<T, U, EX>("POST", auth, path, queryArguments, payload, baseUri, contentType);
+            return MakeRequestAsync<T, U, EX>("POST", auth, path, queryArguments, payload, baseUri, contentType).Result;
         }
 
         public static U Put<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload) where T : class
@@ -86,21 +101,10 @@ namespace createsend_dotnet
         // NEW
         public static U Put<T, U>(AuthenticationDetails auth, string path, NameValueCollection queryArguments, T payload, string baseUri, string contentType) where T : class
         {
-            return MakeRequest<T, U, ErrorResult>("PUT", auth, path, queryArguments, payload, baseUri, contentType);
+            return MakeRequestAsync<T, U, ErrorResult>("PUT", auth, path, queryArguments, payload, baseUri, contentType).Result;
         }
 
-        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments)
-        {
-            return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null);
-        }
-
-        // NEW
-        public static string Delete(AuthenticationDetails auth, string path, NameValueCollection queryArguments, string baseUri, string contentType)
-        {
-            return MakeRequest<string, string, ErrorResult>("DELETE", auth, path, queryArguments, null, baseUri, contentType);
-        }
-
-        static U MakeRequest<T, U, EX>(
+        private static U MakeRequest<T, U, EX>(
             string method,
             AuthenticationDetails auth,
             string path,
@@ -109,11 +113,11 @@ namespace createsend_dotnet
             where T : class
             where EX : ErrorResult
         {
-            return MakeRequest<T, U, EX>(method, auth, path, queryArguments,
-                payload, CreateSendOptions.BaseUri, APPLICATION_JSON_CONTENT_TYPE);
+            return MakeRequestAsync<T, U, EX>(method, auth, path, queryArguments,
+                payload, CreateSendOptions.BaseUri, APPLICATION_JSON_CONTENT_TYPE).Result;
         }
 
-        static U MakeRequest<T, U, EX>(
+        private static async Task<U> MakeRequestAsync<T, U, EX>(
             string method,
             AuthenticationDetails auth,
             string path,
@@ -127,68 +131,78 @@ namespace createsend_dotnet
             JsonSerializerSettings serialiserSettings = new JsonSerializerSettings();
             serialiserSettings.NullValueHandling = NullValueHandling.Ignore;
             serialiserSettings.MissingMemberHandling = MissingMemberHandling.Ignore;
-            #if SUPPORTED_FRAMEWORK_VERSION
+#if SUPPORTED_FRAMEWORK_VERSION
             serialiserSettings.Converters.Add(new EmailAddressConverter());
-            #endif
+#endif
             string uri = baseUri + path + NameValueCollectionExtension.ToQueryString(queryArguments);
 
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
-            req.Method = method;
-            req.ContentType = contentType;
-            req.AutomaticDecompression = DecompressionMethods.GZip;
+            HttpClient client = new HttpClient();
+
+            //HttpWebRequest req = (HttpWebRequest)WebRequest.Create(uri);
+            //req.Method = method;
+            //req.ContentType = contentType;
+            //req.AutomaticDecompression = DecompressionMethods.GZip;
 
             if (auth != null)
             {
                 if (auth is OAuthAuthenticationDetails)
                 {
                     OAuthAuthenticationDetails oauthDetails = auth as OAuthAuthenticationDetails;
-                    req.Headers["Authorization"] = "Bearer " + oauthDetails.AccessToken;
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + oauthDetails.AccessToken);
                 }
                 else if (auth is ApiKeyAuthenticationDetails)
                 {
                     ApiKeyAuthenticationDetails apiKeyDetails = auth as ApiKeyAuthenticationDetails;
-                    req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
-                        Encoding.Default.GetBytes(apiKeyDetails.ApiKey + ":x"));
+                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
+                        Encoding.GetEncoding(0).GetBytes(apiKeyDetails.ApiKey + ":x")));
                 }
                 else if (auth is BasicAuthAuthenticationDetails)
                 {
                     BasicAuthAuthenticationDetails basicDetails = auth as BasicAuthAuthenticationDetails;
-                    req.Headers["Authorization"] = "Basic " + Convert.ToBase64String(
-                        Encoding.Default.GetBytes(basicDetails.Username + ":" + basicDetails.Password));
+                    client.DefaultRequestHeaders.Add("Authorization", "Basic " + Convert.ToBase64String(
+                        Encoding.GetEncoding(0).GetBytes(basicDetails.Username + ":" + basicDetails.Password)));
                 }
             }
 
-            req.UserAgent = string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
-                CreateSendOptions.VersionNumber, Environment.Version, Environment.OSVersion, Assembly.GetExecutingAssembly().FullName);
+            client.DefaultRequestHeaders.Add("User-Agent", string.Format("createsend-dotnet-#{0} .Net: {1} OS: {2} DLL: {3}",
+                CreateSendOptions.VersionNumber, RuntimeInformation.FrameworkDescription, RuntimeInformation.OSDescription, typeof(HttpHelper).GetTypeInfo().Assembly));
+
+            HttpContent content;
 
             if (method != "GET")
             {
+                Stream s = new MemoryStream();
+
                 if (payload != null)
                 {
-                    using (System.IO.StreamWriter os = new System.IO.StreamWriter(req.GetRequestStream()))
+                    using (System.IO.StreamWriter os = new System.IO.StreamWriter(s))
                     {
                         if (contentType == APPLICATION_FORM_URLENCODED_CONTENT_TYPE)
                             os.Write(payload);
                         else
                             os.Write(JsonConvert.SerializeObject(payload, Formatting.None, serialiserSettings));
-                        os.Close();
+                        os.Dispose();
                     }
                 }
-                else
-                    req.ContentLength = 0;
+
+                content = new StreamContent(s);
             }
 
             try
             {
-                using (var resp = (HttpWebResponse)req.GetResponse())
+                var response = await client.PostAsync(uri, null);
+
+                if (response.IsSuccessStatusCode)
                 {
+                    var resp = await response.Content.ReadAsStreamAsync();
+
                     if (resp == null)
                         return default(U);
-                    else
+
                     {
-                        using (var sr = new System.IO.StreamReader(resp.GetResponseStream()))
+                        using (var sr = new System.IO.StreamReader(resp))
                         {
-                            #if SUPPORTED_FRAMEWORK_VERSION
+#if SUPPORTED_FRAMEWORK_VERSION
                             var type = typeof(U);
                             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(RateLimited<>))
                             {
@@ -202,34 +216,31 @@ namespace createsend_dotnet
                                     };
                                 return (U)Activator.CreateInstance(type, response, status);
                             }
-                            #endif
+#endif
                             return JsonConvert.DeserializeObject<U>(sr.ReadToEnd().Trim(), serialiserSettings);
                         }
                     }
                 }
-            }
-            catch (WebException we)
-            {
-                if (we.Status == WebExceptionStatus.ProtocolError)
-                {
-                    switch ((int)((HttpWebResponse)we.Response).StatusCode)
-                    {
-                        case 400:
-                        case 401:
-                            throw ThrowReworkedCustomException<EX>(we);
-                        case 404:
-                        default:
-                            throw we;
-                    }
-                }
                 else
                 {
-                    throw we;
+                    switch (response.StatusCode)
+                    {
+                        case System.Net.HttpStatusCode.BadRequest:
+                        case System.Net.HttpStatusCode.Unauthorized:
+                            throw ThrowReworkedCustomException<EX>(response);
+                        case System.Net.HttpStatusCode.NotFound:
+                        default:
+                            throw new HttpRequestException(response.Content.ReadAsStringAsync().Result);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
-        #if SUPPORTED_FRAMEWORK_VERSION
+#if SUPPORTED_FRAMEWORK_VERSION
         private static uint UInt(this string value, uint defaultValue)
         {
             uint v;
@@ -239,11 +250,11 @@ namespace createsend_dotnet
             }
             return defaultValue;
         }
-        #endif
+#endif
 
-        private static Exception ThrowReworkedCustomException<EX>(WebException we) where EX : ErrorResult
+        private static Exception ThrowReworkedCustomException<EX>(HttpResponseMessage messageResponse) where EX : ErrorResult
         {
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(((HttpWebResponse)we.Response).GetResponseStream()))
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(messageResponse.Content.ReadAsStreamAsync().Result))
             {
                 string response = sr.ReadToEnd().Trim();
                 ErrorResult result = JsonConvert.DeserializeObject<EX>(response);
@@ -256,7 +267,7 @@ namespace createsend_dotnet
                         (result as OAuthErrorResult).error_description);
                 else // Regular ErrorResult format.
                     message = string.Format(
-                        "The CreateSend API responded with the following error - {0}: {1}", 
+                        "The CreateSend API responded with the following error - {0}: {1}",
                         result.Code, result.Message);
 
                 CreatesendException exception;
@@ -276,31 +287,14 @@ namespace createsend_dotnet
     {
         public static string ToQueryString(NameValueCollection nvc)
         {
-            if (nvc != null && nvc.Count > 0)
-                return "?" + string.Join("&", GetPairs(nvc));
-            else
-                return "";
-        }
+            string url = string.Empty;
 
-        private static string[] GetPairs(NameValueCollection nvc)
-        {
-            List<string> keyValuePair = new List<string>();
-
-            foreach (string key in nvc.AllKeys)
+            foreach (KeyValuePair<string, string> nv in nvc)
             {
-                string encodedKey = HttpUtility.UrlEncode(key) + "=";
-                var values = nvc.GetValues(key);
-                
-                if(values != null)
-                foreach (string value in values)
-                {
-                    
-                        keyValuePair.Add(encodedKey + HttpUtility.UrlEncode(value));
-                    
-                }
+                url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, nv.Key, nv.Value);
             }
 
-            return keyValuePair.ToArray();
+            return url;
         }
     }
 }
