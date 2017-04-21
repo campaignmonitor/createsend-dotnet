@@ -200,6 +200,10 @@ namespace createsend_dotnet
                         response = await client.PostAsync(uri, null);
                     }
                 }
+                else
+                {
+                    response = await client.GetAsync(uri);
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -302,7 +306,10 @@ namespace createsend_dotnet
 
             foreach (string key in nvc)
             {
-                url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, key, nvc[key]);
+                if (!string.IsNullOrWhiteSpace(nvc[key]))
+                {
+                    url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, key, nvc[key]);
+                }
             }
 
             return url;
