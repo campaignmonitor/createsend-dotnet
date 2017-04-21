@@ -201,7 +201,7 @@ namespace createsend_dotnet
                 }
                 else
                 {
-                    response = await client.PostAsync(uri, null);
+                    response = await client.GetAsync(uri);
                 }
 
                 if (response.IsSuccessStatusCode)
