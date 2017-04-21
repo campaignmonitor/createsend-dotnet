@@ -55,6 +55,7 @@
     <Compile Include="CreateSendOptions.cs" />
     <Compile Include="CreateSendOptionsWrapper.cs" />
     <Compile Include="CustomCreateSendOptions.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="General.cs" />
     <Compile Include="ICreateSendOptions.cs" />
     <Compile Include="List.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Models\EmailClient.cs" />
+    <Compile Include="Models\Event.cs" />
     <Compile Include="Models\ExternalSession.cs" />
     <Compile Include="Models\List.cs" />
     <Compile Include="Models\OAuthTokenDetails.cs">
