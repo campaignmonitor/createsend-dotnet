@@ -222,9 +222,9 @@ namespace createsend_dotnet
                                 var result = JsonConvert.DeserializeObject(sr.ReadToEnd().Trim(), responseType, serialiserSettings);
                                 var status = new RateLimitStatus
                                 {
-                                    Credit = uint.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()),
-                                    Remaining = uint.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First()),
-                                    Reset = uint.Parse(response.Headers.GetValues("X-RateLimit-Reset").First())
+                                    Credit = response.Headers.Contains("X-RateLimit-Limit") ? uint.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()) : 0,
+                                    Remaining = response.Headers.Contains("X-RateLimit-Remaining") ? uint.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First()) : 0,
+                                    Reset = response.Headers.Contains("X-RateLimit-Reset") ? uint.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()) : 0
                                 };
                                 return (U)Activator.CreateInstance(type, result, status);
                             }
@@ -304,15 +304,17 @@ namespace createsend_dotnet
                 return url;
             }
 
+            Dictionary<string, string> queryValues = new Dictionary<string, string>();
+
             foreach (string key in nvc)
             {
                 if (!string.IsNullOrWhiteSpace(nvc[key]))
                 {
-                    url += Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, key, nvc[key]);
+                    queryValues.Add(key, nvc[key]);
                 }
             }
 
-            return url;
+            return Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(url, queryValues);
         }
     }
 }
