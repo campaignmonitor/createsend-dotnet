@@ -70,8 +70,11 @@ namespace createsend_dotnet
 
             string refreshToken = (this.AuthDetails as OAuthAuthenticationDetails)
                 .RefreshToken;
-            string body = QueryHelpers.AddQueryString("", "grant_type", "refresh_token");
-            body = QueryHelpers.AddQueryString(body, "refresh_token", refreshToken);
+
+            var values = new Dictionary<string, string>();
+            values.Add("grant_type", "refresh_token");
+            values.Add("refresh_token", refreshToken);
+            string body = QueryHelpers.AddQueryString("", values);
 
             OAuthTokenDetails newTokenDetails =
                 HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(

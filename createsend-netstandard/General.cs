@@ -33,12 +33,15 @@ namespace createsend_dotnet
             string scope,
             string state)
         {
-            string result = CreateSendOptions.BaseOAuthUri;
-            result += QueryHelpers.AddQueryString(result, "client_id", clientID.ToString());
-            result += QueryHelpers.AddQueryString(result, "redirect_uri", redirectUri);
+            var values = new Dictionary<string, string>();
+            values.Add("client_id", clientID.ToString());
+            values.Add("redirect_uri", redirectUri);
             if (!string.IsNullOrEmpty(state))
-                result += QueryHelpers.AddQueryString(result, "state", state);
-            result += QueryHelpers.AddQueryString(result, "scope", scope);
+                values.Add("state", state);
+            values.Add("scope", scope);
+
+            string result = CreateSendOptions.BaseOAuthUri;
+            result += QueryHelpers.AddQueryString(result, values);
 
             return result;
         }
@@ -50,10 +53,14 @@ namespace createsend_dotnet
             string code)
         {
             string body = "grant_type=authorization_code";
-            body += QueryHelpers.AddQueryString(body, "client_id", clientID.ToString());
-            body += QueryHelpers.AddQueryString(body, "client_secret", clientSecret);
-            body += QueryHelpers.AddQueryString(body, "redirect_uri", redirectUri);
-            body += QueryHelpers.AddQueryString(body, "code", code);
+
+            var values = new Dictionary<string, string>();
+            values.Add("client_id", clientID.ToString());
+            values.Add("client_secret", clientSecret);
+            values.Add("redirect_uri", redirectUri);
+            values.Add("code", code);
+
+            body = QueryHelpers.AddQueryString(body, values);
 
             return HttpHelper.Post<string, OAuthTokenDetails, OAuthErrorResult>(
                 null, "/token", new NameValueCollection(), body,
