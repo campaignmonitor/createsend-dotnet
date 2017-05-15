@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v5.0.0 - 16 May, 2017
+
+* Events API added to the dotnet 4 wrapper
+
 ## v4.2.2 - 8 Oct, 2015
 
 * Actually upgraded the createsend package set to Nuget
