@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "createsend-dotnet", "createsend-dotnet\createsend-dotnetstandard.csproj", "{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "createsend-dotnet", "createsend-dotnet\createsend-dotnet.netstandard.csproj", "{A498EB72-A24F-4CF3-85DE-3E4EE62DF56F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{23495137-57D3-41AB-AB55-01FD382D9964}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.netstandard.csproj", "{AAFD18A5-FAF4-4C3A-BF7F-6E38B8F9EFAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-createsend-dotnet", "test-createsend-dotnet\test-createsend-dotnet-standard.csproj", "{32D38695-BA7D-41E4-A5B9-90C130364958}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test-createsend-dotnet", "test-createsend-dotnet\test-createsend-dotnet.netstandard.csproj", "{32D38695-BA7D-41E4-A5B9-90C130364958}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

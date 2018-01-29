@@ -23,6 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\createsend-dotnet\createsend-dotnetstandard.csproj" />
+    <ProjectReference Include="..\createsend-dotnet\createsend-dotnet.netstandard.csproj" />
   </ItemGroup>
 </Project>
