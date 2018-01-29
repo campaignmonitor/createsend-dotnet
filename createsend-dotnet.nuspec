@@ -17,6 +17,7 @@
     <file src="createsend-dotnet\bin\release\net20\createsend-dotnet.*" target="lib\net20" />
     <file src="createsend-dotnet\bin\release\net35\createsend-dotnet.*" target="lib\net35" />
     <file src="createsend-dotnet\bin\release\net40\createsend-dotnet.*" target="lib\net40" />
+    <file src="createsend-dotnet\bin\release\netstandard2.0\createsend-dotnet.*" target="lib\netstandard2.0" />
     <file src="app.config.transform" target="content" />
     <file src="web.config.transform" target="content" />
   </files>
