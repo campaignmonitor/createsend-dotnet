@@ -10,7 +10,9 @@
 		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <DefineConstants>SUPPORTED_FRAMEWORK_VERSION</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
 	<None Remove="packages.config" />
   </ItemGroup>
