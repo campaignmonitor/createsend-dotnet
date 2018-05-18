@@ -157,52 +157,52 @@ namespace createsend_dotnet
 
         public PagedCollection<SubscriberDetail> Active()
         {
-            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc", false);
         }
 
-        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         public PagedCollection<SubscriberDetail> Unconfirmed()
         {
-            return GenericPagedSubscriberGet("unconfirmed", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("unconfirmed", "", 1, 1000, "email", "asc", false);
         }
 
-        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         public PagedCollection<SubscriberDetail> Unsubscribed()
         {
-            return GenericPagedSubscriberGet("unsubscribed", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("unsubscribed", "", 1, 1000, "email", "asc", false);
         }
 
-        public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         public PagedCollection<SubscriberDetail> Bounced()
         {
-            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc", false);
         }
 
-        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         public PagedCollection<SubscriberDetail> Deleted()
         {
-            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc", false);
         }
 
-        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(
@@ -211,14 +211,15 @@ namespace createsend_dotnet
             int page,
             int pageSize,
             string orderField,
-            string orderDirection)
+            string orderDirection,
+            bool includeTrackingPreference)
         {
             return GenericPagedSubscriberGet(type,
                 fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), page, pageSize,
-                orderField, orderDirection);
+                orderField, orderDirection, includeTrackingPreference);
         }
 
-        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, string fromDate, int page, int pageSize, string orderField, string orderDirection)
+        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, string fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("date", fromDate);
@@ -226,6 +227,7 @@ namespace createsend_dotnet
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
+            queryArguments.Add("includeTrackingPreference", includeTrackingPreference.ToString());
 
             return HttpGet<PagedCollection<SubscriberDetail>>(
                 string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);

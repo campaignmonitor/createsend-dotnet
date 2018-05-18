@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using createsend_dotnet.Models;
 
 namespace createsend_dotnet.Transactional
 {
@@ -27,7 +28,8 @@ namespace createsend_dotnet.Transactional
         IMessageBuilder Group(string @group);
         IMessageBuilder AddRecipientsToList(bool addRecipientsToList);
         IMessageBuilder AddRecipientsToListId(string addRecipientsToListId);
-        
+        IMessageBuilder ConsentToTrack(ConsentToTrack consentToTrack);
+
         RateLimited<RecipientStatus[]> Send();
         RateLimited<RecipientStatus[]> Send(Guid smartEmailId);
     }
@@ -57,6 +59,7 @@ namespace createsend_dotnet.Transactional
         private bool inlineCss = true;
         private string @group;
         private bool addRecipientsToList = true;
+        private ConsentToTrack consentToTrack = Models.ConsentToTrack.Unchanged;
         private string listId;
 
         public MessageBuilder(SmartEmailContext smart, ClassicEmailContext classic)
@@ -246,18 +249,24 @@ namespace createsend_dotnet.Transactional
             return this;
         }
 
+        public IMessageBuilder ConsentToTrack(ConsentToTrack consentToTrack)
+        {
+            this.consentToTrack = consentToTrack;
+
+            return this;
+        }
+
         public RateLimited<RecipientStatus[]> Send()
         {
             return classic.Send(from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, consentToTrack, to.ToArray());
         }
 
         public RateLimited<RecipientStatus[]> Send(string clientId)
         {
             return classic.Send(clientId, from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, consentToTrack, to.ToArray());
         }
-
 
         public RateLimited<RecipientStatus[]> Send(Guid smartEmailId)
         {
@@ -268,6 +277,7 @@ namespace createsend_dotnet.Transactional
                attachments.ToArray(),
                data,
                addRecipientsToList,
+               consentToTrack,
                to.ToArray());
         }
     }

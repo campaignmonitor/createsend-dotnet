@@ -12,7 +12,7 @@ namespace createsend_dotnet
         {
             base_uri = string.IsNullOrEmpty(
                 ConfigurationManager.AppSettings["base_uri"]) ?
-                "https://api.createsend.com/api/v3.1" :
+                "https://api.createsend.com/api/v3.2" :
                 ConfigurationManager.AppSettings["base_uri"];
             base_oauth_uri = string.IsNullOrEmpty(
                 ConfigurationManager.AppSettings["base_oauth_uri"]) ?
@@ -36,7 +36,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "4.2.2";
+                return "5.0.0";
             }
         }
     }

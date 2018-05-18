@@ -51,17 +51,18 @@ namespace createsend_dotnet
 
         public PagedCollection<SubscriberDetail> Subscribers()
         {
-            return Subscribers(1, 1000, "email", "asc");
+            return Subscribers(1, 1000, "email", "asc", false);
         }
 
         public PagedCollection<SubscriberDetail> Subscribers(
             int page,
             int pageSize,
             string orderField,
-            string orderDirection)
+            string orderDirection,
+            bool includeTrackingPreference)
         {
             return Subscribers("", page, pageSize, orderField,
-                orderDirection);
+                orderDirection, includeTrackingPreference);
         }
 
         public PagedCollection<SubscriberDetail> Subscribers(
@@ -69,10 +70,11 @@ namespace createsend_dotnet
             int page,
             int pageSize,
             string orderField,
-            string orderDirection)
+            string orderDirection,
+            bool includeTrackingPreference)
         {
             return Subscribers(fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                page, pageSize, orderField, orderDirection);
+                page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         private PagedCollection<SubscriberDetail> Subscribers(
@@ -80,7 +82,8 @@ namespace createsend_dotnet
             int page,
             int pageSize,
             string orderField,
-            string orderDirection)
+            string orderDirection,
+            bool includeTrackingPreference)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("date", fromDate);

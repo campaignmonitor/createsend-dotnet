@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
+using createsend_dotnet.Models;
 
 namespace createsend_dotnet
 {
@@ -13,10 +14,13 @@ namespace createsend_dotnet
             ListID = listID;
         }
 
-        public SubscriberDetail Get(string emailAddress)
+        public SubscriberDetail Get(string emailAddress, bool includeTrackingPreference)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("email", emailAddress);
+            NameValueCollection queryArguments = new NameValueCollection
+            {
+                { "email", emailAddress },
+                { "includeTrackingPreference", includeTrackingPreference.ToString() }
+            };
 
             return HttpGet<SubscriberDetail>(
                 string.Format("/subscribers/{0}.json", ListID), queryArguments);
@@ -35,23 +39,23 @@ namespace createsend_dotnet
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe)
         {
-            return Add(emailAddress, name, customFields, resubscribe, false);
+            return Add(emailAddress, name, customFields, resubscribe, false, ConsentToTrack.Unchanged);
         }
 
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe,
-            bool restartSubscriptionBasedAutoresponders)
+            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack)
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/subscribers/{0}.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "EmailAddress", emailAddress }, 
-                    { "Name", name }, 
-                    { "CustomFields", customFields }, 
+                new Dictionary<string, object>()
+                {
+                    { "EmailAddress", emailAddress },
+                    { "Name", name },
+                    { "CustomFields", customFields },
                     { "Resubscribe", resubscribe },
-                    { "RestartSubscriptionBasedAutoresponders",
-                        restartSubscriptionBasedAutoresponders }
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders },
+                    { "ConsentToTrack", consentToTrack }
                 });
         }
 
@@ -60,26 +64,26 @@ namespace createsend_dotnet
             bool resubscribe)
         {
             Update(emailAddress, newEmailAddress, name, customFields,
-                resubscribe, false);
+                resubscribe, false, ConsentToTrack.Unchanged);
         }
 
         public void Update(string emailAddress, string newEmailAddress,
-            string name, List<SubscriberCustomField> customFields,
-            bool resubscribe, bool restartSubscriptionBasedAutoresponders)
+            string name, List<SubscriberCustomField> customFields, bool resubscribe,
+            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
 
             HttpPut<Dictionary<string, object>, string>(
-                string.Format("/subscribers/{0}.json", ListID), queryArguments, 
-                new Dictionary<string, object>() 
-                { 
-                    { "EmailAddress", newEmailAddress }, 
-                    { "Name", name }, 
-                    { "CustomFields", customFields }, 
+                string.Format("/subscribers/{0}.json", ListID), queryArguments,
+                new Dictionary<string, object>()
+                {
+                    { "EmailAddress", newEmailAddress },
+                    { "Name", name },
+                    { "CustomFields", customFields },
                     { "Resubscribe", resubscribe },
-                    { "RestartSubscriptionBasedAutoresponders",
-                        restartSubscriptionBasedAutoresponders }
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders },
+                    { "ConsentToTrack", consentToTrack }
                 });
         }
 
@@ -89,7 +93,7 @@ namespace createsend_dotnet
             queryArguments.Add("email", emailAddress);
             HttpDelete(string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
-        
+
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
             return Import(subscribers, resubscribe, false);
@@ -110,12 +114,14 @@ namespace createsend_dotnet
             foreach (SubscriberDetail subscriber in subscribers)
             {
                 Dictionary<string, object> subscriberWithoutDate =
-                    new Dictionary<string, object>() 
-                { 
-                    { "EmailAddress", subscriber.EmailAddress }, 
-                    { "Name", subscriber.Name }, 
-                    { "CustomFields", subscriber.CustomFields } 
+                    new Dictionary<string, object>()
+                {
+                    { "EmailAddress", subscriber.EmailAddress },
+                    { "Name", subscriber.Name },
+                    { "CustomFields", subscriber.CustomFields },
+                    { "ConsentToTrack", subscriber.ConsentToTrack }
                 };
+
                 reworkedSubscribers.Add(subscriberWithoutDate);
             }
 
