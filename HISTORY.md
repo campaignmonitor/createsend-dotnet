@@ -1,5 +1,10 @@
 # createsend-dotnet history
 
+## v5.0.0 - 21 May, 2018
+
+* Update wrapper to API version 3.2
+** Add ConsentToTrack fields and includeTrackingPreference query string parameters
+
 ## v4.2.2 - 8 Oct, 2015
 
 * Actually upgraded the createsend package set to Nuget

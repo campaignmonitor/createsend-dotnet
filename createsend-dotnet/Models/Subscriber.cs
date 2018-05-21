@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using createsend_dotnet.Models;
 
 namespace createsend_dotnet
 {
@@ -54,6 +53,6 @@ namespace createsend_dotnet
         public string Name { get; set; }
         public List<SubscriberCustomField> CustomFields { get; set; }
         public string ReadsEmailWith { get; set; }
-        public ConsentToTrack ConsentToTrack { get; set; }
+        public ConsentToTrack? ConsentToTrack { get; set; }
     }
 }

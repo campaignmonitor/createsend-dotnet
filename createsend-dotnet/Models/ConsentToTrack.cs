@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace createsend_dotnet.Models
+namespace createsend_dotnet
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ConsentToTrack
     {
         Unchanged = 0,

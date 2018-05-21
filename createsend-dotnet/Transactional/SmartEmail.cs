@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using createsend_dotnet.Models;
 
 namespace createsend_dotnet.Transactional
 {
@@ -88,7 +87,7 @@ namespace createsend_dotnet.Transactional
             Attachments = attachments;
             Data = data;
             AddRecipientsToList = addRecipientsToList;
-            ConsentToTrack = ConsentToTrack;
+            ConsentToTrack = consentToTrack;
         }
 
         public EmailAddress[] To { get; private set; }

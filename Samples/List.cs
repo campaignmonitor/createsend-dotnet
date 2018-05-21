@@ -10,7 +10,7 @@ namespace Samples
         private AuthenticationDetails auth =
             new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
-        public string ListID { get; set; } = "your_list_id";
+        public string ListID = "your_list_id";
 
         public void GetDetails()
         {

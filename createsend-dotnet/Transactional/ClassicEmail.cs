@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Specialized;
-using createsend_dotnet.Models;
 
 namespace createsend_dotnet.Transactional
 {

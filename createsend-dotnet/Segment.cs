@@ -49,17 +49,12 @@ namespace createsend_dotnet
                 });
         }
 
-        public PagedCollection<SubscriberDetail> Subscribers()
-        {
-            return Subscribers(1, 1000, "email", "asc", false);
-        }
-
         public PagedCollection<SubscriberDetail> Subscribers(
-            int page,
-            int pageSize,
-            string orderField,
-            string orderDirection,
-            bool includeTrackingPreference)
+            int page = 1,
+            int pageSize = 1000,
+            string orderField = "email",
+            string orderDirection = "asc",
+            bool includeTrackingPreference = false)
         {
             return Subscribers("", page, pageSize, orderField,
                 orderDirection, includeTrackingPreference);
@@ -91,6 +86,7 @@ namespace createsend_dotnet
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
+            queryArguments.Add("includeTrackingPreference", includeTrackingPreference.ToString());
 
             return HttpGet<PagedCollection<SubscriberDetail>>(
                 string.Format("/segments/{0}/active.json", SegmentID), queryArguments);

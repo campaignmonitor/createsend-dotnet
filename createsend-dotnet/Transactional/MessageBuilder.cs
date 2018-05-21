@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using createsend_dotnet.Models;
 
 namespace createsend_dotnet.Transactional
 {
@@ -59,7 +58,7 @@ namespace createsend_dotnet.Transactional
         private bool inlineCss = true;
         private string @group;
         private bool addRecipientsToList = true;
-        private ConsentToTrack consentToTrack = Models.ConsentToTrack.Unchanged;
+        private ConsentToTrack consentToTrack = createsend_dotnet.ConsentToTrack.Unchanged;
         private string listId;
 
         public MessageBuilder(SmartEmailContext smart, ClassicEmailContext classic)
@@ -188,13 +187,23 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Text(string text)
         {
-            this.text = text ?? throw new ArgumentNullException("text");
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            this.text = text;
             return this;
         }
 
         public IMessageBuilder Html(string html)
         {
-            this.html = html ?? throw new ArgumentNullException("html");
+            if (html == null)
+            {
+                throw new ArgumentNullException("html");
+            }
+
+            this.html = html;
             return this;
         }
 
