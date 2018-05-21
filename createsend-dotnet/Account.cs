@@ -5,7 +5,10 @@ namespace createsend_dotnet
 {
     public class Account : CreateSendBase
     {
-        public Account(AuthenticationDetails auth) : base(auth) { }
+        public Account(AuthenticationDetails auth) 
+            : base(auth)
+        {
+        }
 
         public string GetPrimaryContact()
         {

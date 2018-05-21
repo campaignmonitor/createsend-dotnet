@@ -4,13 +4,12 @@ using System.Text;
 
 namespace createsend_dotnet
 {
-    public abstract class AuthenticationDetails { }
+    public abstract class AuthenticationDetails
+    {
+    }
 
     public class OAuthAuthenticationDetails : AuthenticationDetails
     {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-
         public OAuthAuthenticationDetails(
             string accessToken,
             string refreshToken)
@@ -18,6 +17,9 @@ namespace createsend_dotnet
             AccessToken = accessToken;
             RefreshToken = refreshToken;
         }
+
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 
     public class ApiKeyAuthenticationDetails : AuthenticationDetails
@@ -32,9 +34,9 @@ namespace createsend_dotnet
 
     internal sealed class ClientApiKey : ApiKeyAuthenticationDetails
     {
-        public ClientApiKey(string apiKey) : base(apiKey)
+        public ClientApiKey(string apiKey) 
+            : base(apiKey)
         {
-            
         }
     }
 

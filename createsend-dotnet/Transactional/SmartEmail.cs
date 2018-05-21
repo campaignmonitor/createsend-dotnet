@@ -43,7 +43,10 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<SmartEmailListDetail[]> List(string clientId, SmartEmailListStatus status = SmartEmailListStatus.All)
         {
-            if (clientId == null) throw new ArgumentNullException("clientId");
+            if (clientId == null)
+            {
+                throw new ArgumentNullException("clientId");
+            }
 
             return List(CreateQueryString(status, clientId));
         }
@@ -76,14 +79,6 @@ namespace createsend_dotnet.Transactional
 
     internal class SmartEmail
     {
-        public EmailAddress[] To { get; private set; }
-        public EmailAddress[] CC { get; private set; }
-        public EmailAddress[] BCC { get; private set; }
-        public Attachment[] Attachments { get; private set; }
-        public IDictionary<string, object> Data { get; private set; }
-        public bool AddRecipientsToList { get; private set; }
-        public ConsentToTrack ConsentToTrack { get; private set; }
-
         public SmartEmail(EmailAddress[] to, EmailAddress[] cc, EmailAddress[] bcc, Attachment[] attachments,
             IDictionary<string, object> data, bool addRecipientsToList, ConsentToTrack consentToTrack)
         {
@@ -95,5 +90,13 @@ namespace createsend_dotnet.Transactional
             AddRecipientsToList = addRecipientsToList;
             ConsentToTrack = ConsentToTrack;
         }
+
+        public EmailAddress[] To { get; private set; }
+        public EmailAddress[] CC { get; private set; }
+        public EmailAddress[] BCC { get; private set; }
+        public Attachment[] Attachments { get; private set; }
+        public IDictionary<string, object> Data { get; private set; }
+        public bool AddRecipientsToList { get; private set; }
+        public ConsentToTrack ConsentToTrack { get; private set; }
     }
 }

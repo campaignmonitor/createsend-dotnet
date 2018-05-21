@@ -85,16 +85,22 @@ namespace createsend_dotnet
         public string CountryName { get; set; }
     }
 
-    public class CampaignOpenDetail : CampaignDetailWithGeoBase { }
+    public class CampaignOpenDetail : CampaignDetailWithGeoBase
+    {
+    }
 
     public class CampaignClickDetail : CampaignDetailWithGeoBase
     {
         public string URL { get; set; }
     }
 
-    public class CampaignUnsubscribeDetail : CampaignDetailBaseWithIPAddress { }
+    public class CampaignUnsubscribeDetail : CampaignDetailBaseWithIPAddress
+    {
+    }
 
-    public class CampaignSpamComplaint : CampaignDetailBase { }
+    public class CampaignSpamComplaint : CampaignDetailBase
+    {
+    }
 
     public class CampaignBounceDetail : CampaignDetailBaseWithIPAddress
     {

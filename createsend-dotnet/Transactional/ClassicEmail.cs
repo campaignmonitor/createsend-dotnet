@@ -32,7 +32,10 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to)
         {
-            if (clientId == null) throw new ArgumentNullException("clientId");
+            if (clientId == null)
+            {
+                throw new ArgumentNullException("clientId");
+            }
 
             return Send(new ClassicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, @group, addRecipientsToListId, consentToTrack), this.CreateQueryString(clientId));
         }
@@ -49,7 +52,10 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<ClassicEmailDetail[]> Groups(string clientId)
         {
-            if (clientId == null) throw new ArgumentNullException("clientId");
+            if (clientId == null)
+            {
+                throw new ArgumentNullException("clientId");
+            }
 
             return Groups(this.CreateQueryString(clientId));
         }
@@ -62,23 +68,6 @@ namespace createsend_dotnet.Transactional
 
     internal class ClassicEmail
     {
-        public EmailAddress From { get; set; }
-        public EmailAddress ReplyTo { get; set; }
-        public EmailAddress[] To { get; set; }
-        public EmailAddress[] CC { get; set; }
-        public EmailAddress[] BCC { get; set; }
-        public string Subject { get; set; }
-        public string Html { get; set; }
-        public string Text { get; set; }
-        public Image[] Images { get; set; }
-        public Attachment[] Attachments { get; set; }
-        public bool TrackOpens { get; set; }
-        public bool TrackClicks { get; set; }
-        public bool InlineCss { get; set; }
-        public string Group { get; set; }
-        public string AddRecipientsToListId { get; set; }
-        public ConsentToTrack ConsentToTrack { get; set; }
-
         public ClassicEmail(EmailAddress from, EmailAddress replyTo, EmailAddress[] to, EmailAddress[] cc,
             EmailAddress[] bcc, string subject, string html, string text, Image[] images, Attachment[] attachments,
             bool trackOpens, bool trackClicks, bool inlineCss, string @group, string addRecipientsToListId, ConsentToTrack consentToTrack)
@@ -100,5 +89,22 @@ namespace createsend_dotnet.Transactional
             AddRecipientsToListId = addRecipientsToListId;
             ConsentToTrack = consentToTrack;
         }
+
+        public EmailAddress From { get; set; }
+        public EmailAddress ReplyTo { get; set; }
+        public EmailAddress[] To { get; set; }
+        public EmailAddress[] CC { get; set; }
+        public EmailAddress[] BCC { get; set; }
+        public string Subject { get; set; }
+        public string Html { get; set; }
+        public string Text { get; set; }
+        public Image[] Images { get; set; }
+        public Attachment[] Attachments { get; set; }
+        public bool TrackOpens { get; set; }
+        public bool TrackClicks { get; set; }
+        public bool InlineCss { get; set; }
+        public string Group { get; set; }
+        public string AddRecipientsToListId { get; set; }
+        public ConsentToTrack ConsentToTrack { get; set; }
     }
 }

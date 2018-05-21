@@ -6,13 +6,22 @@ namespace createsend_dotnet
 {
     public class ExpiredOAuthTokenException : CreatesendException
     {
-        public ExpiredOAuthTokenException(string message) : base(message) { }
+        public ExpiredOAuthTokenException(string message)
+            : base(message)
+        {
+        }
     }
 
     public class CreatesendException : Exception
     {
-        public ErrorResult Error { get { return Data["ErrorResult"] as ErrorResult; } }
+        public ErrorResult Error
+        {
+            get { return Data["ErrorResult"] as ErrorResult; }
+        }
 
-        public CreatesendException(string message) : base (message) { }
+        public CreatesendException(string message)
+            : base(message)
+        {
+        }
     }
 }

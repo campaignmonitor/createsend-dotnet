@@ -7,13 +7,13 @@ namespace createsend_dotnet
 {
     public class List : CreateSendBase
     {
-        public string ListID { get; set; }
-
         public List(AuthenticationDetails auth, string listID)
             : base(auth)
         {
             ListID = listID;
         }
+
+        public string ListID { get; set; }
 
         public static string Create(
             AuthenticationDetails auth,
@@ -86,10 +86,10 @@ namespace createsend_dotnet
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/customfields.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "FieldName", fieldName }, 
-                    { "DataType", dataType.ToString() }, 
+                new Dictionary<string, object>()
+                {
+                    { "FieldName", fieldName },
+                    { "DataType", dataType.ToString() },
                     { "Options", options },
                     { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
                 });
@@ -101,9 +101,9 @@ namespace createsend_dotnet
             bool visibleInPreferenceCenter)
         {
             return HttpPut<Dictionary<string, object>, string>(
-                string.Format("/lists/{0}/customfields/{1}.json", 
+                string.Format("/lists/{0}/customfields/{1}.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new Dictionary<string, object>() 
+                new Dictionary<string, object>()
                 {
                     { "FieldName", fieldName },
                     { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
@@ -113,7 +113,7 @@ namespace createsend_dotnet
         public void DeleteCustomField(string customFieldKey)
         {
             HttpDelete(
-                string.Format("/lists/{0}/customfields/{1}.json", 
+                string.Format("/lists/{0}/customfields/{1}.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null);
         }
 
@@ -131,7 +131,8 @@ namespace createsend_dotnet
             HttpPut<object, string>(
                 string.Format("/lists/{0}/customfields/{1}/options.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new { 
+                new
+                {
                     KeepExistingOptions = keepExistingOptions,
                     Options = options
                 });
@@ -243,11 +244,11 @@ namespace createsend_dotnet
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/webhooks.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "Events", events }, 
-                    { "Url", url }, 
-                    { "PayloadFormat", payloadFormat } 
+                new Dictionary<string, object>()
+                {
+                    { "Events", events },
+                    { "Url", url },
+                    { "PayloadFormat", payloadFormat }
                 });
         }
 
@@ -256,8 +257,8 @@ namespace createsend_dotnet
             HttpGet<string, ErrorResult<WebhookTestErrorResult>>(
                 string.Format("/lists/{0}/webhooks/{1}/test.json",
                 ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
-          
-            return true; //an exception will be thrown if there is a problem
+
+            return true; // an exception will be thrown if there is a problem
         }
 
         public void DeleteWebhook(string webhookID)

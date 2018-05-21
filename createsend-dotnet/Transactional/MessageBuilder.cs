@@ -76,7 +76,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder From(EmailAddress from)
         {
-            if(from == null) throw new ArgumentNullException("from");
+            if (from == null)
+            {
+                throw new ArgumentNullException("from");
+            }
 
             this.from = from;
             return this;
@@ -84,7 +87,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder ReplyTo(EmailAddress replyTo)
         {
-            if(replyTo == null) throw new ArgumentNullException("replyTo");
+            if (replyTo == null)
+            {
+                throw new ArgumentNullException("replyTo");
+            }
 
             this.replyTo = replyTo;
             return this;
@@ -92,7 +98,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Subject(string subject)
         {
-            if(subject == null) throw new ArgumentNullException("subject");
+            if (subject == null)
+            {
+                throw new ArgumentNullException("subject");
+            }
 
             this.subject = subject;
             return this;
@@ -100,7 +109,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder To(EmailAddress to)
         {
-            if(to == null) throw new ArgumentNullException("to");
+            if (to == null)
+            {
+                throw new ArgumentNullException("to");
+            }
 
             this.to.Add(to);
             return this;
@@ -108,8 +120,14 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder To(EmailAddress[] to)
         {
-            if(to == null) throw new ArgumentNullException("to");
-            if(to.Length == 0) throw new ArgumentException("Cannot be empty", "to");
+            if (to == null)
+            {
+                throw new ArgumentNullException("to");
+            }
+            else if (to.Length == 0)
+            {
+                throw new ArgumentException("Cannot be empty", "to");
+            }
 
             this.to.AddRange(to);
             return this;
@@ -117,16 +135,26 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder CC(EmailAddress cc)
         {
-            if(cc == null) throw new ArgumentNullException("cc");
-            
+            if (cc == null)
+            {
+                throw new ArgumentNullException("cc");
+            }
+
             this.cc.Add(cc);
             return this;
         }
 
         public IMessageBuilder CC(EmailAddress[] cc)
         {
-            if(cc == null) throw new ArgumentNullException("cc");
-            if (cc.Length == 0) throw new ArgumentException("Cannot be empty", "cc");
+            if (cc == null)
+            {
+                throw new ArgumentNullException("cc");
+            }
+
+            if (cc.Length == 0)
+            {
+                throw new ArgumentException("Cannot be empty", "cc");
+            }
 
             this.cc.AddRange(cc);
             return this;
@@ -134,7 +162,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder BCC(EmailAddress bcc)
         {
-            if(bcc == null) throw new ArgumentNullException("bcc");
+            if (bcc == null)
+            {
+                throw new ArgumentNullException("bcc");
+            }
 
             this.bcc.Add(bcc);
             return this;
@@ -142,31 +173,37 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder BCC(EmailAddress[] bcc)
         {
-            if (bcc == null) throw new ArgumentNullException("bcc");
-            if (bcc.Length == 0) throw new ArgumentException("Cannot be empty", "bcc");
+            if (bcc == null)
+            {
+                throw new ArgumentNullException("bcc");
+            }
+            else if (bcc.Length == 0)
+            {
+                throw new ArgumentException("Cannot be empty", "bcc");
+            }
+
             this.bcc.AddRange(bcc);
             return this;
         }
 
         public IMessageBuilder Text(string text)
         {
-            if(text == null) throw new ArgumentNullException("text");
-
-            this.text = text;
+            this.text = text ?? throw new ArgumentNullException("text");
             return this;
         }
 
         public IMessageBuilder Html(string html)
         {
-            if(html == null) throw new ArgumentNullException("html");
-
-            this.html = html;
+            this.html = html ?? throw new ArgumentNullException("html");
             return this;
         }
 
         public IMessageBuilder Attachment(Attachment attachment)
         {
-            if(attachment == null) throw new ArgumentNullException("attachment");
+            if (attachment == null)
+            {
+                throw new ArgumentNullException("attachment");
+            }
 
             this.attachments.Add(attachment);
             return this;
@@ -174,8 +211,14 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Attachment(Attachment[] attachments)
         {
-            if(attachments == null) throw new ArgumentNullException("attachments");
-            if (attachments.Length == 0) throw new ArgumentException("Cannot be empty", "attachments");
+            if (attachments == null)
+            {
+                throw new ArgumentNullException("attachments");
+            }
+            else if (attachments.Length == 0)
+            {
+                throw new ArgumentException("Cannot be empty", "attachments");
+            }
 
             this.attachments.AddRange(attachments);
             return this;
@@ -183,7 +226,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Image(Image image)
         {
-            if(image == null) throw new ArgumentNullException("image");
+            if (image == null)
+            {
+                throw new ArgumentNullException("image");
+            }
 
             this.images.Add(image);
             return this;
@@ -191,8 +237,14 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Image(Image[] images)
         {
-            if(images == null) throw new ArgumentNullException("images");
-            if(images.Length == 0) throw new ArgumentException("Cannot be empty", "images");
+            if (images == null)
+            {
+                throw new ArgumentNullException("images");
+            }
+            else if (images.Length == 0)
+            {
+                throw new ArgumentException("Cannot be empty", "images");
+            }
 
             this.images.AddRange(images);
             return this;
@@ -200,7 +252,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Data(IDictionary<string, object> data)
         {
-            if(data == null) throw new ArgumentNullException("data");
+            if (data == null)
+            {
+                throw new ArgumentNullException("data");
+            }
 
             this.data = data;
             return this;
@@ -229,7 +284,10 @@ namespace createsend_dotnet.Transactional
 
         public IMessageBuilder Group(string @group)
         {
-            if(@group == null) throw new ArgumentNullException("group");
+            if (@group == null)
+            {
+                throw new ArgumentNullException("group");
+            }
 
             this.@group = @group;
             return this;

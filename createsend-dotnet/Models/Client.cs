@@ -13,7 +13,9 @@ namespace createsend_dotnet
         public string Name { get; set; }
     }
 
-    public class Clients : List<BasicClient> { }
+    public class Clients : List<BasicClient>
+    {
+    }
 
     public class ClientWithSettings
     {

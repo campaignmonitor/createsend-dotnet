@@ -9,7 +9,10 @@ namespace createsend_dotnet
     [Serializable]
     public class ErrorResult<T> : ErrorResult
     {
-        public ErrorResult() : base() { }
+        public ErrorResult()
+            : base()
+        {
+        }
 
         public ErrorResult(ErrorResult errorResult)
         {

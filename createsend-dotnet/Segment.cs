@@ -7,23 +7,23 @@ namespace createsend_dotnet
 {
     public class Segment : CreateSendBase
     {
-        public string SegmentID { get; set; }
-
         public Segment(AuthenticationDetails auth, string segmentID)
             : base(auth)
         {
             SegmentID = segmentID;
         }
 
+        public string SegmentID { get; set; }
+
         public static string Create(
             AuthenticationDetails auth, string listID, string title, SegmentRuleGroups ruleGroups)
         {
             return HttpHelper.Post<Dictionary<string, object>, string, ErrorResult<RuleErrorResults>>(
                 auth, string.Format("/segments/{0}.json", listID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "ListID", listID }, 
-                    { "Title", title }, 
+                new Dictionary<string, object>()
+                {
+                    { "ListID", listID },
+                    { "Title", title },
                     { "RuleGroups", ruleGroups }
                 });
         }
@@ -32,10 +32,10 @@ namespace createsend_dotnet
         {
             HttpPut<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}.json", SegmentID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "Title", title }, 
-                    { "RuleGroups", ruleGroups } 
+                new Dictionary<string, object>()
+                {
+                    { "Title", title },
+                    { "RuleGroups", ruleGroups }
                 });
         }
 
@@ -43,9 +43,9 @@ namespace createsend_dotnet
         {
             HttpPost<Dictionary<string, object>, string>(
                 string.Format("/segments/{0}/rules.json", SegmentID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "Rules", ruleGroup.Rules } 
+                new Dictionary<string, object>()
+                {
+                    { "Rules", ruleGroup.Rules }
                 });
         }
 

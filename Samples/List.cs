@@ -10,7 +10,7 @@ namespace Samples
         private AuthenticationDetails auth =
             new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
-        public string ListID = "your_list_id";
+        public string ListID { get; set; } = "your_list_id";
 
         public void GetDetails()
         {
@@ -126,7 +126,6 @@ namespace Samples
                         field.DataType,
                         field.VisibleInPreferenceCenter ? "" : "not "));
                 }
-
             }
             catch (CreatesendException ex)
             {
@@ -155,16 +154,20 @@ namespace Samples
                 allSubscribers.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
+                {
                     for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
                         PagedCollection<SubscriberDetail> subsequentPage = list.Active(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
                         allSubscribers.AddRange(subsequentPage.Results);
                     }
+                }
 
-                foreach(SubscriberDetail subscriberDetail in allSubscribers)
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
                     Console.WriteLine(string.Format(
                         "Subscriber with email address {0} reads mail with {1}.",
                         subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
             }
             catch (CreatesendException ex)
             {

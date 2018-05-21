@@ -6,13 +6,13 @@ namespace createsend_dotnet
 {
     public class Subscriber : CreateSendBase
     {
-        public string ListID { get; set; }
-
         public Subscriber(AuthenticationDetails auth, string listID)
             : base(auth)
         {
             ListID = listID;
         }
+
+        public string ListID { get; set; }
 
         public SubscriberDetail Get(string emailAddress, bool includeTrackingPreference)
         {
@@ -127,25 +127,23 @@ namespace createsend_dotnet
 
             return HttpPost<Dictionary<string, object>, BulkImportResults,
                 ErrorResult<BulkImportResults>>(
-                string.Format("/subscribers/{0}/import.json", ListID), null, 
-                new Dictionary<string, object>() 
-                { 
-                    { "Subscribers", reworkedSubscribers }, 
+                string.Format("/subscribers/{0}/import.json", ListID), null,
+                new Dictionary<string, object>()
+                {
+                    { "Subscribers", reworkedSubscribers },
                     { "Resubscribe", resubscribe },
-                    { "QueueSubscriptionBasedAutoResponders",
-                        queueSubscriptionBasedAutoResponders },
-                    { "RestartSubscriptionBasedAutoresponders",
-                        restartSubscriptionBasedAutoresponders }
+                    { "QueueSubscriptionBasedAutoResponders", queueSubscriptionBasedAutoResponders },
+                    { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders }
                 });
         }
 
         public bool Unsubscribe(string emailAddress)
         {
             string result = HttpPost<Dictionary<string, string>, string>(
-                string.Format("/subscribers/{0}/unsubscribe.json", ListID), null, 
-                new Dictionary<string, string>() 
-                { 
-                    {"EmailAddress", emailAddress } 
+                string.Format("/subscribers/{0}/unsubscribe.json", ListID), null,
+                new Dictionary<string, string>()
+                {
+                    { "EmailAddress", emailAddress }
                 });
 
             return result != null;
