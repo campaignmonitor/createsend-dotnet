@@ -5,15 +5,15 @@ namespace createsend_dotnet.Transactional
 {
     public interface IClassicEmail
     {
-        RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null,
-            Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, ConsentToTrack consentToTrack, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null,
+            Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, params EmailAddress[] to);
         RateLimited<ClassicEmailDetail[]> Groups();
     }
 
     public interface IAgencyClassicEmail : IClassicEmail
     {
-        RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null,
-            Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, ConsentToTrack consentToTrack, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null,
+            Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, params EmailAddress[] to);
         RateLimited<ClassicEmailDetail[]> Groups(string clientId);
     }
 
@@ -24,12 +24,12 @@ namespace createsend_dotnet.Transactional
         {
         }
 
-        public RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(EmailAddress from, string subject, string html, string text, ConsentToTrack consentToTrack, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, params EmailAddress[] to)
         {
             return Send(new ClassicEmail(from, replyTo, to, cc, bcc, subject, html, text, images, attachments, trackOpens, trackClicks, inlineCss, @group, addRecipientsToListId, consentToTrack), this.CreateQueryString());
         }
 
-        public RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(string clientId, EmailAddress from, string subject, string html, string text, ConsentToTrack consentToTrack, EmailAddress replyTo = null, EmailAddress[] cc = null, EmailAddress[] bcc = null, Image[] images = null, Attachment[] attachments = null, bool trackOpens = true, bool trackClicks = true, bool inlineCss = true, string @group = null, string addRecipientsToListId = null, params EmailAddress[] to)
         {
             if (clientId == null)
             {

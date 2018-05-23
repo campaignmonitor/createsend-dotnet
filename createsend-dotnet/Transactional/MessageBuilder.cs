@@ -58,7 +58,7 @@ namespace createsend_dotnet.Transactional
         private bool inlineCss = true;
         private string @group;
         private bool addRecipientsToList = true;
-        private ConsentToTrack consentToTrack = createsend_dotnet.ConsentToTrack.Unchanged;
+        private ConsentToTrack? consentToTrack;
         private string listId;
 
         public MessageBuilder(SmartEmailContext smart, ClassicEmailContext classic)
@@ -325,27 +325,41 @@ namespace createsend_dotnet.Transactional
 
         public RateLimited<RecipientStatus[]> Send()
         {
-            return classic.Send(from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, consentToTrack, to.ToArray());
+            Validate();
+
+            return classic.Send(from, subject, html, text, consentToTrack.Value, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
         }
 
         public RateLimited<RecipientStatus[]> Send(string clientId)
         {
-            return classic.Send(clientId, from, subject, html, text, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
-                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, consentToTrack, to.ToArray());
+            Validate();
+
+            return classic.Send(clientId, from, subject, html, text, consentToTrack.Value, replyTo, cc.ToArray(), bcc.ToArray(), images.ToArray(),
+                attachments.ToArray(), trackOpens, trackClicks, inlineCss, @group, listId, to.ToArray());
         }
 
         public RateLimited<RecipientStatus[]> Send(Guid smartEmailId)
         {
+            Validate();
+
             return smart.Send(
                smartEmailId,
+               consentToTrack.Value,
                cc.ToArray(),
                bcc.ToArray(),
                attachments.ToArray(),
                data,
                addRecipientsToList,
-               consentToTrack,
                to.ToArray());
+        }
+
+        private void Validate()
+        {
+            if (!consentToTrack.HasValue)
+            {
+                throw new ArgumentException("Must specify a `Consent To Track` value");
+            }
         }
     }
 }

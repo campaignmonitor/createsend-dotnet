@@ -6,8 +6,8 @@ namespace createsend_dotnet.Transactional
 {
     public interface ISmartEmail
     {
-        RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null,
-            IDictionary<string, object> data = null, bool addRecipientsToList = true, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to);
+        RateLimited<RecipientStatus[]> Send(Guid smartEmailId, ConsentToTrack consentToTrack, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null,
+            IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to);
         RateLimited<SmartEmailDetail> Details(Guid smartEmailId);
         RateLimited<SmartEmailListDetail[]> List(SmartEmailListStatus status = SmartEmailListStatus.All);
     }
@@ -24,8 +24,8 @@ namespace createsend_dotnet.Transactional
         {
         }
 
-        public RateLimited<RecipientStatus[]> Send(Guid smartEmailId, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null,
-            IDictionary<string, object> data = null, bool addRecipientsToList = true, ConsentToTrack consentToTrack = ConsentToTrack.Unchanged, params EmailAddress[] to)
+        public RateLimited<RecipientStatus[]> Send(Guid smartEmailId, ConsentToTrack consentToTrack, EmailAddress[] cc = null, EmailAddress[] bcc = null, Attachment[] attachments = null,
+            IDictionary<string, object> data = null, bool addRecipientsToList = true, params EmailAddress[] to)
         {
             return Send(smartEmailId, new SmartEmail(to, cc, bcc, attachments, data, addRecipientsToList, consentToTrack), new NameValueCollection());
         }

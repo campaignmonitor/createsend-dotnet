@@ -36,9 +36,10 @@ namespace createsend_dotnet
         }
 
         public string Add(string emailAddress, string name,
-            List<SubscriberCustomField> customFields, bool resubscribe)
+            List<SubscriberCustomField> customFields, bool resubscribe,
+            ConsentToTrack consentToTrack)
         {
-            return Add(emailAddress, name, customFields, resubscribe, false, ConsentToTrack.Unchanged);
+            return Add(emailAddress, name, customFields, resubscribe, false, consentToTrack);
         }
 
         public string Add(string emailAddress, string name,
@@ -60,10 +61,10 @@ namespace createsend_dotnet
 
         public void Update(string emailAddress, string newEmailAddress,
             string name, List<SubscriberCustomField> customFields,
-            bool resubscribe)
+            bool resubscribe, ConsentToTrack consentToTrack)
         {
             Update(emailAddress, newEmailAddress, name, customFields,
-                resubscribe, false, ConsentToTrack.Unchanged);
+                resubscribe, false, consentToTrack);
         }
 
         public void Update(string emailAddress, string newEmailAddress,
