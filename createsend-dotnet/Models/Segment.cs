@@ -11,7 +11,9 @@ namespace createsend_dotnet
         public string Title { get; set; }
     }
 
-    public class Segments : List<BasicSegment> { }
+    public class Segments : List<BasicSegment>
+    {
+    }
 
     public class SegmentDetail : BasicSegment
     {
@@ -19,7 +21,9 @@ namespace createsend_dotnet
         public SegmentRuleGroups RuleGroups { get; set; }
     }
 
-    public class SegmentRules : List<Rule> { }
+    public class SegmentRules : List<Rule>
+    {
+    }
 
     public class Rule
     {
@@ -27,14 +31,18 @@ namespace createsend_dotnet
         public string Clause { get; set; }
     }
 
-    public class SegmentRuleGroups : List<SegmentRuleGroup> { }
+    public class SegmentRuleGroups : List<SegmentRuleGroup>
+    {
+    }
 
     public class SegmentRuleGroup
     {
         public SegmentRules Rules { get; set; }
     }
 
-    public class RuleErrorResults : List<RuleErrorResult> { }
+    public class RuleErrorResults : List<RuleErrorResult>
+    {
+    }
 
     public class RuleErrorResult
     {
@@ -44,7 +52,9 @@ namespace createsend_dotnet
         public ClauseErrorResults ClauseResults { get; set; }
     }
 
-    public class ClauseErrorResults : List<ClauseErrorResult> { }
+    public class ClauseErrorResults : List<ClauseErrorResult>
+    {
+    }
 
     public class ClauseErrorResult
     {

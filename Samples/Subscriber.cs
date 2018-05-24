@@ -18,7 +18,7 @@ namespace Samples
 
             try
             {
-                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false);
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false, ConsentToTrack.Unchanged);
                 Console.WriteLine(newSubscriberID);
             }
             catch (CreatesendException ex)
@@ -44,7 +44,7 @@ namespace Samples
                 customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Value = "Value" });
                 customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey2", Value = "Value2" });
 
-                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", customFields, false);
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", customFields, false, ConsentToTrack.Unchanged);
                 Console.WriteLine(newSubscriberID);
             }
             catch (CreatesendException ex)
@@ -75,7 +75,7 @@ namespace Samples
                 customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey", Clear = true });
                 customFields.Add(new SubscriberCustomField() { Key = "CustomFieldKey2", Value = "Value2" });
 
-                subscriber.Update("test@notarealdomain.com", "new_address@notarealdomain.com", null, customFields, false);
+                subscriber.Update("test@notarealdomain.com", "new_address@notarealdomain.com", null, customFields, false, ConsentToTrack.Unchanged);
                 Console.WriteLine("Subscriber Updated successfully with new email: new_address@notarealdomain.com. Name was unchanged");
             }
             catch (CreatesendException ex)

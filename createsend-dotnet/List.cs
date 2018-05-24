@@ -7,13 +7,13 @@ namespace createsend_dotnet
 {
     public class List : CreateSendBase
     {
-        public string ListID { get; set; }
-
         public List(AuthenticationDetails auth, string listID)
             : base(auth)
         {
             ListID = listID;
         }
+
+        public string ListID { get; set; }
 
         public static string Create(
             AuthenticationDetails auth,
@@ -86,10 +86,10 @@ namespace createsend_dotnet
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/customfields.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "FieldName", fieldName }, 
-                    { "DataType", dataType.ToString() }, 
+                new Dictionary<string, object>()
+                {
+                    { "FieldName", fieldName },
+                    { "DataType", dataType.ToString() },
                     { "Options", options },
                     { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
                 });
@@ -101,9 +101,9 @@ namespace createsend_dotnet
             bool visibleInPreferenceCenter)
         {
             return HttpPut<Dictionary<string, object>, string>(
-                string.Format("/lists/{0}/customfields/{1}.json", 
+                string.Format("/lists/{0}/customfields/{1}.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new Dictionary<string, object>() 
+                new Dictionary<string, object>()
                 {
                     { "FieldName", fieldName },
                     { "VisibleInPreferenceCenter", visibleInPreferenceCenter }
@@ -113,7 +113,7 @@ namespace createsend_dotnet
         public void DeleteCustomField(string customFieldKey)
         {
             HttpDelete(
-                string.Format("/lists/{0}/customfields/{1}.json", 
+                string.Format("/lists/{0}/customfields/{1}.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null);
         }
 
@@ -131,7 +131,8 @@ namespace createsend_dotnet
             HttpPut<object, string>(
                 string.Format("/lists/{0}/customfields/{1}/options.json",
                 ListID, System.Web.HttpUtility.UrlEncode(customFieldKey)), null,
-                new { 
+                new
+                {
                     KeepExistingOptions = keepExistingOptions,
                     Options = options
                 });
@@ -155,54 +156,54 @@ namespace createsend_dotnet
                 string.Format("/lists/{0}/stats.json", ListID), null);
         }
 
-        public PagedCollection<SubscriberDetail> Active()
+        public PagedCollection<SubscriberDetail> Active(int page = 1, int pageSize = 1000, string orderField = "email", string orderDirection = "asc", bool includeTrackingPreference = false)
         {
-            return GenericPagedSubscriberGet("active", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("active", "", page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Active(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("active", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Unconfirmed()
+        public PagedCollection<SubscriberDetail> Unconfirmed(int page = 1, int pageSize = 1000, string orderField = "email", string orderDirection = "asc", bool includeTrackingPreference = false)
         {
-            return GenericPagedSubscriberGet("unconfirmed", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("unconfirmed", "", page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Unconfirmed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("unconfirmed", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Unsubscribed()
+        public PagedCollection<SubscriberDetail> Unsubscribed(int page = 1, int pageSize = 1000, string orderField = "email", string orderDirection = "asc", bool includeTrackingPreference = false)
         {
-            return GenericPagedSubscriberGet("unsubscribed", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("unsubscribed", "", page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Unsubscribed(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("unsubscribed", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Bounced()
+        public PagedCollection<SubscriberDetail> Bounced(int page = 1, int pageSize = 1000, string orderField = "email", string orderDirection = "asc", bool includeTrackingPreference = false)
         {
-            return GenericPagedSubscriberGet("bounced", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("bounced", "", page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Bounced(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("bounced", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Deleted()
+        public PagedCollection<SubscriberDetail> Deleted(int page = 1, int pageSize = 1000, string orderField = "email", string orderDirection = "asc", bool includeTrackingPreference = false)
         {
-            return GenericPagedSubscriberGet("deleted", "", 1, 1000, "email", "asc");
+            return GenericPagedSubscriberGet("deleted", "", page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
-        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection)
+        public PagedCollection<SubscriberDetail> Deleted(DateTime fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
-            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection);
+            return GenericPagedSubscriberGet("deleted", fromDate, page, pageSize, orderField, orderDirection, includeTrackingPreference);
         }
 
         private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(
@@ -211,14 +212,15 @@ namespace createsend_dotnet
             int page,
             int pageSize,
             string orderField,
-            string orderDirection)
+            string orderDirection,
+            bool includeTrackingPreference)
         {
             return GenericPagedSubscriberGet(type,
                 fromDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), page, pageSize,
-                orderField, orderDirection);
+                orderField, orderDirection, includeTrackingPreference);
         }
 
-        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, string fromDate, int page, int pageSize, string orderField, string orderDirection)
+        private PagedCollection<SubscriberDetail> GenericPagedSubscriberGet(string type, string fromDate, int page, int pageSize, string orderField, string orderDirection, bool includeTrackingPreference)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("date", fromDate);
@@ -226,6 +228,7 @@ namespace createsend_dotnet
             queryArguments.Add("pagesize", pageSize.ToString());
             queryArguments.Add("orderfield", orderField);
             queryArguments.Add("orderdirection", orderDirection);
+            queryArguments.Add("includeTrackingPreference", includeTrackingPreference.ToString());
 
             return HttpGet<PagedCollection<SubscriberDetail>>(
                 string.Format("/lists/{0}/{1}.json", ListID, type), queryArguments);
@@ -241,11 +244,11 @@ namespace createsend_dotnet
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/lists/{0}/webhooks.json", ListID), null,
-                new Dictionary<string, object>() 
-                { 
-                    { "Events", events }, 
-                    { "Url", url }, 
-                    { "PayloadFormat", payloadFormat } 
+                new Dictionary<string, object>()
+                {
+                    { "Events", events },
+                    { "Url", url },
+                    { "PayloadFormat", payloadFormat }
                 });
         }
 
@@ -254,8 +257,8 @@ namespace createsend_dotnet
             HttpGet<string, ErrorResult<WebhookTestErrorResult>>(
                 string.Format("/lists/{0}/webhooks/{1}/test.json",
                 ListID, System.Web.HttpUtility.UrlEncode(webhookID)), null);
-          
-            return true; //an exception will be thrown if there is a problem
+
+            return true; // an exception will be thrown if there is a problem
         }
 
         public void DeleteWebhook(string webhookID)

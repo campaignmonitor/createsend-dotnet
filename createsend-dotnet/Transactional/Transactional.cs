@@ -6,16 +6,16 @@ namespace createsend_dotnet.Transactional
     {
         IClassicEmail ClassicEmail { get; }
         ISmartEmail SmartEmail { get; }
-        IMessageBuilder MessageBuilder();
         IMessages Messages { get; }
+        IMessageBuilder MessageBuilder();
     }
 
     public interface IAgencyTransactional : IAgencyStatistics
     {
         IAgencyClassicEmail ClassicEmail { get; }
         IAgencySmartEmail SmartEmail { get; }
-        IAgencyMessageBuilder MessageBuilder();
         IAgencyMessages Messages { get; }
+        IAgencyMessageBuilder MessageBuilder();
     }
 
     internal class TransactionalContext : ITransactional, IAgencyTransactional
@@ -52,7 +52,7 @@ namespace createsend_dotnet.Transactional
         {
             get { return smartEmail; }
         }
-        
+
         IMessages ITransactional.Messages
         {
             get { return messages; }

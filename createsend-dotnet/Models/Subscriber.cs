@@ -22,18 +22,23 @@ namespace createsend_dotnet
         public string ListID { get; set; }
     }
 
-    public class CampaignRecipients : List<CampaignRecipient> { }
+    public class CampaignRecipients : List<CampaignRecipient>
+    {
+    }
 
     public class SubscriberCustomField
     {
         public string Key { get; set; }
-        public string Value{ get ;set; }
+        public string Value { get; set; }
         public bool Clear { get; set; }
     }
 
     public class SubscriberDetail : BasicSubscriber
     {
-        public SubscriberDetail() : base() { }
+        public SubscriberDetail()
+            : base()
+        {
+        }
 
         public SubscriberDetail(
             string emailAddress,
@@ -48,5 +53,6 @@ namespace createsend_dotnet
         public string Name { get; set; }
         public List<SubscriberCustomField> CustomFields { get; set; }
         public string ReadsEmailWith { get; set; }
+        public ConsentToTrack? ConsentToTrack { get; set; }
     }
 }

@@ -126,7 +126,6 @@ namespace Samples
                         field.DataType,
                         field.VisibleInPreferenceCenter ? "" : "not "));
                 }
-
             }
             catch (CreatesendException ex)
             {
@@ -149,22 +148,26 @@ namespace Samples
             {
                 List<SubscriberDetail> allSubscribers = new List<SubscriberDetail>();
 
-                //get the first page, with an old date to signify entire list
-                PagedCollection<SubscriberDetail> firstPage = list.Active(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC");
+                // get the first page, with an old date to signify entire list
+                PagedCollection<SubscriberDetail> firstPage = list.Active(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC", false);
 
                 allSubscribers.AddRange(firstPage.Results);
 
-                if(firstPage.NumberOfPages > 1)
+                if (firstPage.NumberOfPages > 1)
+                {
                     for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<SubscriberDetail> subsequentPage = list.Active(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC");
+                        PagedCollection<SubscriberDetail> subsequentPage = list.Active(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
                         allSubscribers.AddRange(subsequentPage.Results);
                     }
+                }
 
-                foreach(SubscriberDetail subscriberDetail in allSubscribers)
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
                     Console.WriteLine(string.Format(
                         "Subscriber with email address {0} reads mail with {1}.",
                         subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
             }
             catch (CreatesendException ex)
             {

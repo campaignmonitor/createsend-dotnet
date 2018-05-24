@@ -10,7 +10,9 @@ namespace createsend_dotnet
         public string Name { get; set; }
     }
 
-    public class Lists : List<BasicList> { }
+    public class Lists : List<BasicList>
+    {
+    }
 
     public class ListDetail
     {
