@@ -21,7 +21,7 @@ task :release => :build do
   # You will need to set your NuGet API key before releasing:
   # $ nuget setapikey {apikey}
   puts "Releasing NuGet package..."
-  system "nuget push campaignmonitor-api.*.nupkg"
+  system "nuget push campaignmonitor-api.*.nupkg -src nuget.org" 
 end
 
 task :default => :build
