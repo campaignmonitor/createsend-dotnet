@@ -1,44 +1,44 @@
-﻿using createsend_dotnet;
-using createsend_dotnet.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using createsend_dotnet;
+using createsend_dotnet.Models;
 
 namespace Samples
 {
-    class JourneyEmailSamples
+    public class JourneyEmailSamples
     {
-        private AuthenticationDetails auth =
+        private readonly AuthenticationDetails auth =
             new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
-        private string journeyEmailID = "your_journey_email_id";
+        private const string JourneyEmailID = "your_journey_email_id";
 
         public void GetRecipients()
         {
-            JourneyEmail journeyEmail = new JourneyEmail(auth, journeyEmailID);
+            var journeyEmail = new JourneyEmail(auth, JourneyEmailID);
 
             try
             {
-                List<JourneyEmailRecipient> recipients = new List<JourneyEmailRecipient>();
-                PagedCollection<JourneyEmailRecipient> firstPage = journeyEmail.Recipients(1, 10, "ASC");
+                var recipients = new List<JourneyEmailRecipient>();
+                var firstPage = journeyEmail.Recipients(1, 10, "ASC");
                 recipients.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
                 {
-                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    for (var pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<JourneyEmailRecipient> subsequentPage = journeyEmail.Recipients(pageNumber, 10, "ASC");
+                        var subsequentPage = journeyEmail.Recipients(pageNumber, 10, "ASC");
                         recipients.AddRange(subsequentPage.Results);
                     }
                 }
 
-                foreach (JourneyEmailRecipient recipient in recipients)
+                foreach (var recipient in recipients)
                 {
                     Console.WriteLine(recipient.EmailAddress);
                 }
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -51,31 +51,31 @@ namespace Samples
 
         public void GetOpens()
         {
-            JourneyEmail journeyEmail = new JourneyEmail(auth, journeyEmailID);
+            var journeyEmail = new JourneyEmail(auth, JourneyEmailID);
 
             try
             {
-                List<JourneyEmailOpenDetail> opens = new List<JourneyEmailOpenDetail>();
-                PagedCollection<JourneyEmailOpenDetail> firstPage = journeyEmail.Opens(1, 50, "ASC");
+                var opens = new List<JourneyEmailOpenDetail>();
+                var firstPage = journeyEmail.Opens(1, 50, "ASC");
                 opens.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
                 {
-                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    for (var pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<JourneyEmailOpenDetail> subsequentPage = journeyEmail.Opens(pageNumber, 50, "ASC");
+                        var subsequentPage = journeyEmail.Opens(pageNumber, 50, "ASC");
                         opens.AddRange(subsequentPage.Results);
                     }
                 }
 
-                foreach (JourneyEmailOpenDetail open in opens)
+                foreach (var open in opens)
                 {
                     Console.WriteLine(open.EmailAddress);
                 }
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -88,31 +88,31 @@ namespace Samples
 
         public void GetUnsubscribes()
         {
-            JourneyEmail journeyEmail = new JourneyEmail(auth, journeyEmailID);
+            var journeyEmail = new JourneyEmail(auth, JourneyEmailID);
 
             try
             {
-                List<JourneyEmailUnsubscribeDetail> unsubscribes = new List<JourneyEmailUnsubscribeDetail>();
-                PagedCollection<JourneyEmailUnsubscribeDetail> firstPage = journeyEmail.Unsubscribes(1, 50, "ASC");
+                var unsubscribes = new List<JourneyEmailUnsubscribeDetail>();
+                var firstPage = journeyEmail.Unsubscribes(1, 50, "ASC");
                 unsubscribes.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
                 {
-                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    for (var pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<JourneyEmailUnsubscribeDetail> subsequentPage = journeyEmail.Unsubscribes(pageNumber, 50, "ASC");
+                        var subsequentPage = journeyEmail.Unsubscribes(pageNumber, 50, "ASC");
                         unsubscribes.AddRange(subsequentPage.Results);
                     }
                 }
 
-                foreach (JourneyEmailUnsubscribeDetail unsubscribe in unsubscribes)
+                foreach (var unsubscribe in unsubscribes)
                 {
                     Console.WriteLine(unsubscribe.EmailAddress);
                 }
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -125,31 +125,31 @@ namespace Samples
 
         public void GetClicks()
         {
-            JourneyEmail journeyEmail = new JourneyEmail(auth, journeyEmailID);
+            var journeyEmail = new JourneyEmail(auth, JourneyEmailID);
 
             try
             {
-                List<JourneyEmailClickDetail> clicks = new List<JourneyEmailClickDetail>();
-                PagedCollection<JourneyEmailClickDetail> firstPage = journeyEmail.Clicks(1, 50, "ASC");
+                var clicks = new List<JourneyEmailClickDetail>();
+                var firstPage = journeyEmail.Clicks(1, 50, "ASC");
                 clicks.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
                 {
-                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    for (var pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<JourneyEmailClickDetail> subsequentPage = journeyEmail.Clicks(pageNumber, 50, "ASC");
+                        var subsequentPage = journeyEmail.Clicks(pageNumber, 50, "ASC");
                         clicks.AddRange(subsequentPage.Results);
                     }
                 }
 
-                foreach (JourneyEmailClickDetail click in clicks)
+                foreach (var click in clicks)
                 {
                     Console.WriteLine(click.EmailAddress);
                 }
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }
@@ -162,31 +162,31 @@ namespace Samples
 
         public void GetBounces()
         {
-            JourneyEmail journeyEmail = new JourneyEmail(auth, journeyEmailID);
+            var journeyEmail = new JourneyEmail(auth, JourneyEmailID);
 
             try
             {
-                List<JourneyEmailBounceDetail> bounces = new List<JourneyEmailBounceDetail>();
-                PagedCollection<JourneyEmailBounceDetail> firstPage = journeyEmail.Bounces(1, 50, "ASC");
+                var bounces = new List<JourneyEmailBounceDetail>();
+                var firstPage = journeyEmail.Bounces(1, 50, "ASC");
                 bounces.AddRange(firstPage.Results);
 
                 if (firstPage.NumberOfPages > 1)
                 {
-                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    for (var pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
-                        PagedCollection<JourneyEmailBounceDetail> subsequentPage = journeyEmail.Bounces(pageNumber, 50, "ASC");
+                        var subsequentPage = journeyEmail.Bounces(pageNumber, 50, "ASC");
                         bounces.AddRange(subsequentPage.Results);
                     }
                 }
 
-                foreach (JourneyEmailBounceDetail bounce in bounces)
+                foreach (var bounce in bounces)
                 {
                     Console.WriteLine(bounce.EmailAddress);
                 }
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }

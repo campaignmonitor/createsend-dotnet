@@ -1,28 +1,27 @@
-﻿using createsend_dotnet;
-using createsend_dotnet.Models;
-using System;
+﻿using System;
+using createsend_dotnet;
 
 namespace Samples
 {
-    class JourneySamples
+    public class JourneySamples
     {
-        private AuthenticationDetails auth =
+        private readonly AuthenticationDetails auth =
             new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
-        private string journeyID = "your_journey_id";
+        private const string JourneyID = "your_journey_id";
 
         public void GetSummary()
         {
-            Journey journey = new Journey(auth, journeyID);
+            var journey = new Journey(auth, JourneyID);
 
             try
             {
-                JourneySummary summary = journey.Summary();
+                var summary = journey.Summary();
                 Console.WriteLine(summary.Name);
             }
             catch (CreatesendException ex)
             {
-                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                var error = (ErrorResult)ex.Data["ErrorResult"];
                 Console.WriteLine(error.Code);
                 Console.WriteLine(error.Message);
             }

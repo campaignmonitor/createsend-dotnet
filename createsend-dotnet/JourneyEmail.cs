@@ -1,7 +1,7 @@
-﻿using createsend_dotnet.Models;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
+using createsend_dotnet.Models;
 
 namespace createsend_dotnet
 {
@@ -44,11 +44,7 @@ namespace createsend_dotnet
             int pageSize,
             string orderDirection)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate);
-            queryArguments.Add("page", page.ToString());
-            queryArguments.Add("pagesize", pageSize.ToString());
-            queryArguments.Add("orderdirection", orderDirection);
+            var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
             return HttpGet<PagedCollection<JourneyEmailRecipient>>($"/journeys/email/{EmailID}/recipients.json", queryArguments);
         }
@@ -81,11 +77,7 @@ namespace createsend_dotnet
             int pageSize,
             string orderDirection)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate);
-            queryArguments.Add("page", page.ToString());
-            queryArguments.Add("pagesize", pageSize.ToString());
-            queryArguments.Add("orderdirection", orderDirection);
+            var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
             return HttpGet<PagedCollection<JourneyEmailOpenDetail>>($"/journeys/email/{EmailID}/opens.json", queryArguments);
         }
@@ -118,11 +110,7 @@ namespace createsend_dotnet
             int pageSize,
             string orderDirection)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate);
-            queryArguments.Add("page", page.ToString());
-            queryArguments.Add("pagesize", pageSize.ToString());
-            queryArguments.Add("orderdirection", orderDirection);
+            var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
             return HttpGet<PagedCollection<JourneyEmailUnsubscribeDetail>>($"/journeys/email/{EmailID}/unsubscribes.json", queryArguments);
         }
@@ -155,11 +143,7 @@ namespace createsend_dotnet
             int pageSize,
             string orderDirection)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate);
-            queryArguments.Add("page", page.ToString());
-            queryArguments.Add("pagesize", pageSize.ToString());
-            queryArguments.Add("orderdirection", orderDirection);
+            var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
             return HttpGet<PagedCollection<JourneyEmailClickDetail>>($"/journeys/email/{EmailID}/clicks.json", queryArguments);
         }
@@ -192,11 +176,7 @@ namespace createsend_dotnet
             int pageSize,
             string orderDirection)
         {
-            NameValueCollection queryArguments = new NameValueCollection();
-            queryArguments.Add("date", fromDate);
-            queryArguments.Add("page", page.ToString());
-            queryArguments.Add("pagesize", pageSize.ToString());
-            queryArguments.Add("orderdirection", orderDirection);
+            var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
             return HttpGet<PagedCollection<JourneyEmailBounceDetail>>($"/journeys/email/{EmailID}/bounces.json", queryArguments);
         }
@@ -204,6 +184,17 @@ namespace createsend_dotnet
         private string ConvertDateTimeToString(DateTime date)
         {
             return date.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
+        }
+
+        private static NameValueCollection CreateQueryArguments(string fromDate, int page, int pageSize, string orderDirection)
+        {
+            return new NameValueCollection
+            {
+                {"date", fromDate},
+                {"page", page.ToString()},
+                {"pagesize", pageSize.ToString()},
+                {"orderdirection", orderDirection}
+            };
         }
     }
 }

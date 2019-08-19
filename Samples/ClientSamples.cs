@@ -1,5 +1,4 @@
 ﻿using createsend_dotnet;
-using createsend_dotnet.Models;
 using System;
 using System.Collections.Generic;
 
@@ -83,10 +82,10 @@ namespace Samples
 
         public void Journeys()
         {
-            Client client = new Client(auth, ClientID);
-            IEnumerable<JourneyDetail> journeys = client.Journeys();
+            var client = new Client(auth, ClientID);
+            var journeys = client.Journeys();
 
-            foreach (JourneyDetail journey in journeys)
+            foreach (var journey in journeys)
             {
                 Console.WriteLine(journey.Name);
             }
