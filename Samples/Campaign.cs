@@ -1,7 +1,6 @@
-﻿using System;
+﻿using createsend_dotnet;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using createsend_dotnet;
 
 namespace Samples
 {

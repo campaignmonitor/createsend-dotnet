@@ -1,8 +1,7 @@
-﻿using System;
+﻿using createsend_dotnet;
+using createsend_dotnet.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using createsend_dotnet;
 
 namespace Samples
 {
@@ -79,6 +78,17 @@ namespace Samples
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void Journeys()
+        {
+            Client client = new Client(auth, ClientID);
+            IEnumerable<JourneyDetail> journeys = client.Journeys();
+
+            foreach (JourneyDetail journey in journeys)
+            {
+                Console.WriteLine(journey.Name);
             }
         }
     }
