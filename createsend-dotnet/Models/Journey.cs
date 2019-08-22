@@ -26,7 +26,7 @@ namespace createsend_dotnet.Models
         public string Name { get; set; }
         public int Sent { get; set; }
         public int Opened { get; set; }
-        public int Clicks { get; set; }
+        public int Clicked { get; set; }
         public int Unsubscribed { get; set; }
         public int Bounced { get; set; }
         public int UniqueOpened { get; set; }
