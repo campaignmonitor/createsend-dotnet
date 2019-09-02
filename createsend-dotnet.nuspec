@@ -3,7 +3,7 @@
   <metadata>
     <id>campaignmonitor-api</id>
     <title>Campaign Monitor</title>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
     <authors>Campaign Monitor</authors>
     <description>A .NET library for the Campaign Monitor API with enhancements for Transactional</description>
     <licenseUrl>http://opensource.org/licenses/mit-license</licenseUrl>

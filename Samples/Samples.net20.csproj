@@ -38,6 +38,8 @@
   <ItemGroup>
     <Compile Include="Administrators.cs" />
     <Compile Include="Campaign.cs" />
+    <Compile Include="Journey.cs" />
+    <Compile Include="JourneyEmail.cs" />
     <Compile Include="List.cs" />
     <Compile Include="People.cs" />
     <Compile Include="Subscriber.cs" />

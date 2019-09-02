@@ -1,5 +1,9 @@
 # createsend-dotnet history
 
+## v5.0.2 - 2 September 2019
+
+* Added support for [Journey API](https://www.campaignmonitor.com/api/journeys)
+
 ## v5.0.1 - 8 June, 2018
 
 * Update API version in config transform files

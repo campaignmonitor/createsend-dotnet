@@ -192,5 +192,10 @@ namespace createsend_dotnet
         {
             return HttpGet<IEnumerable<PersonDetails>>(string.Format("/clients/{0}/people.json", ClientID), null);
         }
+
+        public IEnumerable<JourneyDetail> Journeys()
+        {
+            return HttpGet<IEnumerable<JourneyDetail>>(string.Format("/clients/{0}/journeys.json", ClientID), null);
+        }
     }
 }
