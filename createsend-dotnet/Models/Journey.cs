@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace createsend_dotnet.Models
+namespace createsend_dotnet
 {
     public class JourneyDetail
     {

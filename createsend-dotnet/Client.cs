@@ -1,5 +1,4 @@
-﻿using createsend_dotnet.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -196,7 +195,7 @@ namespace createsend_dotnet
 
         public IEnumerable<JourneyDetail> Journeys()
         {
-            return HttpGet<IEnumerable<JourneyDetail>>($"/clients/{ClientID}/journeys.json", null);
+            return HttpGet<IEnumerable<JourneyDetail>>(string.Format("/clients/{0}/journeys.json", ClientID), null);
         }
     }
 }

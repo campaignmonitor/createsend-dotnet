@@ -1,5 +1,4 @@
-﻿using createsend_dotnet.Models;
-
+﻿
 namespace createsend_dotnet
 {
     public class Journey : CreateSendBase
@@ -14,7 +13,7 @@ namespace createsend_dotnet
 
         public JourneySummary Summary()
         {
-            return HttpGet<JourneySummary>($"/journeys/{JourneyID}.json", null);
+            return HttpGet<JourneySummary>(string.Format("/journeys/{0}.json", JourneyID), null);
         }
     }
 }

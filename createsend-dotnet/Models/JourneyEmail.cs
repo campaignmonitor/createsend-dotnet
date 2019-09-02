@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace createsend_dotnet.Models
+namespace createsend_dotnet
 {
     public class JourneyEmailRecipient
     {

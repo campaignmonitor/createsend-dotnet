@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
-using createsend_dotnet.Models;
 
 namespace createsend_dotnet
 {
@@ -46,7 +45,7 @@ namespace createsend_dotnet
         {
             var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
-            return HttpGet<PagedCollection<JourneyEmailRecipient>>($"/journeys/email/{EmailID}/recipients.json", queryArguments);
+            return HttpGet<PagedCollection<JourneyEmailRecipient>>(string.Format("/journeys/email/{0}/recipients.json", EmailID), queryArguments);
         }
 
         public PagedCollection<JourneyEmailOpenDetail> Opens()
@@ -79,7 +78,7 @@ namespace createsend_dotnet
         {
             var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
-            return HttpGet<PagedCollection<JourneyEmailOpenDetail>>($"/journeys/email/{EmailID}/opens.json", queryArguments);
+            return HttpGet<PagedCollection<JourneyEmailOpenDetail>>(string.Format("/journeys/email/{0}/opens.json", EmailID), queryArguments);
         }
 
         public PagedCollection<JourneyEmailUnsubscribeDetail> Unsubscribes()
@@ -112,7 +111,7 @@ namespace createsend_dotnet
         {
             var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
-            return HttpGet<PagedCollection<JourneyEmailUnsubscribeDetail>>($"/journeys/email/{EmailID}/unsubscribes.json", queryArguments);
+            return HttpGet<PagedCollection<JourneyEmailUnsubscribeDetail>>(string.Format("/journeys/email/{0}/unsubscribes.json", EmailID), queryArguments);
         }
 
         public PagedCollection<JourneyEmailClickDetail> Clicks()
@@ -145,7 +144,7 @@ namespace createsend_dotnet
         {
             var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
-            return HttpGet<PagedCollection<JourneyEmailClickDetail>>($"/journeys/email/{EmailID}/clicks.json", queryArguments);
+            return HttpGet<PagedCollection<JourneyEmailClickDetail>>(string.Format("/journeys/email/{0}/clicks.json", EmailID), queryArguments);
         }
 
         public PagedCollection<JourneyEmailBounceDetail> Bounces()
@@ -178,7 +177,7 @@ namespace createsend_dotnet
         {
             var queryArguments = CreateQueryArguments(fromDate, page, pageSize, orderDirection);
 
-            return HttpGet<PagedCollection<JourneyEmailBounceDetail>>($"/journeys/email/{EmailID}/bounces.json", queryArguments);
+            return HttpGet<PagedCollection<JourneyEmailBounceDetail>>(string.Format("/journeys/email/{0}/bounces.json", EmailID), queryArguments);
         }
 
         private string ConvertDateTimeToString(DateTime date)
