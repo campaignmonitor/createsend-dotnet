@@ -36,7 +36,7 @@ namespace createsend_dotnet
         {
             get
             {
-                return "5.0.1";
+                return "5.2.0";
             }
         }
     }

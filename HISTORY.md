@@ -1,5 +1,10 @@
 # createsend-dotnet history
 
+## v5.2.0 - 17 September, 2019
+
+* Add support for .NET Standard 2.0
+    * dotnet CLI is now required to build the nuget package
+
 ## v5.1.1 - 2 September 2019
 
 * Added support for [Journey API](https://www.campaignmonitor.com/api/journeys)

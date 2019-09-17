@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "createsend-dotnet.standard20", "createsend-dotnet\createsend-dotnet.standard20.csproj", "{90557731-4DEE-4B34-89FB-1F76EE0F92B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "createsend-dotnet.standard20", "createsend-dotnet\createsend-dotnet.standard20.csproj", "{90557731-4DEE-4B34-89FB-1F76EE0F92B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.standard20", "Samples\Samples.standard20.csproj", "{DD6C993E-C4BE-4E2D-B099-58229E727428}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test-createsend-dotnet.standard20", "test-createsend-dotnet\test-createsend-dotnet.standard20.csproj", "{9AB4B10F-C1FE-4F26-93A8-FA229D05ABD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{90557731-4DEE-4B34-89FB-1F76EE0F92B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90557731-4DEE-4B34-89FB-1F76EE0F92B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90557731-4DEE-4B34-89FB-1F76EE0F92B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD6C993E-C4BE-4E2D-B099-58229E727428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD6C993E-C4BE-4E2D-B099-58229E727428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD6C993E-C4BE-4E2D-B099-58229E727428}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD6C993E-C4BE-4E2D-B099-58229E727428}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AB4B10F-C1FE-4F26-93A8-FA229D05ABD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB4B10F-C1FE-4F26-93A8-FA229D05ABD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AB4B10F-C1FE-4F26-93A8-FA229D05ABD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AB4B10F-C1FE-4F26-93A8-FA229D05ABD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
