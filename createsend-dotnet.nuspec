@@ -10,7 +10,13 @@
     <projectUrl>http://campaignmonitor.github.io/createsend-dotnet/</projectUrl>
     <tags>api campaign monitor .net transactional</tags>
     <dependencies>
-        <dependency id="Newtonsoft.Json" version="6.0.0.0" />
+        <group targetFramework="netstandard2.0">
+          <dependency id="Newtonsoft.Json" version="12.0.2" />
+          <dependency id="System.Configuration.ConfigurationManager" version="4.5.0" />
+        </group>
+        <group>
+          <dependency id="Newtonsoft.Json" version="6.0.0.0" />
+        </group>
     </dependencies>
   </metadata>
   <files>
