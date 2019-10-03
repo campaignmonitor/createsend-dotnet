@@ -7,6 +7,7 @@ task :solutions do
   system "#{msbuild} createsend-dotnet.sln /t:Clean,Build /p:Configuration=Release"
   system "#{msbuild} createsend-dotnet.net35.sln /t:Clean,Build /p:Configuration=Release"
   system "#{msbuild} createsend-dotnet.net20.sln /t:Clean,Build /p:Configuration=Release"
+  system "dotnet build createsend-dotnet.standard20.sln --configuration Release"
 end
 
 desc "Build NuGet package"
