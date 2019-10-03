@@ -1,6 +1,12 @@
 A .NET library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/).
 
-This library is supported on .NET 2, .NET 3.5, and .NET 4. You will find solution files which target the different .NET runtime versions: `createsend-dotnet.net20.sln`, `createsend-dotnet.net35.sln`, and `createsend-dotnet.sln`.
+This library supports:
+| Target | Solution |
+|--|--|
+|.NET Standard 2.0  | `createsend-dotnet.standard20.sln` |
+|.NET 4  | `createsend-dotnet.sln` |
+|.NET 3.5  | `createsend-dotnet.net35.sln` |
+|.NET 2  | `createsend-dotnet.net20.sln` |
 
 ## Installation
 
