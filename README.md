@@ -1,6 +1,7 @@
 A .NET library which implements the complete functionality of the [Campaign Monitor API](http://www.campaignmonitor.com/api/).
 
 This library supports:
+
 | Target | Solution |
 |--|--|
 |.NET Standard 2.0  | `createsend-dotnet.standard20.sln` |
