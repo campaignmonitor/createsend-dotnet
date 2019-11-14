@@ -45,6 +45,7 @@
     <Compile Include="People.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transactional.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\createsend-dotnet\createsend-dotnet.net35.csproj">
