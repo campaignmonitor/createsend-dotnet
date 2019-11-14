@@ -34,7 +34,7 @@ namespace Samples
             }
         }
 
-        public void SendClassicEmailUsinClientAPIKey()
+        public void SendClassicEmailUsingClientAPIKey()
         {
             try
             {
