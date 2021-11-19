@@ -31,9 +31,28 @@ namespace createsend_dotnet
             return HttpGet<ClientWithSettings>(string.Format("/clients/{0}.json", ClientID), null);
         }
 
-        public IEnumerable<CampaignDetail> Campaigns()
+        public PagedCollection<CampaignDetail> Campaigns(
+            string tags,
+            int page,
+            int pageSize,
+            string orderDirection,
+            DateTime sentFromDate,
+            DateTime sentToDate)
         {
-            return HttpGet<CampaignDetail[]>(string.Format("/clients/{0}/campaigns.json", ClientID), null);
+            return Campaigns(tags, page, pageSize, orderDirection, sentFromDate.ToString("yyyy-MM-dd"), sentToDate.ToString("yyyy-MM-dd"));
+        }
+
+        public PagedCollection<CampaignDetail> Campaigns(string tags, int page, int pageSize, string orderDirection, string sentFromDate, string sentToDate)
+        {
+            NameValueCollection queryArguments = new NameValueCollection();
+            queryArguments.Add("tags", tags);
+            queryArguments.Add("page", page.ToString());
+            queryArguments.Add("pagesize", pageSize.ToString());
+            queryArguments.Add("orderdirection", orderDirection);
+            queryArguments.Add("sentFromDate", sentFromDate);
+            queryArguments.Add("sentToDate", sentToDate);
+
+            return HttpGet<PagedCollection<CampaignDetail>>(string.Format("/clients/{0}/campaigns.json", ClientID), queryArguments);
         }
 
         public IEnumerable<ScheduledCampaignDetail> Scheduled()
@@ -196,6 +215,11 @@ namespace createsend_dotnet
         public IEnumerable<JourneyDetail> Journeys()
         {
             return HttpGet<IEnumerable<JourneyDetail>>(string.Format("/clients/{0}/journeys.json", ClientID), null);
+        }
+
+        public IEnumerable<ClientTag> Tags()
+        {
+            return HttpGet<IEnumerable<ClientTag>>(string.Format("/clients/{0}/tags.json", ClientID), null);
         }
     }
 }
