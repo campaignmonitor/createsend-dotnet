@@ -99,7 +99,7 @@ namespace Samples
                 var tags = "Tag1,Tag2";
                 var sortDirection = "desc";
                 var pageNumber = 1;
-                var pageSize = 1;
+                var pageSize = 100;
                 var campaigns = client.Campaigns(tags, pageNumber, pageSize, sortDirection, new DateTime(1900, 1, 1), DateTime.Now);
                 var numberOfPages = campaigns.NumberOfPages;
                 Console.WriteLine($"Total Pages: {numberOfPages}");

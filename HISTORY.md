@@ -2,10 +2,10 @@
 
 ## v6.0.0 - 18 November, 2021
 
-* Update wrapper to API version 3.3
+* Update wrapper to Createsend API version 3.3 which includes new breaking changes
 * Add extra query string parameters and pagination support for client sent campaigns endpoint
 * Add new client tags endpoint
-* Add support for returning campaign name as part of sent, draft and scheduled campaign endpoints
+* Add support for returning campaign tags as part of sent, draft and scheduled campaign endpoints
 * Add support for returning campaign name as part of campaign summary endpoint
 * Add new examples for client tags and sent campaigns endpoints
 * Add new example for campaigns summary
