@@ -42,7 +42,7 @@ namespace createsend_dotnet
             return Campaigns(tags, page, pageSize, orderDirection, sentFromDate.ToString("yyyy-MM-dd"), sentToDate.ToString("yyyy-MM-dd"));
         }
 
-        public PagedCollection<CampaignDetail> Campaigns(string tags, int page, int pageSize, string orderDirection, string sentFromDate, string sentToDate)
+        public PagedCollection<CampaignDetail> Campaigns(string tags = null, int page = 1, int pageSize = 100, string orderDirection = "desc", string sentFromDate = null, string sentToDate = null)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("tags", tags);

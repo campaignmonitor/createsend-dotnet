@@ -109,7 +109,7 @@ namespace Samples
                 {
                     if (pageNumber > 1)
                     {
-                        campaigns = client.Campaigns(tags, pageNumber, pageSize, sortDirection, null, null);
+                        campaigns = client.Campaigns(tags, pageNumber, pageSize, sortDirection, new DateTime(1900, 1, 1), DateTime.Now);
                     }
 
                     foreach (var campaign in campaigns.Results)
