@@ -160,7 +160,7 @@ namespace dotnet_api_client
                 {
                     if (pageNumber > 1)
                     {
-                        campaigns = cl.Campaigns();
+                        campaigns = cl.Campaigns(page: pageNumber);
                     }
 
                     foreach (var cm in campaigns.Results)
