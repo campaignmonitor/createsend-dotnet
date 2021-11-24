@@ -152,22 +152,10 @@ namespace dotnet_api_client
             {
                 Console.WriteLine(string.Format("Client: {0}", c.Name));
                 var cl = new Client(auth, c.ClientID);
-                Console.WriteLine("- Campaigns:");
-                var pageNumber = 1;
-                var campaigns = cl.Campaigns();
-                var numberOfPages = campaigns.NumberOfPages;
-                while (pageNumber <= numberOfPages)
+                Console.WriteLine("- Draft Campaigns:");
+                foreach (DraftDetail cm in cl.Drafts())
                 {
-                    if (pageNumber > 1)
-                    {
-                        campaigns = cl.Campaigns(page: pageNumber);
-                    }
-
-                    foreach (var cm in campaigns.Results)
-                    {
-                        Console.WriteLine(string.Format("  - {0}", cm.Subject));
-                    }
-                    pageNumber++;
+                    Console.WriteLine(string.Format("  - {0}", cm.Subject));
                 }
             }
         }
