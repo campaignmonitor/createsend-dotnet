@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using createsend_dotnet;
 
 namespace Samples
@@ -11,6 +10,32 @@ namespace Samples
             new OAuthAuthenticationDetails(
                 "your access token", "your refresh token");
         private string listID = "your_list_id";
+
+        public void GetSubscriberDetail()
+        {
+            Subscriber subscriber = new Subscriber(auth, listID);
+
+            try
+            {
+                var detail = subscriber.Get("an email address", false);
+                Console.WriteLine("Name: {0}", detail.Name);
+                Console.WriteLine("State: {0}", detail.State);
+                Console.WriteLine("StateChangedDate: {0}", detail.StateChangedDate);
+                Console.WriteLine("ListJoinedDate: {0}", detail.ListJoinedDate);
+                Console.WriteLine("ReadsEmailWith: {0}", detail.ReadsEmailWith);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
 
         void BasicAdd()
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using createsend_dotnet;
 
 namespace Samples
@@ -158,6 +157,174 @@ namespace Samples
                     for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
                     {
                         PagedCollection<SubscriberDetail> subsequentPage = list.Active(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
+                        allSubscribers.AddRange(subsequentPage.Results);
+                    }
+                }
+
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
+                    Console.WriteLine(string.Format(
+                        "Subscriber with email address {0} reads mail with {1}.",
+                        subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void GetUnsubscribedSubscribers()
+        {
+            List list = new List(auth, ListID);
+
+            try
+            {
+                List<SubscriberDetail> allSubscribers = new List<SubscriberDetail>();
+
+                // get the first page, with an old date to signify entire list
+                PagedCollection<SubscriberDetail> firstPage = list.Unsubscribed(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC", false);
+
+                allSubscribers.AddRange(firstPage.Results);
+
+                if (firstPage.NumberOfPages > 1)
+                {
+                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    {
+                        PagedCollection<SubscriberDetail> subsequentPage = list.Unsubscribed(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
+                        allSubscribers.AddRange(subsequentPage.Results);
+                    }
+                }
+
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
+                    Console.WriteLine(string.Format(
+                        "Subscriber with email address {0} reads mail with {1}.",
+                        subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void GetUnconfirmedSubscribers()
+        {
+            List list = new List(auth, ListID);
+
+            try
+            {
+                List<SubscriberDetail> allSubscribers = new List<SubscriberDetail>();
+
+                // get the first page, with an old date to signify entire list
+                PagedCollection<SubscriberDetail> firstPage = list.Unconfirmed(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC", false);
+
+                allSubscribers.AddRange(firstPage.Results);
+
+                if (firstPage.NumberOfPages > 1)
+                {
+                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    {
+                        PagedCollection<SubscriberDetail> subsequentPage = list.Unconfirmed(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
+                        allSubscribers.AddRange(subsequentPage.Results);
+                    }
+                }
+
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
+                    Console.WriteLine(string.Format(
+                        "Subscriber with email address {0} reads mail with {1}.",
+                        subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void GetDeletedSubscribers()
+        {
+            List list = new List(auth, ListID);
+
+            try
+            {
+                List<SubscriberDetail> allSubscribers = new List<SubscriberDetail>();
+
+                // get the first page, with an old date to signify entire list
+                PagedCollection<SubscriberDetail> firstPage = list.Deleted(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC", false);
+
+                allSubscribers.AddRange(firstPage.Results);
+
+                if (firstPage.NumberOfPages > 1)
+                {
+                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    {
+                        PagedCollection<SubscriberDetail> subsequentPage = list.Deleted(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
+                        allSubscribers.AddRange(subsequentPage.Results);
+                    }
+                }
+
+                foreach (SubscriberDetail subscriberDetail in allSubscribers)
+                {
+                    Console.WriteLine(string.Format(
+                        "Subscriber with email address {0} reads mail with {1}.",
+                        subscriberDetail.EmailAddress, subscriberDetail.ReadsEmailWith));
+                }
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public void GetBouncedSubscribers()
+        {
+            List list = new List(auth, ListID);
+
+            try
+            {
+                List<SubscriberDetail> allSubscribers = new List<SubscriberDetail>();
+
+                // get the first page, with an old date to signify entire list
+                PagedCollection<SubscriberDetail> firstPage = list.Bounced(new DateTime(1900, 1, 1), 1, 50, "Email", "ASC", false);
+
+                allSubscribers.AddRange(firstPage.Results);
+
+                if (firstPage.NumberOfPages > 1)
+                {
+                    for (int pageNumber = 2; pageNumber <= firstPage.NumberOfPages; pageNumber++)
+                    {
+                        PagedCollection<SubscriberDetail> subsequentPage = list.Bounced(new DateTime(1900, 1, 1), pageNumber, 50, "Email", "ASC", false);
                         allSubscribers.AddRange(subsequentPage.Results);
                     }
                 }
