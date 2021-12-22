@@ -20,7 +20,7 @@ namespace Samples
                 var detail = subscriber.Get("an email address", false);
                 Console.WriteLine("Name: {0}", detail.Name);
                 Console.WriteLine("State: {0}", detail.State);
-                Console.WriteLine("StateChangedDate: {0}", detail.StateChangedDate);
+                Console.WriteLine("Date: {0}", detail.Date);
                 Console.WriteLine("ListJoinedDate: {0}", detail.ListJoinedDate);
                 Console.WriteLine("ReadsEmailWith: {0}", detail.ReadsEmailWith);
             }

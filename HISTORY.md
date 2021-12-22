@@ -9,7 +9,7 @@
 * Add support for returning campaign name as part of campaign summary endpoint
 * Add new examples for client tags and sent campaigns endpoints
 * Add new example for campaigns summary
-* Breaking: Following endpoints now return ListJoinedDate for each subscriber.  Also, Date has been renamed to StateChangedDate:
+* Adding support for returning ListJoinedDate for each subscriber. 
   * List.Active()
   * List.Bounced()
   * List.Unsubscribed()
