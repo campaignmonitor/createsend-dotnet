@@ -3,7 +3,7 @@ using createsend_dotnet;
 
 namespace Samples
 {
-    public class People
+    public class PersonSamples
     {
         private AuthenticationDetails auth =
             new OAuthAuthenticationDetails(
