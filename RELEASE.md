@@ -10,10 +10,11 @@
 
 - Increment version numbers in the following files, ensuring that you use [Semantic Versioning](http://semver.org/):
   * `createsend-dotnet.nuspec`
-  * `createsend-dotnet/HttpHelper.cs`
+  * `createsend-dotnet/CreateSendOptions.cs`
   * `createsend-dotnet/Properties/AssemblyInfo.cs`
 - Add an entry to `HISTORY.md` which clearly explains the new release.
-- Ensure that all solutions build successfully:
+- Ensure that all solutions build successfully. 
+- NB: You may need to clear the bin and obj folder when you are building the different solutions (dotnet, dotnet.net20, dotenet.net35)
 
   ```
   rake solutions

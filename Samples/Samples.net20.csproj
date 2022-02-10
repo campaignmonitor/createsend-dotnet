@@ -38,10 +38,13 @@
   <ItemGroup>
     <Compile Include="Administrators.cs" />
     <Compile Include="Campaign.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="General.cs" />
     <Compile Include="Journey.cs" />
     <Compile Include="JourneyEmail.cs" />
     <Compile Include="List.cs" />
-    <Compile Include="People.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Segment.cs" />
     <Compile Include="Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
