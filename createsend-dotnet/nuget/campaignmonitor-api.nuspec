@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>campaignmonitor-api</id>
-    <title>Campaign Montior API</title>
+    <title>Campaign Monitor API</title>
     <version>$version$</version>
     <authors>Campaign Monitor</authors>
     <description>A .NET library for the Campaign Monitor API</description>

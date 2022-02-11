@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace createsend_dotnet
 {
@@ -14,6 +12,7 @@ namespace createsend_dotnet
         public string ReplyTo { get; set; }
         public string SentDate { get; set; }
         public int TotalRecipients { get; set; }
+        public string[] Tags { get; set; }
         public string WebVersionURL { get; set; }
         public string WebVersionTextURL { get; set; }
     }
@@ -31,6 +30,7 @@ namespace createsend_dotnet
         public string PreviewTextURL { get; set; }
         public string DateScheduled { get; set; }
         public string ScheduledTimeZone { get; set; }
+        public string[] Tags { get; set; }
     }
 
     public class DraftDetail
@@ -44,10 +44,12 @@ namespace createsend_dotnet
         public string DateCreated { get; set; }
         public string PreviewURL { get; set; }
         public string PreviewTextURL { get; set; }
+        public string[] Tags { get; set; }
     }
 
     public class CampaignSummary
     {
+        public string Name { get; set; }
         public int Recipients { get; set; }
         public int TotalOpened { get; set; }
         public int Clicks { get; set; }

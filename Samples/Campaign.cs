@@ -164,5 +164,40 @@ namespace Samples
                 Console.WriteLine(ex.ToString());
             }
         }
+
+        public void GetSummary()
+        {
+            Campaign campaign = new Campaign(auth, campaignID);
+            try
+            {
+                var summary = campaign.Summary();
+                Console.WriteLine("----------");
+                Console.WriteLine("Campaign Name: " + summary.Name);
+                Console.WriteLine("WebVersionURL: " + summary.WebVersionURL);
+                Console.WriteLine("WebVersionTextURL: " + summary.WebVersionTextURL);
+                Console.WriteLine("WorldviewURL: " + summary.WorldviewURL);
+                Console.WriteLine("Forwards: " + summary.Forwards);
+                Console.WriteLine("Likes: " + summary.Likes);
+                Console.WriteLine("Mentions: " + summary.Mentions);
+                Console.WriteLine("Recipients: " + summary.Recipients);
+                Console.WriteLine("TotalOpened: " + summary.TotalOpened);
+                Console.WriteLine("Clicks: " + summary.Clicks);
+                Console.WriteLine("Unsubscribed: " + summary.Unsubscribed);
+                Console.WriteLine("Bounced: " + summary.Bounced);
+                Console.WriteLine("UniqueOpened: " + summary.UniqueOpened);
+                Console.WriteLine("SpamComplaints: " + summary.SpamComplaints);
+                Console.WriteLine("----------");
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
     }
 }

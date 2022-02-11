@@ -152,9 +152,11 @@ namespace dotnet_api_client
             {
                 Console.WriteLine(string.Format("Client: {0}", c.Name));
                 var cl = new Client(auth, c.ClientID);
-                Console.WriteLine("- Campaigns:");
-                foreach (CampaignDetail cm in cl.Campaigns())
+                Console.WriteLine("- Draft Campaigns:");
+                foreach (DraftDetail cm in cl.Drafts())
+                {
                     Console.WriteLine(string.Format("  - {0}", cm.Subject));
+                }
             }
         }
     }

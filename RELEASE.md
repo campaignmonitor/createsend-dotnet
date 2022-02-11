@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- You must have a [NuGet](https://www.nuget.org/) account and must be an owner of the [campaignmonitor-api](https://www.nuget.org/packages/campaignmonitor-api) package.
+- You must have a [NuGet](https://www.nuget.org/) account and must be an owner of the [campaignmonitor-api](https://www.nuget.org/packages/campaignmonitor-api) package (NB: check secret server credentials).
 - You must have the `nuget` command line tool installed.
 - The [Rakefile](https://github.com/campaignmonitor/createsend-dotnet/blob/master/Rakefile) used to automate the process of releasing the package requires that you have [Cygwin](http://www.cygwin.com/), [Ruby](http://www.ruby-lang.org/en/), and [Rake](http://rake.rubyforge.org/) installed. If you don't, you'll need to manually following the processes automated by the rake tasks.
 
@@ -10,10 +10,11 @@
 
 - Increment version numbers in the following files, ensuring that you use [Semantic Versioning](http://semver.org/):
   * `createsend-dotnet.nuspec`
-  * `createsend-dotnet/HttpHelper.cs`
+  * `createsend-dotnet/CreateSendOptions.cs`
   * `createsend-dotnet/Properties/AssemblyInfo.cs`
 - Add an entry to `HISTORY.md` which clearly explains the new release.
-- Ensure that all solutions build successfully:
+- Ensure that all solutions build successfully. 
+- NB: You may need to clear the bin and obj folder when you are building the different solutions (dotnet, dotnet.net20, dotenet.net35)
 
   ```
   rake solutions
