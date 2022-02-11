@@ -172,20 +172,20 @@ namespace Samples
             {
                 var summary = campaign.Summary();
                 Console.WriteLine("----------");
-                Console.WriteLine($"Campaign Name: {summary.Name}");
-                Console.WriteLine($"WebVersionURL: {summary.WebVersionURL}");
-                Console.WriteLine($"WebVersionTextURL: {summary.WebVersionTextURL}");
-                Console.WriteLine($"WorldviewURL: {summary.WorldviewURL}");
-                Console.WriteLine($"Forwards: {summary.Forwards}");
-                Console.WriteLine($"Likes: {summary.Likes}");
-                Console.WriteLine($"Mentions: {summary.Mentions}");
-                Console.WriteLine($"Recipients: {summary.Recipients}");
-                Console.WriteLine($"TotalOpened: {summary.TotalOpened}");
-                Console.WriteLine($"Clicks: {summary.Clicks}");
-                Console.WriteLine($"Unsubscribed: {summary.Unsubscribed}");
-                Console.WriteLine($"Bounced: {summary.Bounced}");
-                Console.WriteLine($"UniqueOpened: {summary.UniqueOpened}");
-                Console.WriteLine($"SpamComplaints: {summary.SpamComplaints}");
+                Console.WriteLine("Campaign Name: " + summary.Name);
+                Console.WriteLine("WebVersionURL: " + summary.WebVersionURL);
+                Console.WriteLine("WebVersionTextURL: " + summary.WebVersionTextURL);
+                Console.WriteLine("WorldviewURL: " + summary.WorldviewURL);
+                Console.WriteLine("Forwards: " + summary.Forwards);
+                Console.WriteLine("Likes: " + summary.Likes);
+                Console.WriteLine("Mentions: " + summary.Mentions);
+                Console.WriteLine("Recipients: " + summary.Recipients);
+                Console.WriteLine("TotalOpened: " + summary.TotalOpened);
+                Console.WriteLine("Clicks: " + summary.Clicks);
+                Console.WriteLine("Unsubscribed: " + summary.Unsubscribed);
+                Console.WriteLine("Bounced: " + summary.Bounced);
+                Console.WriteLine("UniqueOpened: " + summary.UniqueOpened);
+                Console.WriteLine("SpamComplaints: " + summary.SpamComplaints);
                 Console.WriteLine("----------");
             }
             catch (CreatesendException ex)

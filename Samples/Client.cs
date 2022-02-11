@@ -102,7 +102,7 @@ namespace Samples
                 var pageSize = 100;
                 var campaigns = client.Campaigns(tags, pageNumber, pageSize, sortDirection, new DateTime(1900, 1, 1), DateTime.Now);
                 var numberOfPages = campaigns.NumberOfPages;
-                Console.WriteLine($"Total Pages: {numberOfPages}");
+                Console.WriteLine("Total Pages: " + numberOfPages);
                 Console.WriteLine("----------");
 
                 while (pageNumber <= numberOfPages)
@@ -114,17 +114,17 @@ namespace Samples
 
                     foreach (var campaign in campaigns.Results)
                     {
-                        Console.WriteLine($"FromName: {campaign.FromName}");
-                        Console.WriteLine($"FromEmail: {campaign.FromEmail}");
-                        Console.WriteLine($"ReplyTo: {campaign.ReplyTo}");
-                        Console.WriteLine($"WebVersionURL: {campaign.WebVersionURL}");
-                        Console.WriteLine($"WebVersionTextURL: {campaign.WebVersionTextURL}");
-                        Console.WriteLine($"CampaignID: {campaign.CampaignID}");
-                        Console.WriteLine($"Subject: {campaign.Subject}");
-                        Console.WriteLine($"Name: {campaign.Name}");
-                        Console.WriteLine($"SentDate: {campaign.SentDate}");
-                        Console.WriteLine($"TotalRecipients: {campaign.TotalRecipients}");
-                        Console.WriteLine($"Tags: {string.Join(",", campaign.Tags)}");
+                        Console.WriteLine("FromName: " + campaign.FromName);
+                        Console.WriteLine("FromEmail: " + campaign.FromEmail);
+                        Console.WriteLine("ReplyTo: " + campaign.ReplyTo);
+                        Console.WriteLine("WebVersionURL: " + campaign.WebVersionURL);
+                        Console.WriteLine("WebVersionTextURL: " + campaign.WebVersionTextURL);
+                        Console.WriteLine("CampaignID: " + campaign.CampaignID);
+                        Console.WriteLine("Subject: " + campaign.Subject);
+                        Console.WriteLine("Name: " + campaign.Name);
+                        Console.WriteLine("SentDate: " + campaign.SentDate);
+                        Console.WriteLine("TotalRecipients: " + campaign.TotalRecipients);
+                        Console.WriteLine("Tags: " + string.Join(",", campaign.Tags));
                         Console.WriteLine("----------");
                     }
                     pageNumber++;
@@ -152,8 +152,8 @@ namespace Samples
 
                 foreach (var tag in tags)
                 {
-                    Console.WriteLine($"TagName: {tag.Name}");
-                    Console.WriteLine($"NumberOfCampaigns: {tag.NumberOfCampaigns}");
+                    Console.WriteLine("TagName: " + tag.Name);
+                    Console.WriteLine("NumberOfCampaigns: " + tag.NumberOfCampaigns);
                     Console.WriteLine("----------");
                 }
             }

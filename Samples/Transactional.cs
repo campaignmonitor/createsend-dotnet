@@ -18,7 +18,7 @@ namespace Samples
 
                 foreach (var recipientStatus in result.Response)
                 {
-                    Console.WriteLine($"{recipientStatus.Recipient.Email}:{recipientStatus.Status}");
+                    Console.WriteLine(recipientStatus.Recipient.Email + ":" + recipientStatus.Status);
                 }
             }
             catch (CreatesendException ex)
@@ -43,7 +43,7 @@ namespace Samples
 
                 foreach (var recipientStatus in result.Response)
                 {
-                    Console.WriteLine($"{recipientStatus.Recipient.Email}:{recipientStatus.Status}");
+                    Console.WriteLine(recipientStatus.Recipient.Email + ":" + recipientStatus.Status);
                 }
             }
             catch (CreatesendException ex)
