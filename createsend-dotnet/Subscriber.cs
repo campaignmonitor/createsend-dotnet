@@ -13,6 +13,15 @@ namespace createsend_dotnet
 
         public string ListID { get; set; }
 
+        /// <summary>
+        /// Get the details of a subscriber by their email address.
+        /// </summary>
+        /// <param name="emailAddress">The subscriber's email address</param>
+        /// <param name="includeTrackingPreference">Should the results include the tracking preference?</param>
+        /// <remarks>
+        /// <para>This method does not yet support mobileNumber. Regardless of the subscriber's number, null will be returned.</para>
+        /// </remarks>
+        /// <returns>The subscriber detail that matches the given email address</returns>
         public SubscriberDetail Get(string emailAddress, bool includeTrackingPreference)
         {
             NameValueCollection queryArguments = new NameValueCollection
@@ -35,6 +44,21 @@ namespace createsend_dotnet
                 queryArguments);
         }
 
+        /// <summary>
+        /// Add a subscriber with the provided details to the list without restarting subscription-based autoresponders.
+        /// </summary>
+        /// <param name="emailAddress">The subscriber's email address</param>
+        /// <param name="name">The subscriber's name</param>
+        /// <param name="customFields">Any custom fields that relate to the subscriber</param>
+        /// <param name="resubscribe">Should the subscriber be resubscribed if inactive/suppressed?</param>
+        /// <param name="consentToTrack">The subscriber's consent to track status</param>
+        /// <param name="mobileNumber">(Optional) The subscriber's mobile number</param>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
+        /// <returns>The new subscriber's email address</returns>
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe,
             ConsentToTrack consentToTrack, string mobileNumber = null)
@@ -42,6 +66,22 @@ namespace createsend_dotnet
             return Add(emailAddress, name, customFields, resubscribe, false, consentToTrack, mobileNumber);
         }
 
+        /// <summary>
+        /// Add a subscriber with the provided details to the list.
+        /// </summary>
+        /// <param name="emailAddress">The subscriber's email address</param>
+        /// <param name="name">The subscriber's name</param>
+        /// <param name="customFields">Any custom fields that relate to the subscriber</param>
+        /// <param name="resubscribe">Should the subscriber be resubscribed if inactive/suppressed?</param>
+        /// <param name="restartSubscriptionBasedAutoresponders">Should resubscribed autoresponders restart their sequence?</param>
+        /// <param name="consentToTrack">The subscriber's consent to track status</param>
+        /// <param name="mobileNumber">(Optional) The subscriber's mobile number</param>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
+        /// <returns>The new subscriber's email address</returns>
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe,
             bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack, string mobileNumber)
@@ -60,6 +100,20 @@ namespace createsend_dotnet
                 });
         }
 
+        /// <summary>
+        /// Update the details of a subscriber by their email address without restarting subscription-based autoresponders.
+        /// </summary>
+        /// <param name="emailAddress">The subscriber's email address</param>
+        /// <param name="name">The subscriber's name</param>
+        /// <param name="customFields">Any custom fields that relate to the subscriber</param>
+        /// <param name="resubscribe">Should the subscriber be resubscribed if inactive/suppressed?</param>
+        /// <param name="consentToTrack">The subscriber's consent to track status</param>
+        /// <param name="mobileNumber">(Optional) The subscriber's mobile number</param>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
         public void Update(string emailAddress, string newEmailAddress,
             string name, List<SubscriberCustomField> customFields,
             bool resubscribe, ConsentToTrack consentToTrack, string mobileNumber = null)
@@ -68,6 +122,22 @@ namespace createsend_dotnet
                 resubscribe, false, consentToTrack, mobileNumber);
         }
 
+        /// <summary>
+        /// Update the details of a subscriber by their email address.
+        /// </summary>
+        /// <param name="emailAddress">The subscriber's current email address</param>
+        /// <param name="newEmailAddress">The subscriber's new email address</param>
+        /// <param name="name">The subscriber's name</param>
+        /// <param name="customFields">Any custom fields that relate to the subscriber</param>
+        /// <param name="resubscribe">Should the subscriber be resubscribed if inactive/suppressed?</param>
+        /// <param name="restartSubscriptionBasedAutoresponders">Should resubscribed autoresponders restart their sequence?</param>
+        /// <param name="consentToTrack">The subscriber's consent to track status</param>
+        /// <param name="mobileNumber">(Optional) The subscriber's mobile number</param>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
         public void Update(string emailAddress, string newEmailAddress,
             string name, List<SubscriberCustomField> customFields, bool resubscribe,
             bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack, string mobileNumber = null)
@@ -96,11 +166,34 @@ namespace createsend_dotnet
             HttpDelete(string.Format("/subscribers/{0}.json", ListID), queryArguments);
         }
 
+        /// <summary>
+        /// Bulk import multiple subscribers into the list without queueing or restarting subscription-based autoresponders.
+        /// </summary>
+        /// <param name="subscribers">A list of subscribers to import</param>
+        /// <param name="resubscribe">Should the subscribers be resubscribed if inactive/suppressed?</param>
+        /// <returns>A class containing the results of the import.</returns>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
         public BulkImportResults Import(List<SubscriberDetail> subscribers, bool resubscribe)
         {
             return Import(subscribers, resubscribe, false);
         }
 
+        /// <summary>
+        /// Bulk import multiple subscribers into the list without restarting subscription-based autoresponders.
+        /// </summary>
+        /// <param name="subscribers">A list of subscribers to import</param>
+        /// <param name="resubscribe">Should the subscribers be resubscribed if inactive/suppressed?</param>
+        /// <param name="queueSubscriptionBasedAutoResponders">Should automated workflow emails be queued for these subscribers?</param>
+        /// <returns>A class containing the results of the import.</returns>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
         public BulkImportResults Import(List<SubscriberDetail> subscribers,
             bool resubscribe, bool queueSubscriptionBasedAutoResponders)
         {
@@ -108,6 +201,19 @@ namespace createsend_dotnet
                 queueSubscriptionBasedAutoResponders, false);
         }
 
+        /// <summary>
+        /// Bulk import multiple subscribers into the list.
+        /// </summary>
+        /// <param name="subscribers">A list of subscribers to import</param>
+        /// <param name="resubscribe">Should the subscribers be resubscribed if inactive/suppressed?</param>
+        /// <param name="queueSubscriptionBasedAutoResponders">Should automated workflow emails be queued for these subscribers?</param>
+        /// <param name="restartSubscriptionBasedAutoresponders">Should resubscribed autoresponders restart their sequence?</param>
+        /// <returns>A class containing the results of the import.</returns>
+        /// <remarks>
+        /// <para>Excluding the mobileNumber parameter, or passing null, will not alter the subscriber's mobile number.</para>
+        /// <para>In order to remove a mobile number, pass in an empty string ("").</para>
+        /// <para><see href="https://www.campaignmonitor.com/api/v3-3/subscribers/">Visit the API documentation for more info.</see></para>
+        /// </remarks>
         public BulkImportResults Import(List<SubscriberDetail> subscribers,
             bool resubscribe, bool queueSubscriptionBasedAutoResponders,
             bool restartSubscriptionBasedAutoresponders)
