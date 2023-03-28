@@ -37,14 +37,15 @@ namespace createsend_dotnet
 
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe,
-            ConsentToTrack consentToTrack)
+            ConsentToTrack consentToTrack, string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
         {
-            return Add(emailAddress, name, customFields, resubscribe, false, consentToTrack);
+            return Add(emailAddress, name, customFields, resubscribe, false, consentToTrack, mobileNumber, consentToSendSms);
         }
 
         public string Add(string emailAddress, string name,
             List<SubscriberCustomField> customFields, bool resubscribe,
-            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack)
+            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack,
+            string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
         {
             return HttpPost<Dictionary<string, object>, string>(
                 string.Format("/subscribers/{0}.json", ListID), null,
@@ -52,24 +53,27 @@ namespace createsend_dotnet
                 {
                     { "EmailAddress", emailAddress },
                     { "Name", name },
+                    { "MobileNumber" , mobileNumber},
                     { "CustomFields", customFields },
                     { "Resubscribe", resubscribe },
                     { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders },
-                    { "ConsentToTrack", consentToTrack }
+                    { "ConsentToTrack", consentToTrack },
+                    { "ConsentToSendSms", consentToSendSms }
                 });
         }
 
         public void Update(string emailAddress, string newEmailAddress,
             string name, List<SubscriberCustomField> customFields,
-            bool resubscribe, ConsentToTrack consentToTrack)
+            bool resubscribe, ConsentToTrack consentToTrack, string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
         {
             Update(emailAddress, newEmailAddress, name, customFields,
-                resubscribe, false, consentToTrack);
+                resubscribe, false, consentToTrack, mobileNumber, consentToSendSms);
         }
 
         public void Update(string emailAddress, string newEmailAddress,
             string name, List<SubscriberCustomField> customFields, bool resubscribe,
-            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack)
+            bool restartSubscriptionBasedAutoresponders, ConsentToTrack consentToTrack,
+            string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
         {
             NameValueCollection queryArguments = new NameValueCollection();
             queryArguments.Add("email", emailAddress);
@@ -80,10 +84,12 @@ namespace createsend_dotnet
                 {
                     { "EmailAddress", newEmailAddress },
                     { "Name", name },
+                    { "MobileNumber" , mobileNumber},
                     { "CustomFields", customFields },
                     { "Resubscribe", resubscribe },
                     { "RestartSubscriptionBasedAutoresponders", restartSubscriptionBasedAutoresponders },
-                    { "ConsentToTrack", consentToTrack }
+                    { "ConsentToTrack", consentToTrack },
+                    { "ConsentToSendSms", consentToSendSms }
                 });
         }
 
@@ -119,7 +125,9 @@ namespace createsend_dotnet
                     { "EmailAddress", subscriber.EmailAddress },
                     { "Name", subscriber.Name },
                     { "CustomFields", subscriber.CustomFields },
-                    { "ConsentToTrack", subscriber.ConsentToTrack }
+                    { "ConsentToTrack", subscriber.ConsentToTrack },
+                    { "MobileNumber", subscriber.MobileNumber },
+                    { "ConsentToSendSms", subscriber.ConsentToSendSms }
                 };
 
                 reworkedSubscribers.Add(subscriberWithoutDate);
