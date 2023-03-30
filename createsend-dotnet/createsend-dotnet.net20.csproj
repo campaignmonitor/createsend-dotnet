@@ -63,6 +63,7 @@
     <Compile Include="Models\BillingDetails.cs" />
     <Compile Include="Models\Campaign.cs" />
     <Compile Include="Models\ClientTag.cs" />
+    <Compile Include="Models\ConsentToSendSms.cs" />
     <Compile Include="Models\ConsentToTrack.cs" />
     <Compile Include="Models\CreatesendException.cs" />
     <Compile Include="Models\Client.cs" />
