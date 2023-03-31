@@ -44,7 +44,8 @@ namespace createsend_dotnet
             string emailAddress,
             string name,
             List<SubscriberCustomField> customFields,
-            string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
+            string mobileNumber = null,
+            ConsentToSendSms? consentToSendSms = null)
         {
             EmailAddress = emailAddress;
             Name = name;
