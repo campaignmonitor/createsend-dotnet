@@ -59,13 +59,13 @@ namespace Samples
             }
         }
 
-        void AddWithMobileAndSMSFields()
+        void AddWithSmsFields()
         {
             Subscriber subscriber = new Subscriber(auth, listID);
 
             try
             {
-                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false, ConsentToTrack.Unchanged, "+61400000000", ConsentToSendSms.Yes);
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false, ConsentToTrack.Unchanged, "+61400000000", ConsentToSendSms.No);
                 Console.WriteLine(newSubscriberID);
             }
             catch (CreatesendException ex)

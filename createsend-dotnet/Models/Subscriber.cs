@@ -9,7 +9,6 @@ namespace createsend_dotnet
         public string State { get; set; }
         public DateTime Date { get; set; }
         public string MobileNumber { get; set; }
-
     }
 
     public class SuppressedSubscriber : BasicSubscriber
@@ -45,12 +44,13 @@ namespace createsend_dotnet
             string emailAddress,
             string name,
             List<SubscriberCustomField> customFields,
-            string mobileNumber = null)
+            string mobileNumber = null, ConsentToSendSms? consentToSendSms = null)
         {
             EmailAddress = emailAddress;
             Name = name;
             CustomFields = customFields;
             MobileNumber = mobileNumber;
+            ConsentToSendSms = consentToSendSms;
         }
         public DateTime ListJoinedDate { get; set; }
         public string Name { get; set; }
