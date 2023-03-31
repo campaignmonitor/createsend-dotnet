@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace createsend_dotnet
 {
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(ConsentToTrackEnumConverter))]
     public enum ConsentToTrack
     {
         Unchanged = 0,
