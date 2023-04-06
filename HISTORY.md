@@ -1,5 +1,13 @@
 # createsend-dotnet history
 
+## v6.0.1 - 6 April, 2023
+
+* Adding support for returning MobileNumber and ConsentToSendSms for each subscriber
+  * Subscriber.Get() - only available in v3.3 API
+  * Subscriber.Add()
+  * Subscriber.Update()
+  * Subscriber.Import()
+  
 ## v6.0.0 - 15 December, 2021
 
 * Update wrapper to Createsend API version 3.3 which includes new breaking changes
