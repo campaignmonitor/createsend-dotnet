@@ -59,6 +59,28 @@ namespace Samples
             }
         }
 
+        void AddWithSmsFields()
+        {
+            Subscriber subscriber = new Subscriber(auth, listID);
+
+            try
+            {
+                string newSubscriberID = subscriber.Add("test@notarealdomain.com", "Test Name", null, false, ConsentToTrack.Unchanged, "+61400000000", ConsentToSendSms.No);
+                Console.WriteLine(newSubscriberID);
+            }
+            catch (CreatesendException ex)
+            {
+                ErrorResult error = (ErrorResult)ex.Data["ErrorResult"];
+                Console.WriteLine(error.Code);
+                Console.WriteLine(error.Message);
+            }
+            catch (Exception ex)
+            {
+                // Handle some other failure
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
         void AddWithCustomFields()
         {
             Subscriber subscriber = new Subscriber(auth, listID);
