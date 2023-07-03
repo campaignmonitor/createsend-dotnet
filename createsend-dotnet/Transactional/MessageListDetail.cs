@@ -14,5 +14,6 @@ namespace createsend_dotnet.Transactional
         public long TotalOpens { get; set; }
         public long TotalClicks { get; set; }
         public bool CanBeResent { get; set; }
+        public DateTimeOffset SentAt { get; set; }
     }
 }
