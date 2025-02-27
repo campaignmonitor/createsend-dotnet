@@ -124,7 +124,7 @@ namespace createsend_dotnet
                 });
         }
 
-        public void SetPAYGBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, decimal markupOnDelivery, decimal markupPerRecipient, decimal markupOnDesignSpamTest)
+        public void SetPAYGBilling(string currency, bool clientPays, bool canPurchaseCredits, int markupPercentage, decimal markupOnDelivery, decimal markupPerRecipient)
         {
             HttpPut<BillingOptions, string>(
                 string.Format("/clients/{0}/setpaygbilling.json", ClientID), null,
@@ -136,7 +136,6 @@ namespace createsend_dotnet
                     MarkupPercentage = markupPercentage,
                     MarkupOnDelivery = markupOnDelivery,
                     MarkupPerRecipient = markupPerRecipient,
-                    MarkupOnDesignSpamTest = markupOnDesignSpamTest
                 });
         }
 
