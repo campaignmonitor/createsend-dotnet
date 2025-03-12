@@ -1,5 +1,10 @@
 # createsend-dotnet history
 
+
+## v6.0.1 - 12 March, 2025
+
+* Removed now redundant parameter ```markupOnDesignSpamTest``` from method Client.SetPAYGBilling
+
 ## v6.0.1 - 6 April, 2023
 
 * Adding support for returning MobileNumber and ConsentToSendSms for each subscriber
